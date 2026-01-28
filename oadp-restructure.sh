@@ -3,6 +3,8 @@
 # setup_migration.sh
 # Automates the OADP JTBD Restructure Plan.
 
+# IMPORTANT
+# Navigate to `openshift-docs/backup_and_restore`
 
 # Base directory for OADP documentation as defined in the plan
 BASE_DIR="backup_and_restore/application_backup_and_restore"
