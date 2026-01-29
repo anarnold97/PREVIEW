@@ -1,0 +1,68 @@
+<!--
+Structural Changes Explained
+    1. Grouping by Goal: Instead of a flat list of features (About, Tools, Support), content is grouped by the user's active goal (Evaluate, Migrate, Manage, Troubleshoot).
+
+    2. Elevating Migration: Migration content was previously hidden inside the "About" section. It is now a top-level job because it is a primary motivation for the "Engine" edition user.
+
+    3. Action-Oriented Titles: Titles are changed from nouns (e.g., "Red Hat Ansible Automation Platform" ) to gerunds/actions (e.g., "Automating VM Provisioning with Ansible") to match the JTBD format "I want to [motivation]".
+
+    4. Contextual Integration: The "Migration Toolkit" link  was moved from a generic list of resources into the context of the Migration job where it is most relevant.
+-->    
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map>
+    <title>Red Hat OpenShift Virtualization Engine 4 Overview</title>
+
+    <topicref navtitle="Evaluating OpenShift Virtualization Engine" href="concepts/c_evaluating-openshift-virt-engine.dita">
+        <topicmeta>
+            <shortdesc>Understand the scope, cost-effectiveness, and limitations of the Engine edition.</shortdesc>
+        </topicmeta>
+        
+        <topicref navtitle="Understanding the Virtualization-Only Scope" href="concepts/c_understanding-virt-only-scope.dita">
+             <topicmeta><shortdesc>Learn about VM-exclusive workloads and the exclusion of container-based features.</shortdesc></topicmeta>
+        </topicref>
+
+        <topicref navtitle="Reviewing the Modernization Pathway" href="concepts/c_reviewing-modernization-path.dita">
+             <topicmeta><shortdesc>How to add containerization features later by switching editions.</shortdesc></topicmeta>
+        </topicref>
+    </topicref>
+
+    <topicref navtitle="Planning and Executing Migration" href="tasks/t_planning-migration.dita">
+        <topicmeta>
+            <shortdesc>Strategies for migrating from traditional virtualization platforms to OpenShift.</shortdesc>
+        </topicmeta>
+
+        <topicref navtitle="Migrating from Traditional Virtualization Platforms" href="concepts/c_migrating-strategies.dita"/>
+        
+        <topicref navtitle="Using the Migration Toolkit for Virtualization" href="references/r_migration-toolkit.dita"/>
+    </topicref>
+
+    <topicref navtitle="Managing and Automating Virtual Infrastructure" href="tasks/t_managing-virt-infrastructure.dita">
+        <topicmeta>
+            <shortdesc>Streamline operations using Ansible and Advanced Cluster Management.</shortdesc>
+        </topicmeta>
+
+        <topicref navtitle="Automating VM Provisioning with Ansible" href="tasks/t_automating-with-ansible.dita">
+             <topicmeta><shortdesc>Streamlining provisioning, migration, and monitoring tasks.</shortdesc></topicmeta>
+        </topicref>
+
+        <topicref navtitle="Centralizing Lifecycle Management with ACM" href="tasks/t_centralizing-management-acm.dita">
+             <topicmeta><shortdesc>Ensuring consistency, compliance, and governance across clusters.</shortdesc></topicmeta>
+        </topicref>
+
+        <topicref navtitle="Enhancing Networking and Disaster Recovery" href="concepts/c_partner-ecosystem-solutions.dita"/>
+    </topicref>
+
+    <topicref navtitle="Troubleshooting and System Health" href="tasks/t_troubleshooting-system-health.dita">
+        <topicmeta>
+            <shortdesc>Monitor cluster health and access support resources.</shortdesc>
+        </topicmeta>
+
+        <topicref navtitle="Monitoring Cluster Health" href="tasks/t_monitoring-cluster-health.dita"/>
+
+        <topicref navtitle="Creating a Support Case" href="tasks/t_creating-support-case.dita"/>
+    </topicref>
+
+    <topicref navtitle="Additional Resources" href="references/r_additional-resources.dita" processing-role="resource-only"/>
+
+</map>
