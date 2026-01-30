@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map id="openshift_virt_restructure">
+    <title>OpenShift Virtualization Job-Based Documentation</title>
+    <topichead navtitle="Platform Ops">
+        <!-- Job: Enable and Maintain the Virtualization Platform -->
+        <topichead navtitle="1. Prepare and Install">
+            <topicref navtitle="Planning (Limits)" href="planning_limits.dita">
+                <!-- Task Job: When I plan my cluster deployment, I want to understand resource limits, so that I can ensure the infrastructure supports my intended workload scale. -->
+            </topicref>
+            <topicref navtitle="Installation (Web/CLI)" href="installation_web_cli.dita">
+                <!-- Task Job: When I deploy the virtualization operator, I want to use my preferred interface (Web or CLI), so that I can quickly enable VM capabilities on my cluster. -->
+            </topicref>
+            <topicref navtitle="Verification" href="verification.dita">
+                <!-- Task Job: When I finish installing, I want to verify the health of the operator components, so that I can be confident the environment is ready for production. -->
+            </topicref>
+        </topichead>
+        <topichead navtitle="2. Configure Infrastructure">
+            <topicref navtitle="Node placement" href="node_placement.dita">
+                <!-- Task Job: When I have specific hardware requirements, I want to configure node placement rules, so that my VMs run on the most appropriate physical nodes. -->
+            </topicref>
+            <topicref navtitle="Certificates" href="certificates.dita">
+                <!-- Task Job: When I secure cluster communications, I want to manage TLS certificates, so that I can maintain a secure and compliant virtualization environment. -->
+            </topicref>
+            <topicref navtitle="Security" href="security.dita">
+                <!-- Task Job: When I perform Security, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+        </topichead>
+        <topichead navtitle="3. Maintain Platform Health">
+            <topicref navtitle="Updating Operator" href="updating_operator.dita">
+                <!-- Task Job: When a new version of the operator is released, I want to perform a seamless update, so that I can access new features without disrupting running VMs. -->
+            </topicref>
+            <topicref navtitle="Node maintenance modes" href="node_maintenance_modes.dita">
+                <!-- Task Job: When I perform Node maintenance modes, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+            <topicref navtitle="Troubleshooting (Must-gather)" href="troubleshooting_must_gather.dita">
+                <!-- Task Job: When I perform Troubleshooting (Must-gather), I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+        </topichead>
+    </topichead>
+    <topichead navtitle="VM Ops">
+        <!-- Job: Provision and Instantiate Virtual Machines -->
+        <topichead navtitle="1. Define Workload Dimensions">
+            <topicref navtitle="Sizing via Instance Types & Templates" href="sizing_via_instance_types_templates.dita">
+                <!-- Task Job: When I create a new VM, I want to select from pre-defined hardware profiles, so that I can ensure consistent sizing and performance across my workloads. -->
+            </topicref>
+        </topichead>
+        <topichead navtitle="2. Manage Boot Sources (Images)">
+            <topicref navtitle="Golden images" href="golden_images.dita">
+                <!-- Task Job: When I perform Golden images, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+            <topicref navtitle="Container disks" href="container_disks.dita">
+                <!-- Task Job: When I perform Container disks, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+            <topicref navtitle="Auto-updates" href="auto_updates.dita">
+                <!-- Task Job: When I perform Auto-updates, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+        </topichead>
+        <topichead navtitle="3. Automate Deployment">
+            <topicref navtitle="CLI (virtctl)" href="cli_virtctl.dita">
+                <!-- Task Job: When I manage VMs from a terminal, I want a dedicated CLI tool, so that I can perform administrative tasks more efficiently than using standard Kubernetes YAML. -->
+            </topicref>
+            <topicref navtitle="CI/CD Pipelines" href="ci_cd_pipelines.dita">
+                <!-- Task Job: When I perform CI/CD Pipelines, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+            <topicref navtitle="GitOps" href="gitops.dita">
+                <!-- Task Job: When I perform GitOps, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+        </topichead>
+    </topichead>
+    <topichead navtitle="Networking">
+        <!-- Job: Connect to the provider's physical network (L2) -->
+        <topichead navtitle="1. Connect via Linux Bridge">
+            <topicref navtitle="Prepare node (NNCP)" href="prepare_node_nncp.dita">
+                <!-- Task Job: When I bridge VMs to the physical network, I want to maintain identity persistence and protocol compatibility, so that the VM retains its original IP and looks like a physical server to the rest of the network. -->
+            </topicref>
+            <topicref navtitle="Define network (NAD)" href="define_network_nad.dita">
+                <!-- Task Job: When I bridge VMs to the physical network, I want to maintain identity persistence and protocol compatibility, so that the VM retains its original IP and looks like a physical server to the rest of the network. -->
+            </topicref>
+            <topicref navtitle="Attach VM" href="attach_vm.dita">
+                <!-- Task Job: When I perform Attach VM, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+        </topichead>
+        <topichead navtitle="2. Connect via OVS Bridge (Localnet)">
+            <topicref navtitle="Bridge mapping" href="bridge_mapping.dita">
+                <!-- Task Job: When I bridge VMs to the physical network, I want to maintain identity persistence and protocol compatibility, so that the VM retains its original IP and looks like a physical server to the rest of the network. -->
+            </topicref>
+            <topicref navtitle="Define CUDN" href="define_cudn.dita">
+                <!-- Task Job: When I onboard distinct tenant workloads, I want to provide an isolated Primary User-Defined Network, so that I can provide a dedicated environment with custom IP addressing and guaranteed traffic segmentation. -->
+            </topicref>
+            <topicref navtitle="Attach VM" href="attach_vm.dita">
+                <!-- Task Job: When I perform Attach VM, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+        </topichead>
+        <topichead navtitle="3. Connect via SR-IOV/DPDK">
+            <topicref navtitle="Hardware config" href="hardware_config.dita">
+                <!-- Task Job: When I perform Hardware config, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+            <topicref navtitle="Network definition" href="network_definition.dita">
+                <!-- Task Job: When I perform Network definition, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+            <topicref navtitle="Interface binding" href="interface_binding.dita">
+                <!-- Task Job: When I perform Interface binding, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+        </topichead>
+        <topichead navtitle="1. Connect to Default Pod Network">
+            <topicref navtitle="Masquerade binding" href="masquerade_binding.dita">
+                <!-- Task Job: When I perform Masquerade binding, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+            <topicref navtitle="Dual-stack" href="dual_stack.dita">
+                <!-- Task Job: When I perform Dual-stack, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+        </topichead>
+        <topichead navtitle="2. Connect to Primary Overlay (UDN)">
+            <topicref navtitle="Define UserDefinedNetwork" href="define_userdefinednetwork.dita">
+                <!-- Task Job: When I onboard distinct tenant workloads, I want to provide an isolated Primary User-Defined Network, so that I can provide a dedicated environment with custom IP addressing and guaranteed traffic segmentation. -->
+            </topicref>
+            <topicref navtitle="Attach VM" href="attach_vm.dita">
+                <!-- Task Job: When I perform Attach VM, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+        </topichead>
+        <topichead navtitle="3. Connect to Secondary Overlay">
+            <topicref navtitle="OVN-Kubernetes Layer 2" href="ovn_kubernetes_layer_2.dita">
+                <!-- Task Job: When I perform OVN-Kubernetes Layer 2, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+        </topichead>
+        <topichead navtitle="4. Configure Ingress (Services)">
+            <topicref navtitle="ClusterIP" href="clusterip.dita">
+                <!-- Task Job: When I perform ClusterIP, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+            <topicref navtitle="NodePort" href="nodeport.dita">
+                <!-- Task Job: When I perform NodePort, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+            <topicref navtitle="LoadBalancer" href="loadbalancer.dita">
+                <!-- Task Job: When I perform LoadBalancer, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+            <topicref navtitle="Headless" href="headless.dita">
+                <!-- Task Job: When I perform Headless, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+            <topicref navtitle="SSH Access" href="ssh_access.dita">
+                <!-- Task Job: When I perform SSH Access, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+        </topichead>
+    </topichead>
+    <topichead navtitle="Storage">
+        <!-- Job: Persist and Manage Data -->
+        <topichead navtitle="1. Configure Storage Backends">
+            <topicref navtitle="Storage Classes" href="storage_classes.dita">
+                <!-- Task Job: When I manage stateful applications, I want to dynamically attach or expand persistent disks, so that I can handle growing data requirements without rebuilding VMs. -->
+            </topicref>
+            <topicref navtitle="Profiles" href="profiles.dita">
+                <!-- Task Job: When I perform Profiles, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+            <topicref navtitle="Hostpath Provisioner" href="hostpath_provisioner.dita">
+                <!-- Task Job: When I perform Hostpath Provisioner, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+            <topicref navtitle="IBM Fusion" href="ibm_fusion.dita">
+                <!-- Task Job: When I perform IBM Fusion, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+        </topichead>
+        <topichead navtitle="2. Manage VM Disks">
+            <topicref navtitle="Hot-plugging" href="hot_plugging.dita">
+                <!-- Task Job: When I perform Hot-plugging, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+            <topicref navtitle="Expanding" href="expanding.dita">
+                <!-- Task Job: When I perform Expanding, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+            <topicref navtitle="Shared Volumes" href="shared_volumes.dita">
+                <!-- Task Job: When I perform Shared Volumes, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+            <topicref navtitle="Preallocation" href="preallocation.dita">
+                <!-- Task Job: When I perform Preallocation, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+        </topichead>
+    </topichead>
+    <topichead navtitle="Operations">
+        <!-- Job: Optimize and Maintain Workloads -->
+        <topichead navtitle="1. Tune Performance">
+            <topicref navtitle="CPU models" href="cpu_models.dita">
+                <!-- Task Job: When I perform CPU models, I want to follow a standardized process, so that I can successfully complete the Operations objective. -->
+            </topicref>
+            <topicref navtitle="NUMA" href="numa.dita">
+                <!-- Task Job: When I run latency-sensitive workloads, I want to tune CPU and memory affinity, so that I can maximize performance and reduce resource contention. -->
+            </topicref>
+            <topicref navtitle="Real-time" href="real_time.dita">
+                <!-- Task Job: When I perform Real-time, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+            <topicref navtitle="Swap (Wasp)" href="swap_wasp.dita">
+                <!-- Task Job: When I perform Swap (Wasp), I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+            <topicref navtitle="KSM" href="ksm.dita">
+                <!-- Task Job: When I perform KSM, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+        </topichead>
+        <topichead navtitle="2. Manage Hardware Access">
+            <topicref navtitle="GPU/PCI/USB Passthrough" href="gpu_pci_usb_passthrough.dita">
+                <!-- Task Job: When I perform GPU/PCI/USB Passthrough, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+            <topicref navtitle="vTPM" href="vtpm.dita">
+                <!-- Task Job: When I perform vTPM, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+        </topichead>
+        <topichead navtitle="3. Ensure High Availability">
+            <topicref navtitle="Live Migration policies" href="live_migration_policies.dita">
+                <!-- Task Job: When I need to rebalance cluster resources, I want to move running VMs between nodes, so that I can maintain uptime during infrastructure shifts. -->
+            </topicref>
+            <topicref navtitle="Node Failure handling" href="node_failure_handling.dita">
+                <!-- Task Job: When I perform Node Failure handling, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+        </topichead>
+        <topichead navtitle="4. Monitor Health">
+            <topicref navtitle="Metrics" href="metrics.dita">
+                <!-- Task Job: When I monitor platform health, I want to access real-time metrics and alerts, so that I can proactively resolve performance bottlenecks or failures. -->
+            </topicref>
+            <topicref navtitle="Consoles (VNC/Serial)" href="consoles_vnc_serial.dita">
+                <!-- Task Job: When I perform Consoles (VNC/Serial), I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+            <topicref navtitle="Runbooks" href="runbooks.dita">
+                <!-- Task Job: When I perform Runbooks, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+        </topichead>
+    </topichead>
+    <topichead navtitle="Data Protection">
+        <!-- Job: Protect Data and Disaster Recovery -->
+        <topichead navtitle="1. Manage Snapshots">
+            <topicref navtitle="Creation (Online/Offline)" href="creation_online_offline.dita">
+                <!-- Task Job: When I perform Creation (Online/Offline), I want to follow a standardized process, so that I can successfully complete the Data Protection objective. -->
+            </topicref>
+            <topicref navtitle="Restoration" href="restoration.dita">
+                <!-- Task Job: When data loss or corruption occurs, I need to recover to a specific point in time, so that I can preserve business continuity. -->
+            </topicref>
+        </topichead>
+        <topichead navtitle="2. Disaster Recovery (Site-level)">
+            <topicref navtitle="Backup (OADP/Velero)" href="backup_oadp_velero.dita">
+                <!-- Task Job: When data loss or corruption occurs, I need to recover to a specific point in time, so that I can preserve business continuity. -->
+            </topicref>
+            <topicref navtitle="Metro & Regional DR" href="metro_regional_dr.dita">
+                <!-- Task Job: When I perform Metro & Regional DR, I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+        </topichead>
+        <topichead navtitle="3. Export Data">
+            <topicref navtitle="VM Export (Portability)" href="vm_export_portability.dita">
+                <!-- Task Job: When I perform VM Export (Portability), I want to follow a standardized process, so that I can successfully complete the nan objective. -->
+            </topicref>
+        </topichead>
+    </topichead>
+    <topichead navtitle="Automation">
+        <!-- Job: Automate and Scale Virtual Machine Workloads -->
+        <topichead navtitle="1. CI/CD for VMs">
+            <topicref navtitle="OpenShift Pipelines (Tekton)" href="openshift_pipelines_tekton.dita">
+                <!-- Task Job: When I build VM images, I want to use Tekton pipelines, so that I can automate the image creation process. -->
+            </topicref>
+            <topicref navtitle="GitOps (ArgoCD)" href="gitops_argocd.dita">
+                <!-- Task Job: When I manage VM configurations, I want to use ArgoCD, so that I can maintain the state of my VMs through Git. -->
+            </topicref>
+        </topichead>
+    </topichead>
+    <topichead navtitle="VM Ops">
+        <!-- Job: Configure Specialized Workloads -->
+        <topichead navtitle="1. Advanced Hardware Configuration">
+            <topicref navtitle="vGPU Configuration" href="vgpu_configuration.dita">
+                <!-- Task Job: When I run AI/ML workloads, I want to assign vGPUs to my VMs, so that I can leverage hardware acceleration. -->
+            </topicref>
+            <topicref navtitle="PCI Passthrough" href="pci_passthrough.dita">
+                <!-- Task Job: When I need direct hardware access, I want to configure PCI passthrough, so that my VMs can use physical devices. -->
+            </topicref>
+            <topicref navtitle="vTPM Devices" href="vtpm_devices.dita">
+                <!-- Task Job: When I secure my VM boot process, I want to add a vTPM device, so that I can use features like BitLocker or Secure Boot. -->
+            </topicref>
+        </topichead>
+    </topichead>
+    <topichead navtitle="Observability & Diagnostics">
+        <!-- Job: Monitor and Troubleshoot the Virtualization Environment -->
+        <topichead navtitle="1. Monitoring and Health">
+            <topicref navtitle="Prometheus Metrics" href="prometheus_metrics.dita">
+                <!-- Task Job: When I analyze performance, I want to query VM-specific metrics in Prometheus, so that I can identify resource bottlenecks. -->
+            </topicref>
+            <topicref navtitle="Health Checks (Probes)" href="health_checks_probes.dita">
+                <!-- Task Job: When I ensure VM availability, I want to configure liveness and readiness probes, so that the cluster can automatically manage failed VMs. -->
+            </topicref>
+            <topicref navtitle="Cluster Checkups" href="cluster_checkups.dita">
+                <!-- Task Job: When I verify cluster readiness, I want to run predefined checkups (latency/storage), so that I can confirm the infrastructure is performing as expected. -->
+            </topicref>
+        </topichead>
+    </topichead>
+    <topichead navtitle="Security">
+        <!-- Job: Secure the Virtualization Platform -->
+        <topichead navtitle="1. Security and Access Control">
+            <topicref navtitle="RBAC and Authorization" href="rbac_and_authorization.dita">
+                <!-- Task Job: When I grant permissions, I want to use predefined cluster roles, so that users have the minimum required access to manage VMs. -->
+            </topicref>
+            <topicref navtitle="Workload Security Policies" href="workload_security_policies.dita">
+                <!-- Task Job: When I define security standards, I want to apply workload security policies, so that I can protect the host from compromised VMs. -->
+            </topicref>
+        </topichead>
+    </topichead>
+</map>
