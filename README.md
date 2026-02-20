@@ -63,4 +63,4 @@ Optional override file in the **repository root**: `shortdesc_overrides.csv`. Fo
 - `repo` — Path to the repository root that contains the `.adoc` files. Optional; if omitted, defaults to the parent of the directory containing the script.
 - `--dry-run` — Show what would be fixed without writing any files.
 
-**Note:** This script is intended to be run against a copy or branch of the MTA documentation repo. Review the diff before committing.
+**Note:** This script is intended to be run against a copy or branch of the MTA documentation repo. Review the diff (e.g. in Sublime Merge) before committing.

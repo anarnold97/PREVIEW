@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """
 Apply CQA 2.1 shortdesc fixes: add missing [role="_abstract"] or adjust length.
-Run after cqa_jtbd_validate.py to fix reported failures. Use --dry-run to preview.
+Discovers all .adoc files missing a shortdesc, derives one from the title (or uses
+shortdesc_overrides.csv), and fixes too-long / too-short abstracts. Use --dry-run
+to preview. Optional: run after cqa_jtbd_validate.py to fix reported failures.
 """
+import argparse
+import csv
 import re
 import sys
 from pathlib import Path
@@ -13,6 +17,44 @@ RE_TITLE = re.compile(r"^=+\s+(.+)$", re.MULTILINE)
 RE_ROLE_ABSTRACT = re.compile(r"^\[role=\"_abstract\"\]\s*$", re.MULTILINE)
 # CQA 2.1 shortdesc length constraints (characters)
 SHORTDESC_MIN, SHORTDESC_MAX = 50, 300
+# Default suffix used to reach minimum length when deriving or expanding shortdesc
+DEFAULT_SUFFIX = " Use this when writing or matching rules."
+# Name of optional override file in repo root: path,shortdesc (CSV)
+OVERRIDES_FILENAME = "shortdesc_overrides.csv"
+
+
+def load_shortdesc_overrides(repo: Path) -> dict[str, str]:
+    """Load path -> shortdesc from repo/shortdesc_overrides.csv if present."""
+    overrides = {}
+    path = repo / OVERRIDES_FILENAME
+    if not path.is_file():
+        return overrides
+    with path.open(encoding="utf-8", newline="") as f:
+        for row in csv.reader(f):
+            if len(row) >= 2:
+                overrides[row[0].strip()] = row[1].strip()
+    return overrides
+
+
+def derive_shortdesc_from_title(title: str) -> str:
+    """
+    Build a CQA-compliant shortdesc from the topic title.
+    Ensures length is between SHORTDESC_MIN and SHORTDESC_MAX.
+    """
+    raw = title.strip()
+    if not raw:
+        raw = "This topic."
+    # Prefer sentence form: add period if missing, then append default suffix
+    base = raw if raw.endswith(".") else f"{raw}."
+    candidate = (base + DEFAULT_SUFFIX).strip()
+    if len(candidate) <= SHORTDESC_MAX:
+        return candidate if len(candidate) >= SHORTDESC_MIN else (candidate + DEFAULT_SUFFIX)[:SHORTDESC_MAX]
+    # Too long: truncate at word boundary (leave room for "…")
+    truncated = base[: SHORTDESC_MAX - 1].rsplit(maxsplit=1)[0]
+    result = truncated + "…" if len(truncated) < len(base) else truncated
+    if len(result) < SHORTDESC_MIN:
+        result = (result + DEFAULT_SUFFIX)[:SHORTDESC_MAX]
+    return result
 
 
 def first_paragraph_after_abstract(content: str) -> tuple[str, int, int]:
@@ -96,8 +138,7 @@ def fix_file(path: Path, repo: Path, dry_run: bool, missing_shortdescs: dict) ->
 
     # Case 3: Abstract exists but is too short — append generic suffix up to SHORTDESC_MAX
     if para and len(para) < SHORTDESC_MIN:
-        suffix = " Use this when writing or matching rules."
-        new_para = (para + suffix)[:SHORTDESC_MAX]
+        new_para = (para + DEFAULT_SUFFIX)[:SHORTDESC_MAX]
         if len(new_para) >= SHORTDESC_MIN:
             new_content = content[:start] + new_para + content[end:]
             if not dry_run:
@@ -106,77 +147,66 @@ def fix_file(path: Path, repo: Path, dry_run: bool, missing_shortdescs: dict) ->
 
     return modified
 
-def main():
-    dry_run = "--dry-run" in sys.argv
-    repo = Path(__file__).resolve().parent.parent  # PREVIEW's parent (e.g. mta-documentation root)
 
-    # Map of relative paths -> shortdesc text for topics that lack [role="_abstract"]
-    missing_shortdescs = {}
-    for rel, shortdesc in [
-        ("docs/topics/about-home-var.adoc", "Use the MTA_HOME and related environment variables when running MTA."),
-        ("docs/topics/cli-args.adoc", "Reference for MTA CLI arguments and options."),
-        ("docs/topics/developer-lightspeed/assembly_solution-server-configurations.adoc", "Configure the Solution Server and related settings for Developer Lightspeed."),
-        ("docs/topics/fork-ruleset-repo.adoc", "Fork the ruleset repository to contribute or customize MTA rules."),
-        ("docs/topics/important-links.adoc", "Important links for MTA documentation and resources."),
-        ("docs/topics/mta-ui/con_assessment-module-features.adoc", "Overview of assessment module features in the MTA UI."),
-        ("docs/topics/mta-ui/con_intro-to-mta-ui.adoc", "Introduction to the MTA user interface for configuring and running analyses."),
-        ("docs/topics/mta-ui/con_mta-default-questionnaire.adoc", "Use the default MTA assessment questionnaire to evaluate applications."),
-        ("docs/topics/mta-ui/proc_accessing-analysis-insights.adoc", "Access analysis insights in the MTA UI to understand migration results."),
-        ("docs/topics/mta-ui/proc_accessing-unmatched-rules.adoc", "View and work with unmatched rules after an MTA analysis."),
-        ("docs/topics/mta-ui/proc_adding-applications.adoc", "Add applications to the MTA UI for assessment and analysis."),
-        ("docs/topics/mta-ui/proc_assessing-an-application.adoc", "Assess an application to estimate containerization effort and risks."),
-        ("docs/topics/mta-ui/proc_assessing-an-archetype.adoc", "Assess an archetype to evaluate multiple applications with common characteristics."),
-        ("docs/topics/mta-ui/proc_assigning-application-credentials.adoc", "Assign credentials to applications for source and Maven access."),
-        ("docs/topics/mta-ui/proc_configuring-and-running-an-application-analysis.adoc", "Configure and run an application analysis in the MTA UI."),
-        ("docs/topics/mta-ui/proc_configuring-git-repos.adoc", "Configure Git repositories for the MTA instance."),
-        ("docs/topics/mta-ui/proc_configuring-jira-credentials.adoc", "Configure Jira credentials for issue tracking in the MTA UI."),
-        ("docs/topics/mta-ui/proc_configuring-maven-credentials.adoc", "Configure Maven credentials for the MTA instance."),
-        ("docs/topics/mta-ui/proc_configuring-maven-repo.adoc", "Configure Maven repository settings for the MTA instance."),
-        ("docs/topics/mta-ui/proc_configuring-proxy-credentials.adoc", "Configure proxy credentials for the MTA instance."),
-        ("docs/topics/mta-ui/proc_configuring-proxy-settings.adoc", "Configure proxy settings for the MTA instance."),
-        ("docs/topics/mta-ui/proc_configuring-source-control-credentials.adoc", "Configure source control credentials for the MTA instance."),
-        ("docs/topics/mta-ui/proc_configuring-subversion-repos.adoc", "Configure Subversion repositories for the MTA instance."),
-        ("docs/topics/mta-ui/proc_controlling-task-order-with-task-manager.adoc", "Control task order with Task Manager in the MTA UI."),
-        ("docs/topics/mta-ui/proc_creating-a-business-service.adoc", "Create a business service in the MTA UI for organizing applications."),
-        ("docs/topics/mta-ui/proc_creating-a-jira-connection.adoc", "Create and configure a Jira connection in the MTA UI."),
-        ("docs/topics/mta-ui/proc_creating-a-stakeholder.adoc", "Create a stakeholder in the MTA UI for assessment and review."),
-        ("docs/topics/mta-ui/proc_creating-a-tag.adoc", "Create a tag in the MTA UI for classifying applications."),
-        ("docs/topics/mta-ui/proc_creating-custom-migration-targets.adoc", "Create custom migration targets in the MTA UI."),
-        ("docs/topics/mta-ui/proc_creating-jira-issues-for-migration-wave.adoc", "Create Jira issues for a migration wave in the MTA UI."),
-        ("docs/topics/mta-ui/proc_creating-migration-waves.adoc", "Create migration waves to group and track application migrations."),
-        ("docs/topics/mta-ui/proc_displaying-automated-tasks.adoc", "Display automated tasks and their status in the MTA UI."),
-        ("docs/topics/mta-ui/proc_downloading-an-analysis-report.adoc", "Download an analysis report from the MTA UI."),
-        ("docs/topics/mta-ui/proc_importing-an-app-list.adoc", "Import a list of applications into the MTA UI."),
-        ("docs/topics/mta-ui/proc_manual-tagging-of-an-application.adoc", "Manually tag an application in the MTA UI."),
-        ("docs/topics/mta-ui/proc_reviewing-a-task-log.adoc", "Review task log entries in the MTA UI."),
-        ("docs/topics/mta-ui/proc_reviewing-an-analysis-report.adoc", "Review an analysis report in the MTA UI."),
-        ("docs/topics/mta-ui/proc_reviewing-an-application.adoc", "Review an application assessment in the MTA UI."),
-        ("docs/topics/mta-ui/proc_reviewing-an-archetype.adoc", "Review an archetype in the MTA UI."),
-        ("docs/topics/mta-ui/proc_reviewing-assessment-report.adoc", "Review an assessment report in the MTA UI."),
-        ("docs/topics/mta-ui/proc_setting-default-credentials.adoc", "Set default credentials for the MTA instance."),
-        ("docs/topics/mta-ui/ref_custom-questionnaire-fields.adoc", "Reference for custom assessment questionnaire fields and YAML syntax."),
-        ("docs/topics/mta-web-applying-assessments-to-other-apps.adoc", "Apply assessments from one application to others in the MTA UI."),
-        ("docs/topics/web-console/assembly_asset-generation-ui.adoc", "Generate deployment assets in the MTA web console for Cloud Foundry to OpenShift."),
-        ("docs/topics/web-console/assembly_platform-awareness.adoc", "Use platform awareness in the MTA web console for migration planning."),
-        ("method-discover.adoc", "Discovery method and process for MTA documentation."),
-    ]:
-        missing_shortdescs[rel] = shortdesc
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Fix CQA 2.1 shortdesc: add missing [role=\"_abstract\"] or adjust length."
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Preview changes without writing files",
+    )
+    parser.add_argument(
+        "repo",
+        type=Path,
+        nargs="?",
+        default=Path(__file__).resolve().parent.parent,
+        help="Repository root containing .adoc files (default: parent of script directory)",
+    )
+    args = parser.parse_args()
+    repo = args.repo.resolve()
+    if not repo.is_dir():
+        print("Error: repo is not a directory:", repo, file=sys.stderr)
+        return 1
 
-    fixed = 0
-    # First pass: add missing abstracts to the known list of files
-    for rel in missing_shortdescs:
-        path = repo / rel
-        if path.is_file() and fix_file(path, repo, dry_run, missing_shortdescs):
-            fixed += 1
-            print("Fixed:", rel)
+    overrides = load_shortdesc_overrides(repo)
 
-    # Second pass: fix length (too long or too short) for all other .adoc files
+    # Build map of relative path -> shortdesc for every file missing [role="_abstract"]
+    missing_shortdescs: dict[str, str] = {}
     for path in repo.rglob("*.adoc"):
         if "website" in path.parts:
             continue
-        rel = path.relative_to(repo).as_posix()
+        try:
+            rel = path.relative_to(repo).as_posix()
+        except ValueError:
+            continue
+        content = path.read_text(encoding="utf-8")
+        if RE_ROLE_ABSTRACT.search(content):
+            continue
+        # Use override if present, otherwise derive from title
+        title_m = RE_TITLE.search(content)
+        title = (title_m.group(1).strip()) if title_m else "This topic"
+        missing_shortdescs[rel] = overrides.get(rel) or derive_shortdesc_from_title(title)
+
+    fixed = 0
+    # First pass: add missing abstracts
+    for rel in missing_shortdescs:
+        path = repo / rel
+        if path.is_file() and fix_file(path, repo, args.dry_run, missing_shortdescs):
+            fixed += 1
+            print("Fixed:", rel)
+
+    # Second pass: fix length (too long or too short) for files that already have an abstract
+    for path in repo.rglob("*.adoc"):
+        if "website" in path.parts:
+            continue
+        try:
+            rel = path.relative_to(repo).as_posix()
+        except ValueError:
+            continue
         if rel in missing_shortdescs:
-            continue  # already handled above
+            continue
         content = path.read_text(encoding="utf-8")
         para, start, end = first_paragraph_after_abstract(content)
         if not para:
@@ -185,17 +215,15 @@ def main():
             new_para = shorten_paragraph(para, SHORTDESC_MAX)
             if new_para != para:
                 new_content = content[:start] + new_para + content[end:]
-                if not dry_run:
+                if not args.dry_run:
                     path.write_text(new_content, encoding="utf-8")
                 fixed += 1
                 print("Shortened:", rel)
         elif len(para) < SHORTDESC_MIN:
-            # Same generic suffix as in fix_file() to reach minimum length
-            suffix = " Use this when writing or matching rules."
-            new_para = (para + suffix)[:SHORTDESC_MAX]
+            new_para = (para + DEFAULT_SUFFIX)[:SHORTDESC_MAX]
             if len(new_para) >= SHORTDESC_MIN:
                 new_content = content[:start] + new_para + content[end:]
-                if not dry_run:
+                if not args.dry_run:
                     path.write_text(new_content, encoding="utf-8")
                 fixed += 1
                 print("Expanded:", rel)
