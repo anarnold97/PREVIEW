@@ -1,0 +1,4 @@
+Issue Key,Summary,Issue Type,Description
+OADP-6700,Simultaneous updates cause resource conflicts,Known issue,"Simultaneous updates by several controllers to the same NonAdminBackupStorageLocationRequest objects cause resource conflicts. No known workaround."
+OADP-6765,Self-signed certificate for internal image backup,Bug fix,"Before this update OADP would only process the first custom CA certificate. With this update multiple BSLs with different CA certificates work correctly."
+OADP-6300,New DataProtectionTest custom resource,Enhancement,"The DataProtectionTest (DPT) CR provides a framework to validate your OADP configuration."
