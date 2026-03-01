@@ -1,5 +1,9 @@
 # check_links.py
 
+> [!NOTE]
+>
+> This script is to be used
+
 Checks for broken links in OpenShift docs AsciiDoc (`.adoc`) files. Works for **any book** in the openshift-docs repository, not only vm_networking.
 
 ## What it checks

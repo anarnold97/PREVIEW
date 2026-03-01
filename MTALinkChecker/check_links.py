@@ -15,6 +15,8 @@ Usage (script in repo root, run from repo root):
 Usage (script elsewhere; pass repo root and optional book path):
   python3 check_links.py /path/to/mta-documentation
   python3 check_links.py /path/to/mta-documentation docs/install-guide
+  
+# This script is to be used  
 """
 
 import re

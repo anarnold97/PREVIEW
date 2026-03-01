@@ -1,5 +1,10 @@
 # check_links.py
 
+> [!NOTE]
+>
+> This script is to be used
+
+
 Checks for broken links in **MTA (Migration Toolkit for Applications)** documentation AsciiDoc (`.adoc`) files. Designed to run from the **root of the `mta-documentation`** repository.
 
 ## Where to put the script

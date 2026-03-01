@@ -12,6 +12,9 @@ Usage:
   # Check any book: pass repo root and the book directory (relative or absolute):
   python3 virt/vm_networking/check_links.py /path/to/openshift-docs virt/vm_networking
   python3 virt/vm_networking/check_links.py /path/to/openshift-docs applications/creating_applications
+  
+  # This script is to be used
+  
 """
 
 import re
