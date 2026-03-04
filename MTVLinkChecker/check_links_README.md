@@ -7,7 +7,7 @@ Checks for broken links in **MTV (Migration Toolkit for Virtualization)** docume
 ## Overview (in plain language)
 
 **What does this tool do?**  
-It scans the MTV documentation source files and reports **broken links**—links that point to a missing page, a missing file, or a web address that no longer works. Fixing these before publishing helps readers avoid "Page not found" or dead links.
+It scans the MTV documentation source files and reports **broken links**—links that point to a missing page, a missing file, or a web address that no longer works. It also **compares external links** to the official MTV docs (e.g. [Migration Toolkit for Virtualization \| Red Hat Documentation](https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.11)) by reading the repo’s current version from `modules/common-attributes.adoc` and flagging any links that point to a different MTV doc version. Fixing these before publishing helps readers avoid "Page not found" or outdated version links.
 
 **Who is it for?**  
 Anyone who edits or reviews MTV (forklift) documentation: writers, editors, or reviewers. You don’t need to be a developer. You run one command and read the report.
@@ -62,8 +62,9 @@ You do not need to install anything; Python 3 and the script are enough.
 | **Internal xref** (path-style) | `xref:path/to/file.adoc#anchor[text]` | Target file must exist (path relative to the current file). Path-style only; Antora-style `xref:ref_component[]` is not validated. |
 | **Include** | `include::path/to/file[]` | Target must exist. Path is relative to the **component root** of the current file (the `documentation/doc-*` directory that contains `assemblies/`, `modules/`, or `master.adoc`). Commented `//include::` lines are skipped. |
 | **External** | `link:https://example.com[text]` | URL is fetched; expects HTTP 2xx. |
+| **MTV documentation comparison** | Any external link to `docs.redhat.com/.../migration_toolkit_for_virtualization/...` | The version in the URL (e.g. `2.10`, `2.11`) is compared to the **latest version** used by the repo. The script reads `:project-version:` from `documentation/modules/common-attributes.adoc` (or `modules/common-attributes.adoc`). If a link points to a different MTV doc version (e.g. 2.10 when the repo is 2.11), it is reported as a version mismatch so you can update the link to the current docs (e.g. [Migration Toolkit for Virtualization \| 2.11 \| Red Hat Documentation](https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.11)). |
 
-Only `link:http://` and `link:https://` are treated as external; other link types are ignored.
+Only `link:http://` and `link:https://` are treated as external; other link types are ignored. The MTV comparison runs after external link checks and does not change how those URLs are fetched; it only flags version consistency.
 
 ## Requirements
 
@@ -112,11 +113,13 @@ python3 check_links.py /path/to/forklift-documentation documentation/doc-Plannin
 - **First lines:** The script shows which folder it’s using as the repo root and which folder (or book) it’s checking, plus how many `.adoc` files it found.
 - **Internal links:** It then reports either "Internal links: all OK" or a list of **broken** internal links. Each line shows which file has the problem and which target file or path is missing (e.g. `master.adoc -> modules/missing-topic.adoc` means `master.adoc` references a file that doesn’t exist).
 - **External links:** For each web URL it found, it prints either `OK`, or an error (e.g. `404` = page not found, or `FAIL` with a short reason).
+- **MTV documentation comparison:** The script reads the repo's **latest version** from `documentation/modules/common-attributes.adoc` (`:project-version:`). It then lists that version and the base URL (e.g. `https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.11`). Any external link that points to the MTV docs but uses a different version (e.g. 2.10 in the URL when the repo is 2.11) is listed as a **version mismatch** so you can update the link to the current docs.
 - **End:** It finishes with "All links OK." if nothing is wrong, or it exits with an error so that scripts or CI can detect failure (see [Exit codes](#exit-codes)).
 
 **What to do when something is broken:**  
 - **Internal link broken:** Open the source file (first part of the line, e.g. `master.adoc`). Fix the path to the other file (e.g. correct a typo, or add the missing `.adoc` file in the right place).  
-- **External link 404 or FAIL:** The web page may have moved or been removed. Update the URL in the source file to the new address, or remove/replace the link if the page is gone.
+- **External link 404 or FAIL:** The web page may have moved or been removed. Update the URL in the source file to the new address, or remove/replace the link if the page is gone.  
+- **MTV version mismatch:** The link points to an older (or different) MTV doc version. Update the URL to use the version from `documentation/modules/common-attributes.adoc` (`:project-version:`), e.g. change `.../migration_toolkit_for_virtualization/2.10/...` to `.../migration_toolkit_for_virtualization/2.11/...` so it matches the current docs (e.g. [Migration Toolkit for Virtualization \| 2.11 \| Red Hat Documentation](https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.11)).
 
 Example (all OK):
 
@@ -129,6 +132,11 @@ Internal links: all OK
 External links:
   OK some-file.adoc: https://example.com/page
 
+MTV documentation comparison:
+  Version from modules/common-attributes.adoc (:project-version:): 2.11
+  Base URL: https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.11
+  All MTV doc links use the current project version.
+
 All links OK.
 ```
 
@@ -140,16 +148,22 @@ Broken internal links (1):
 
 External links:
   404 my-file.adoc: https://example.com/gone
+
+MTV documentation comparison:
+  Version from modules/common-attributes.adoc (:project-version:): 2.11
+  Base URL: https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.11
+  MTV version mismatch (1): links should use 2.11
+    my-file.adoc: version in URL is 2.10 -> https://docs.redhat.com/.../migration_toolkit_for_virtualization/2.10/...
 ```
 
 ## Exit codes
 
 | Code | Meaning |
 |------|---------|
-| 0 | All internal and external links OK—nothing to fix. |
-| 1 | One or more broken internal links or unreachable external URLs—check the report and fix the listed items. |
+| 0 | All internal and external links OK, and all MTV doc links use the current project version—nothing to fix. |
+| 1 | One or more broken internal links, unreachable external URLs, or MTV documentation version mismatches—check the report and fix the listed items. |
 
-In practice: if the script ends with "All links OK." you get 0; if it lists any broken links or failed URLs, it exits with 1. Automated systems (e.g. CI) can use this to pass or fail a build: `python3 check_links.py || exit 1`.
+In practice: if the script ends with "All links OK." you get 0; if it lists any broken links, failed URLs, or MTV version mismatches, it exits with 1. Automated systems (e.g. CI) can use this to pass or fail a build: `python3 check_links.py || exit 1`.
 
 ## How the script finds the repo root
 
@@ -162,6 +176,7 @@ In forklift-documentation, each book lives under `documentation/doc-<name>/` and
 
 ## Notes
 
+- **MTV version source:** The "latest" MTV documentation version is always taken from the repo's `documentation/modules/common-attributes.adoc` (or `modules/common-attributes.adoc`), from the line `:project-version: 2.11` (or whatever the current value is). The script does not fetch the Red Hat site to determine the latest version; it uses the version the documentation is being written for. Updating that attribute when you release a new version keeps the checker in sync with the published docs (e.g. https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.11).
 - **What gets checked:** The script only validates path-style cross-references (those that point to a specific `.adoc` file). Other reference styles are skipped.
 - **How much is scanned:** It checks all `.adoc` files in the folder you chose (and in any subfolders). If you don’t pass a folder, it checks the whole repo.
 - **External links on locked-down networks:** If your network blocks or restricts web access, external link checks may fail or show 403—that’s often a network restriction, not necessarily a broken URL.

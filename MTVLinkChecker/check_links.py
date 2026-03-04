@@ -6,6 +6,8 @@ AsciiDoc (`.adoc`) files. Target repo: forklift-documentation.
 - xref: targets (internal .adoc path relative to current file; path-style only)
 - include:: targets (modules/, assemblies/ relative to each file's component root)
 - link:https?:// (external URLs; optional fetch check)
+- MTV documentation comparison: external links to docs.redhat.com/.../migration_toolkit_for_virtualization/
+  are checked against the version in modules/common-attributes.adoc (:project-version:).
 
 Usage (script in repo root, run from repo root):
   python3 check_links.py
@@ -22,6 +24,13 @@ import sys
 import urllib.error
 import urllib.request
 from pathlib import Path
+
+# Pattern for :project-version: in common-attributes.adoc
+PROJECT_VERSION_RE = re.compile(r"^:project-version:\s*(\S+)\s*$", re.MULTILINE)
+# Pattern for MTV docs base URL; group(1) = version segment
+MTV_DOCS_URL_RE = re.compile(
+    r"https?://docs\.redhat\.com/en/documentation/migration_toolkit_for_virtualization/([^/#?\s]+)"
+)
 
 
 def find_repo_root(start: Path) -> Path:
@@ -48,6 +57,39 @@ def find_component_root(adoc_path: Path) -> Path | None:
             break
         d = parent
     return None
+
+
+def get_mtv_version_from_attributes(repo_root: Path) -> str | None:
+    """Read :project-version: from common-attributes.adoc. Tries documentation/modules then modules/."""
+    for rel in ("documentation/modules/common-attributes.adoc", "modules/common-attributes.adoc"):
+        path = repo_root / rel
+        if path.exists():
+            try:
+                text = path.read_text(encoding="utf-8")
+                m = PROJECT_VERSION_RE.search(text)
+                if m:
+                    return m.group(1).strip()
+            except Exception:
+                pass
+    return None
+
+
+def extract_mtv_version_from_url(url: str) -> str | None:
+    """Return the MTV version segment from a docs.redhat.com MTV URL, or None."""
+    m = MTV_DOCS_URL_RE.search(url)
+    return m.group(1) if m else None
+
+
+def check_mtv_doc_links_version(
+    ext_results: list[tuple[str, str, int | None, str]], expected_version: str
+) -> list[tuple[str, str, str]]:
+    """From external link results, return (source_file, url, url_version) for links whose MTV version != expected."""
+    mismatches = []
+    for source, url, _status, _err in ext_results:
+        url_ver = extract_mtv_version_from_url(url)
+        if url_ver is not None and url_ver != expected_version:
+            mismatches.append((source, url, url_ver))
+    return mismatches
 
 
 def extract_xrefs(content: str) -> list[tuple[str, str]]:
@@ -204,7 +246,30 @@ def main() -> None:
         else:
             print(f"  OK {source}: {url}")
 
-    if internal_broken or ext_broken:
+    # MTV documentation comparison (version from common-attributes.adoc)
+    mtv_version = get_mtv_version_from_attributes(repo_root)
+    mtv_mismatches: list[tuple[str, str, str]] = []
+    if mtv_version is not None:
+        mtv_mismatches = check_mtv_doc_links_version(ext, mtv_version)
+    mtv_base = (
+        f"https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/{mtv_version}"
+        if mtv_version
+        else None
+    )
+    print("\nMTV documentation comparison:")
+    if mtv_version is None:
+        print("  (could not read :project-version: from documentation/modules/common-attributes.adoc or modules/common-attributes.adoc; skipping version check)")
+    else:
+        print(f"  Version from modules/common-attributes.adoc (:project-version:): {mtv_version}")
+        print(f"  Base URL: {mtv_base}")
+        if mtv_mismatches:
+            print(f"  MTV version mismatch ({len(mtv_mismatches)}): links should use {mtv_version}")
+            for source, url, url_ver in mtv_mismatches:
+                print(f"    {source}: version in URL is {url_ver} -> {url}")
+        else:
+            print("  All MTV doc links use the current project version.")
+
+    if internal_broken or ext_broken or mtv_mismatches:
         sys.exit(1)
     print("\nAll links OK.")
 
