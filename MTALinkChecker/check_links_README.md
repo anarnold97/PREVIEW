@@ -1,10 +1,5 @@
 # check_links.py
 
-> [!NOTE]
->
-> This script is to be used
-
-
 Checks for broken links in **MTA (Migration Toolkit for Applications)** documentation AsciiDoc (`.adoc`) files. Designed to run from the **root of the `mta-documentation`** repository.
 
 ## Where to put the script
@@ -21,6 +16,7 @@ You do not need to install anything; Python 3 and the script are enough. If you 
 | **Internal xref** (path-style) | `xref:path/to/file.adoc#anchor[text]` | Target file must exist (path relative to the current file). Path-style only; `xref:ref_component[]` (Antora-style) is not validated. |
 | **Include** | `include::path/to/file[]` | Target must exist (path relative to **repo root**: `topics/`, `assemblies/`, etc.). Commented `//include::` lines are skipped. |
 | **External** | `link:https://example.com[text]` | URL is fetched; expects HTTP 2xx. |
+| **MTA documentation** | `link:https://docs.redhat.com/.../migration_toolkit_for_applications/...` | Each link is normalized to the **latest** MTA docs version (resolved from the [MTA docs landing page](https://docs.redhat.com/en/documentation/migration_toolkit_for_applications/) or from `docs/topics/templates/document-attributes.adoc`), then validated with a HEAD request. Ensures links point to current published docs. |
 
 Only `link:http://` and `link:https://` are treated as external; other link types are ignored.
 
@@ -67,7 +63,8 @@ python3 check_links.py /path/to/mta-documentation docs/install-guide
 - Prints repo root and the directory being checked (and how many `.adoc` files).
 - **Internal links:** Lists any broken path-style xref or include targets (missing files).
 - **External links:** For each URL, prints `OK`, an HTTP status code (e.g. `404`), or `FAIL` with the error.
-- Exit code **0** if everything is OK, **1** if any internal or external link is broken or unreachable.
+- **MTA documentation links:** For each link to MTA docs on docs.redhat.com, prints the normalized URL (latest version) and `OK` or failure. Ensures links are valid against the current MTA documentation.
+- Exit code **0** if everything is OK, **1** if any internal, external, or MTA doc link is broken or unreachable.
 
 Example (all OK):
 
@@ -79,6 +76,9 @@ Internal links: all OK
 
 External links:
   OK some-file.adoc: https://example.com/page
+
+MTA documentation links (checked against https://docs.redhat.com/.../migration_toolkit_for_applications/8.0):
+  OK proc_configuring-lighstspeed-ide-settings.adoc: https://docs.redhat.com/.../8.0/html/configuring_and_using_red_hat_developer_lightspeed_for_mta/index
 
 All links OK.
 ```
