@@ -10,17 +10,23 @@ Usage:
 
   --repo-root DIR:       Repository root (default: auto-detect).
   --check-urls:          Validate external link: URLs (HEAD request).
-  --validate-against URL: Validate xrefs against published docs (e.g. https://docs.okd.io/latest).
-                         Resolves each xref to the published page URL and checks it with HTTP.
+  --validate-against URL: Validate xrefs against published docs. Resolves each xref to the
+                         published page URL and checks it with HTTP.
   --no-xref:             Skip xref validation.
   --no-include:          Skip include:: validation.
 
-When --validate-against is set, xrefs are checked against the live site (recommended for virt:
-  --validate-against https://docs.okd.io/latest). Without it, xrefs are checked locally (file
-exists and [id="..."] anchor in source), which can yield false positives due to build-generated IDs.
+Recommended --validate-against URLs for virt:
+  Red Hat OCP virtualization:
+    https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html-single/virtualization
+  OKD docs (latest):
+    https://docs.okd.io/latest
+
+Without --validate-against, xrefs are checked locally (file exists and [id="..."] in source),
+which can yield false positives due to build-generated IDs.
 
 Examples:
   python check_broken_links.py virt/about_virt
+  python check_broken_links.py --validate-against https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html-single/virtualization virt/about_virt
   python check_broken_links.py --validate-against https://docs.okd.io/latest virt/about_virt
   python check_broken_links.py --check-urls virt/about_virt
 """
@@ -331,7 +337,7 @@ def main() -> int:
         "--validate-against",
         metavar="URL",
         default=None,
-        help="Validate xrefs against published docs (e.g. https://docs.okd.io/latest). Resolves xrefs to published URLs and checks them with HTTP GET.",
+        help="Validate xrefs against published docs. Red Hat OCP: https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html-single/virtualization ; OKD: https://docs.okd.io/latest",
     )
     parser.add_argument("--no-xref", action="store_true", help="Skip xref validation")
     parser.add_argument("--no-include", action="store_true", help="Skip include:: validation")

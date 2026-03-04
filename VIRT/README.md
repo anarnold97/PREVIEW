@@ -36,7 +36,7 @@ Paths are resolved relative to the current working directory.
 | Option | Description |
 |--------|-------------|
 | `--repo-root DIR` | Repository root (default: auto-detect by walking up for `modules/` or `_attributes/`) |
-| `--validate-against URL` | **Validate xrefs against published docs.** Resolves each xref to the corresponding page URL (e.g. `https://docs.okd.io/latest/virt/about_virt/about-virt.html`) and checks it with HTTP GET. Use this to ensure links work on the live site. Recommended for virt: `--validate-against https://docs.okd.io/latest` |
+| `--validate-against URL` | **Validate xrefs against published docs.** Resolves each xref to the corresponding page URL and checks it with HTTP GET. **Red Hat OCP virtualization:** `https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html-single/virtualization` — **OKD docs:** `https://docs.okd.io/latest` |
 | `--check-urls` | Validate external `link:https?://...` URLs with a HEAD request |
 | `--no-xref` | Skip xref validation |
 | `--no-include` | Skip `include::` validation |
@@ -45,7 +45,7 @@ Paths are resolved relative to the current working directory.
 ## What it checks
 
 1. **xrefs** (`xref:path#anchor[text]`)
-   - **With `--validate-against URL`** (recommended for virt): Resolves each xref to the published page URL (e.g. `https://docs.okd.io/latest/virt/about_virt/about-virt.html#anchor`) and checks it with HTTP GET. Reports non-2xx responses (e.g. 404). This validates links against the [OKD docs (latest)](https://docs.okd.io/latest/virt/about_virt/about-virt.html).
+   - **With `--validate-against URL`** (recommended for virt): Resolves each xref to the published page URL and checks it with HTTP GET. Reports non-2xx responses (e.g. 404). Use **Red Hat OCP virtualization** (`https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html-single/virtualization`) or **OKD docs** (`https://docs.okd.io/latest`).
    - **Without `--validate-against`**: Resolves `path` relative to the current file and repo root; verifies the target `.adoc` exists and the `#anchor` appears as `[id="..."]` in the source (can yield false positives due to build-generated IDs).
 
 2. **Includes** (`include::path[options]`)
@@ -78,7 +78,10 @@ python3 virt/check_broken_links.py --check-urls virt/about_virt
 # Pin repo root and scan virt
 python3 virt/check_broken_links.py --repo-root /path/to/openshift-docs virt
 
-# Validate xrefs against published OKD docs (recommended for virt)
+# Validate xrefs against Red Hat OCP virtualization docs
+python3 virt/check_broken_links.py --validate-against "https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html-single/virtualization" virt/about_virt
+
+# Validate xrefs against OKD docs (latest)
 python3 virt/check_broken_links.py --validate-against https://docs.okd.io/latest virt/about_virt
 
 # Only check includes (e.g. after moving modules)
