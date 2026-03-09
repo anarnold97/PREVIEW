@@ -1,0 +1,124 @@
+# JTBD (Jobs-to-be-Done) mapping for OADP documentation
+# Resolves: OADP documentation problems (750884295_49516a534bc44e9daeb9c96dbd50f2d9-090326-1412-6482)
+# Used by: cqa_jtbd_validate.py (--mapping or default docs/jtbd-mapping.yaml)
+# Paths are relative to repository root.
+
+jobs:
+  # Get started with OADP
+  - id: get-started
+    title: Get started with OADP
+    assemblies:
+      - path: backup_and_restore/application_backup_and_restore/oadp-intro.adoc
+      - path: backup_and_restore/application_backup_and_restore/oadp-features-plugins.adoc
+
+  # Install and configure OADP
+  - id: install-configure
+    title: Install and configure OADP
+    assemblies:
+      - path: backup_and_restore/application_backup_and_restore/installing/about-installing-oadp.adoc
+      - path: backup_and_restore/application_backup_and_restore/installing/oadp-installing-operator.adoc
+      - path: backup_and_restore/application_backup_and_restore/installing/installing-oadp-aws.adoc
+      - path: backup_and_restore/application_backup_and_restore/installing/installing-oadp-azure.adoc
+      - path: backup_and_restore/application_backup_and_restore/installing/installing-oadp-gcp.adoc
+      - path: backup_and_restore/application_backup_and_restore/installing/installing-oadp-mcg.adoc
+      - path: backup_and_restore/application_backup_and_restore/installing/installing-oadp-ocs.adoc
+      - path: backup_and_restore/application_backup_and_restore/installing/installing-oadp-kubevirt.adoc
+      - path: backup_and_restore/application_backup_and_restore/installing/installing-oadp-ibm-cloud.adoc
+      - path: backup_and_restore/application_backup_and_restore/installing/configuring-oadp-multiple-bsl.adoc
+      - path: backup_and_restore/application_backup_and_restore/installing/configuring-oadp-multiple-vsl.adoc
+      - path: backup_and_restore/application_backup_and_restore/installing/uninstalling-oadp.adoc
+
+  # Back up applications
+  - id: backup-applications
+    title: Back up applications
+    assemblies:
+      - path: backup_and_restore/application_backup_and_restore/backing_up_and_restoring/backing-up-applications.adoc
+      - path: backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-creating-backup-cr.adoc
+      - path: backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-backing-up-pvs-csi-doc.adoc
+      - path: backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-backing-up-applications-restic-doc.adoc
+      - path: backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-creating-backup-hooks-doc.adoc
+      - path: backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-scheduling-backups-doc.adoc
+      - path: backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-deleting-backups.adoc
+      - path: backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-about-kopia.adoc
+
+  # Restore applications
+  - id: restore-applications
+    title: Restore applications
+    assemblies:
+      - path: backup_and_restore/application_backup_and_restore/backing_up_and_restoring/restoring-applications.adoc
+
+  # Platform-specific (ROSA, AWS STS, Virtualization)
+  - id: platform-rosa
+    title: Use OADP on ROSA
+    assemblies:
+      - path: backup_and_restore/application_backup_and_restore/oadp-rosa/oadp-rosa-backing-up-applications.adoc
+      - path: backup_and_restore/application_backup_and_restore/oadp-use-cases/oadp-rosa-backup-restore.adoc
+  - id: platform-aws-sts
+    title: Use OADP with AWS STS
+    assemblies:
+      - path: backup_and_restore/application_backup_and_restore/aws-sts/oadp-aws-sts.adoc
+  - id: platform-virtualization
+    title: Use OADP with OpenShift Virtualization
+    assemblies:
+      - path: backup_and_restore/application_backup_and_restore/installing/installing-oadp-kubevirt.adoc
+
+  # Use cases and how-to
+  - id: use-cases
+    title: OADP use cases
+    assemblies:
+      - path: backup_and_restore/application_backup_and_restore/oadp-use-cases/oadp-usecase-backup-using-odf.adoc
+      - path: backup_and_restore/application_backup_and_restore/oadp-use-cases/oadp-usecase-restore-different-namespace.adoc
+      - path: backup_and_restore/application_backup_and_restore/oadp-use-cases/oadp-usecase-enable-ca-cert.adoc
+      - path: backup_and_restore/application_backup_and_restore/oadp-use-cases/oadp-usecase-legacy-aws-plugin.adoc
+
+  # Self-service, 3scale, Data Mover
+  - id: self-service
+    title: OADP Self-Service
+    assemblies:
+      - path: backup_and_restore/application_backup_and_restore/oadp-self-service/oadp-self-service.adoc
+      - path: backup_and_restore/application_backup_and_restore/oadp-self-service/oadp-self-service-cluster-admin-use-cases.adoc
+      - path: backup_and_restore/application_backup_and_restore/oadp-self-service/oadp-self-service-namespace-admin-use-cases.adoc
+      - path: backup_and_restore/application_backup_and_restore/oadp-self-service/oadp-self-service-troubleshooting.adoc
+  - id: 3scale
+    title: Back up and restore 3scale with OADP
+    assemblies:
+      - path: backup_and_restore/application_backup_and_restore/oadp-3scale/backing-up-and-restoring-3scale-api-management-by-using-oadp.adoc
+      - path: backup_and_restore/application_backup_and_restore/oadp-3scale/backing-up-3scale-api-management-by-using-oadp.adoc
+      - path: backup_and_restore/application_backup_and_restore/oadp-3scale/restoring-3scale-api-management-by-using-oadp.adoc
+  - id: data-mover
+    title: OADP Data Mover
+    assemblies:
+      - path: backup_and_restore/application_backup_and_restore/installing/about-oadp-data-mover.adoc
+      - path: backup_and_restore/application_backup_and_restore/installing/oadp-backup-restore-csi-snapshots.adoc
+      - path: backup_and_restore/application_backup_and_restore/installing/configuring-backup-restore-pvc-datamover.adoc
+      - path: backup_and_restore/application_backup_and_restore/installing/overriding-kopia-algorithms.adoc
+
+  # Reference and troubleshooting
+  - id: reference
+    title: OADP reference
+    assemblies:
+      - path: backup_and_restore/application_backup_and_restore/oadp-api.adoc
+      - path: backup_and_restore/application_backup_and_restore/oadp-advanced-topics.adoc
+      - path: backup_and_restore/application_backup_and_restore/troubleshooting/velero-cli-tool.adoc
+      - path: backup_and_restore/application_backup_and_restore/release-notes/oadp-1-5-release-notes.adoc
+      - path: backup_and_restore/application_backup_and_restore/release-notes/oadp-upgrade-notes-1-5.adoc
+  - id: troubleshooting
+    title: OADP troubleshooting
+    assemblies:
+      - path: backup_and_restore/application_backup_and_restore/troubleshooting/troubleshooting.adoc
+      - path: backup_and_restore/application_backup_and_restore/troubleshooting/oadp-installation-issues.adoc
+      - path: backup_and_restore/application_backup_and_restore/troubleshooting/oadp-operator-issues.adoc
+      - path: backup_and_restore/application_backup_and_restore/troubleshooting/oadp-timeouts.adoc
+      - path: backup_and_restore/application_backup_and_restore/troubleshooting/backup-and-restore-cr-issues.adoc
+      - path: backup_and_restore/application_backup_and_restore/troubleshooting/restic-issues.adoc
+      - path: backup_and_restore/application_backup_and_restore/troubleshooting/oadp-data-protection-test.adoc
+      - path: backup_and_restore/application_backup_and_restore/troubleshooting/using-the-must-gather-tool.adoc
+      - path: backup_and_restore/application_backup_and_restore/troubleshooting/oadp-monitoring.adoc
+      - path: backup_and_restore/application_backup_and_restore/troubleshooting/restoring-workarounds-for-velero-backups-that-use-admission-webhooks.adoc
+      - path: backup_and_restore/application_backup_and_restore/troubleshooting/pods-crash-or-restart-due-to-lack-of-memory-or-cpu.adoc
+
+  # Performance
+  - id: performance
+    title: OADP performance
+    assemblies:
+      - path: backup_and_restore/application_backup_and_restore/oadp-performance/oadp-recommended-network-settings.adoc
