@@ -1,47 +1,61 @@
-This README provides instructions for using the `run_mta_fix.sh` shell script. This script acts as a high-level automation wrapper for the `fix_toc_by_new_modules.py` Python tool, specifically optimized for the **Migration Toolkit for Applications (MTA)** documentation workflow.
+# **MTA TOC Fixer**
+
+This suite provides a professional automation workflow for the **Migration Toolkit for Applications (MTA)** documentation team. It identifies and resolves Table of Contents (TOC) depth issues, ensuring all sub-headings are visible within the Red Hat Customer Portal sidebar.
 
 ---
 
-# **MTA TOC Automation Wrapper (`run_mta_fix.sh`)**
+## **The Core Problem: "Invisible" Headings**
 
-The `run_mta_fix.sh` script streamlines the process of fixing Table of Contents (TOC) depth issues. It handles the execution of the Python logic, captures the transformation data, and automates the Git staging and commit process with a dynamically generated, descriptive commit message.
+The Red Hat Customer Portal sidebar generally supports a **maximum TOC depth of 3**.
 
-## **Core Functions**
+In the MTA "Assembly-Module" architecture, a module is often included with a leveloffset=+2. This means:
 
-* **Execution:** Runs the `fix_toc_by_new_modules.py` script.  
-* **Logging:** Captures the full output of the migration into a temporary report.  
-* **Git Staging:** Automatically runs `git add` on modified modules and updated assemblies.  
-* **Message Generation:** Parses the report to list every moved heading in the Git commit body.  
-* **Interactive Confirmation:** Prompts the user to review the changes before finalizing the commit.
+1. A Document Title (\=) becomes Level 2\.  
+2. A Section Heading (\==) becomes **Level 4**.
+
+Because Level 4 headings are suppressed in the sidebar, users cannot see or navigate to these sub-sections easily. This script "surges" through your files, finds these violations, and refactors the content into smaller, properly-leveled modules.
 
 ---
 
-## **Prerequisites**
+## **Suite Components**
 
-1. **Environment:** A Linux or macOS terminal (Bash-compatible).  
-2. **Tools:** \* Python 3.8+  
-   * Git  
-3. **Required Files:** Both `run_mta_fix.sh` and `fix_toc_by_new_modules.py` must be in the same directory (ideally the root of your local MTA documentation repository).
+| File | Role |
+| :---- | :---- |
+| fix\_toc\_by\_new\_modules.py | **The Engine:** Performs the file analysis, content extraction, and header promotion logic. |
+| run\_mta\_fix.sh | **The Workflow:** Handles Git staging, commit message generation, PR template creation, and provides a safety "cleanup" mode. |
 
 ---
 
 ## **Installation & Setup**
 
-Before running the script for the first time, you must grant it execution permissions:
+1. **Locate your Repo:** Open your local clone of the mta-documentation repository.  
+2. **Deploy Scripts:** Place both fix\_toc\_by\_new\_modules.py and run\_mta\_fix.sh in the repository root.  
+3. **Set Permissions:**  
+   Bash
+
+```
+chmod +x run_mta_fix.sh
+```
+
+4. 
+
+---
+
+## **Standard Usage Workflow**
+
+### **Step 1: Initialize**
+
+Before starting, ensure you are on a fresh feature branch:
 
 Bash
 
 ```
-chmod +x run_mta_fix.sh
+git checkout -b fix-toc-issue-xyz
 ```
 
----
+### **Step 2: Execute the Workflow**
 
-## **Usage**
-
-### **Standard Workflow**
-
-To process the entire repository and generate a commit:
+Run the wrapper script:
 
 Bash
 
@@ -49,59 +63,85 @@ Bash
 ./run_mta_fix.sh
 ```
 
-### **What Happens During Execution?**
+The script will:
 
-1. **Validation:** The script checks if the Python "engine" (`fix_toc_by_new_modules.py`) is present.  
-2. **Processing:** It executes the Python script. If no modules exceed the TOC level 3 limit, the script exits cleanly without making changes.  
-3. **Parsing:** If changes are made, the script extracts the "Moved Headings" from the Python report.  
-4. **Staging:** It stages all `.adoc` files in the `documentation/modules/` and `documentation/doc-*/` directories.  
-5. **Review:** It displays the generated commit message and asks: `Do you want to commit these changes? (y/n)`.
+* Scan for master.adoc and index.adoc files.  
+* Calculate effective heading levels.  
+* Create new \*-toc-sections.adoc modules.  
+* Update assembly includes with leveloffset=+1.  
+* **Stage all changes in Git.**
+
+### **Step 3: The Verification Pause**
+
+The script will pause and ask if the build passed. **Do not close the script yet.**
+
+1. Open a new terminal tab.  
+2. Run your local documentation build:  
+   Bash
+
+```
+# Example:
+asciidoctor documentation/doc-installing-mta/master.adoc
+```
+
+3.   
+4. Check the output. Ensure the new sections appear correctly in the TOC.
+
+### **Step 4: Finalize or Rollback**
+
+Return to the script and choose your path:
+
+* **y (Commit):** Generates the commit message and finalizes the work.  
+* **c (Cleanup):** Wipes all changes if the build failed (see [Cleanup](https://www.google.com/search?q=%23-cleanup--rollback)).  
+* **n (Exit):** Keeps the changes staged but exits without committing.
 
 ---
 
-## **Commit Message Structure**
+## **Cleanup & Rollback**
 
-The script generates a standardized, professional commit message based on the [Conventional Commits](https://www.conventionalcommits.org/) specification.
+If a refactor goes wrong or you want to start over, the suite provides a "Nuke" option to return the repository to its original state.
 
-**Example Generated Message:**
+**To trigger an immediate rollback:**
 
-Plaintext
+Bash
 
 ```
-docs: refactor modules to fix TOC depth
-
-Automated TOC depth correction for MTA documentation.
-The following headings were moved to new modules to stay within Level 3:
-- 'Configuring the CLI for OpenShift'
-- 'Advanced Analysis Rules'
-
-Summary:
-Total Modules Split: 2
-Total Files Modified: 5
+./run_mta_fix.sh --cleanup
+# OR
+./run_mta_fix.sh -c
 ```
+
+**Actions performed during cleanup:**
+
+1. **Unstages** all modified files from Git.  
+2. **Restores** original content to modified modules and assemblies.  
+3. **Deletes** all generated \*-toc-sections.adoc files from the modules folder.  
+4. **Removes** the temporary PR template and report logs.
 
 ---
 
-## **Troubleshooting & Files**
+## **Understanding the Outputs**
 
-### **Temporary Files**
+### **1\. The Git Commit Message**
 
-The script creates two temporary files during execution:
+The script generates a standardized message listing every heading that was moved. This provides a clear audit trail for the maintainers.
 
-* `mta_toc_report.txt`: A temporary log of the Python script output.  
-* `git_commit_msg.txt`: The draft commit message.
+### **2\. The GitHub PR Template (PULL\_REQUEST.md)**
 
-*Note: `mta_toc_report.txt` is automatically deleted on exit, but `git_commit_msg.txt` is preserved if you choose not to commit, allowing you to manually commit later.*
+A formatted Markdown file is created in your root directory. It contains:
 
-### **Error: "No modules found"**
+* A **Description** of why the TOC depth was changed.  
+* A **Transformation Table** (Heading | Source | Target).  
+* An **Impact Summary** (Total modules split).  
+* A **Reviewer Checklist**.
 
-If you see this message, it means your documentation already complies with the TOC depth requirements (all headings are reachable within the first 3 levels of the portal sidebar). No files were changed.
+**Pro Tip:** Copy the contents of PULL\_REQUEST.md directly into your GitHub PR description to make life easier for your reviewers\!
 
 ---
 
 ## **Best Practices**
 
-* **Branching:** Always run this script on a feature branch (e.g., `git checkout -b fix-toc-depth`).  
-* **Dry Run First:** If you are unsure, run the Python script manually with `--dry-run` before using the shell wrapper.  
-* **Verification:** After the script finishes, run `git status` to verify the staged files.
+* **Always Build Locally:** Never commit automated changes without running a local asciidoctor or pantheon build first.  
+* **Grep for Cross-References:** While the script updates includes, it doesn't change xref: or \<\< \>\> IDs. If you moved a heading that had a specific ID, ensure no other files are pointing to the "old" location if the ID wasn't unique.  
+* **Review index.adoc:** MTA guides are transitioning to index.adoc as the primary anchor. The script supports both, but always double-check your specific guide's entry point.
 
