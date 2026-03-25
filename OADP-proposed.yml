@@ -1,0 +1,265 @@
+- Topic Name: "1. Introduction"
+  Job: "Job 1: Get Started"
+  JTBD Tasks:
+  - JTBD Task: "1.1 Understand"
+    Sub-Sections:
+    - Sub-Section Title: "Introduction to OADP"
+      File Name: "oadp-intro"
+      Mapping Logic: "Foundational and conceptual content necessary for new user."
+      Job Logic: "User Need: When I am evaluating OADP, I need a high-level overview of what the tool is and what problems it solves, so that I can confirm it's the right fit for my data protection job. (Foundational)"
+      
+    - Sub-Section Title: "Understand OADP APIs and Resources"
+      File Name: "oadp-api"
+      Mapping Logic: "Foundational and conceptual content necessary for new user."
+      Job Logic: "User Need: When I am scripting or automating OADP tasks, I need a detailed reference of the Velero and OADP custom resources (CRs) and APIs so that I can write accurate and error-free configurations. (Reference/Automation)"
+      
+    - Sub-Section Title: "Review OADP Features and Plugins"
+      File Name: "oadp-features-plugins"
+      Mapping Logic: "Foundational and conceptual content necessary for a new user."
+      Job Logic: "User Need: When planning my implementation, I need to know all available data protection features and plugins, so that I can select the correct components for my specific workload protection job. (Planning/Scoping)"
+
+  - JTBD Task: "1.2 Review Release Options"
+    Sub-Sections:
+    - Sub-Section Title: "Review OADP Release Notes"
+      File Name: 
+      - "oadp-1-5-release-notes"
+      - "oadp-upgrade-notes-1-5"
+      Mapping Logic: "Contextual information about the product version."
+      Job Logic: "User Need: When I prepare for an installation or upgrade, I need a summary of new features, bug fixes, and breaking changes, so that I can anticipate and resolve potential problems before they occur. (Pre-installation/Upgrade Planning)"
+
+  - JTBD Task: "1.3 Install/Uninstall"
+    Sub-Sections:
+    - Sub-Section Title: "Overview: Install and Uninstall OADP"
+      File Name: "about-installing-oadp"
+      Mapping Logic: "The essential first and last steps to acquire/remove the tool."
+      Job Logic: "User Need: When I start my first installation, I need a high-level, step-by-step map of the entire install and uninstall process, so that I can properly scope the time and resources required for the setup job. (Orientation/Planning)"
+      
+    - Sub-Section Title: "Install the OADP Operator"
+      File Name: "oadp-installing-operator"
+      Mapping Logic: "The essential first and last steps to acquire/remove the tool."
+      Job Logic: "User Need: When I am ready to begin the core setup, I need the precise procedure to install the OADP Operator, so that I can enable the data protection services on my cluster. (Core Setup Task)"
+      
+    - Sub-Section Title: "Uninstall OADP"
+      File Name: "uninstalling-oadp"
+      Mapping Logic: "The essential first and last steps to acquire/remove the tool."
+      Job Logic: "User Need: When I am decommissioning OADP, I need the clean, complete procedure to remove all installed components, so that I can avoid lingering costs or resource consumption. (Decommissioning Task)"
+
+- Topic Name: "2. Storage"
+  Job: "Job 2: Configure Storage for Your Backups"
+  JTBD Tasks:
+  - JTBD Task: "2.1 Set up Cloud Storage for Backups"
+    Sub-Sections:
+    - Sub-Section Title: "Configure Storage Providers"
+      File Name: 
+      - "installing-oadp-aws"
+      - "installing-oadp-ibm-cloud"
+      - "installing-oadp-azure"
+      - "installing-oadp-gcp"
+      - "installing-oadp-mcg"
+      - "installing-oadp-ocs"
+      - "installing-oadp-kubevirt"
+      Mapping Logic: "Details the precise configuration settings for specific backup locations."
+      Job Logic: "User Need: When I choose a specific cloud provider for my backups, I need the exact procedures and configuration settings so that I can use my chosen storage location. (Core Configuration task)"
+      
+  - JTBD Task: "2.2 Manage Multiple Storage Locations"
+    Sub-Sections:
+    - Sub-Section Title: "Manage Backup and Volume Snapshot Locations"
+      File Name: 
+      - "configuring-oadp-multiple-bsl"
+      - "configuring-oadp-multiple-vsl"
+      Mapping Logic: "Managing the complexity of configured backup volume snapshot locations."
+      Job Logic: "User Need: When I need to implement data redundancy or satisfy complex requirements for my environment, I need to configure and manage multiple backup storage locations so that I can achieve my protection goals. (Management Task)"
+
+- Topic Name: "3. Backups"
+  Job: "Job 3: Backup your applications"
+  JTBD Tasks:
+  - JTBD Task: "3.1 Perform Standard Backups"
+    Sub-Sections:
+    - Sub-Section Title: "Standard Application Backup"
+      File Name: 
+      - "backing-up-applications"
+      - "oadp-creating-backup-cr"
+      - "oadp-scheduling-backups-doc"
+      - "oadp-deleting-backups"
+      - "oadp-about-kopia"
+      Mapping Logic: "The core specific action of creating, scheduling and cleaning up a backup."
+      Job Logic: "User Need: When I want to protect my applications, I need to know how to create and manage backups seamlessly. (Core Execution Task)"
+
+  - JTBD Task: "3.2 Backup Persistent Volumes"
+    Sub-Sections:
+    - Sub-Section Title: "Backup PVs"
+      File Name: 
+      - "oadp-backing-up-pvs-csi-doc"
+      - "oadp-backing-up-applications-restic-doc"
+      Mapping Logic: "Specific methods for executing the core backup jobs."
+      Job Logic: "User Need: When I need to protect volumes, I need the precise storage procedures so that I can optimize time and storage usage. (Specific Method Task)"
+
+  - JTBD Task: "3.3 Customize your backups"
+    Sub-Sections:
+    - Sub-Section Title: "Backup Hooks"
+      File Name: "oadp-creating-backup-hooks-doc"
+      Mapping Logic: "Advanced steps to refine the core backup job."
+      Job Logic: "User Need: When my application requires it, I need to apply pre and post backup commands (hooks) so that my application works correctly. (Customization Task)"
+
+  - JTBD Task: "3.4 Backup Specific Workloads"
+    Sub-Sections:
+    - Sub-Section Title: "Specific Scenarios"
+      File Name: 
+      - "oadp-usecase-backup-using-odf"
+      - "oadp-usecase-enable-ca-cert"
+      - "oadp-usecase-legacy-aws-plugin"
+      Mapping Logic: "Explicit examples or scenarios of performing the backup."
+      Job Logic: "User Need: When I have custom security requirements or am operating legacy plugins, I need the specific configuration steps so that I can complete my backup job. (Scenario Task)"
+
+- Topic Name: "4. Data Mover"
+  Job: "Job 4: Data Off Cluster"
+  JTBD Tasks:
+  - JTBD Task: "4.1 Ensure Volume Data Resilience with Data Mover"
+    Sub-Sections:
+    - Sub-Section Title: "About Data Mover"
+      File Name: "about-oadp-data-mover"
+      Mapping Logic: "Details the components of the Data Mover."
+      Job Logic: "User Need: When I need to ensure volume data resilience off-cluster, I need to understand the Data Mover architecture."
+
+  - JTBD Task: "4.2 Back Up and Restore PVCs"
+    Sub-Sections:
+    - Sub-Section Title: "Manage PVC Data Movement"
+      File Name: 
+      - "oadp-backup-restore-csi-snapshots"
+      - "configuring-backup-restore-pvc-datamover"
+      Mapping Logic: "Executing the advanced data mover component."
+      Job Logic: "User Need: When moving data off-cluster, I need exact procedures to configure backup and restore PVCs."
+
+  - JTBD Task: "4.3 Manage Data Copying and Deduplication"
+    Sub-Sections:
+    - Sub-Section Title: "Kopia Algorithms"
+      File Name: "overriding-kopia-algorithms"
+      Mapping Logic: "Customizing data deduplication."
+      Job Logic: "User Need: When optimizing storage during data movement, I need to manage Kopia algorithms."
+
+- Topic Name: "5. Restores"
+  Job: "Job 5: Restore your applications"
+  JTBD Tasks:
+  - JTBD Task: "5.1 Restore Standard Backups"
+    Sub-Sections:
+    - Sub-Section Title: "Restore applications"
+      File Name: "restoring-applications"
+      Mapping Logic: "The critical job to return to standard operations."
+      Job Logic: "User Need: When a failure occurs, I need to reliably restore my application to its original location so that I can restore business continuity. (Recovery Task)"
+
+  - JTBD Task: "5.2 Restore to New Location"
+    Sub-Sections:
+    - Sub-Section Title: "Restore to different namespace"
+      File Name: "oadp-usecase-restore-different-namespace"
+      Mapping Logic: "A common variation of the core restore job."
+      Job Logic: "User Need: When migrating or testing, I need to restore a backup to a different namespace so that I can maintain safe operations. (Contingency/Migration Task)"
+
+- Topic Name: "6. API Management"
+  Job: "Job 6: Application-Specific Backups"
+  JTBD Tasks:
+  - JTBD Task: "6.1 Manage 3scale Data Protection"
+    Sub-Sections:
+    - Sub-Section Title: "3scale Data Protection"
+      File Name: 
+      - "backing-up-and-restoring-3scale-api-management-by-using-oadp"
+      - "backing-up-3scale-api-management-by-using-oadp"
+      - "restoring-3scale-api-management-by-using-oadp"
+      Mapping Logic: "Specialized application backup scenarios."
+      Job Logic: "User Need: When operating complex applications like 3scale, I need targeted procedures to ensure the whole application is backed up."
+
+- Topic Name: "7. Self-Service"
+  Job: "Job 7: OADP Self-Service"
+  JTBD Tasks:
+  - JTBD Task: "7.1 Overview and Setup"
+    Sub-Sections:
+    - Sub-Section Title: "Self-Service Administration"
+      File Name: "oadp-self-service"
+      Mapping Logic: "Delegation and governance content."
+      Job Logic: "User Need: When I am delegating data protection tasks, I need to properly set up and govern who can perform tasks to ensure security. (Delegation Task)"
+
+  - JTBD Task: "7.2 Custom/Namespace Admin Tasks"
+    Sub-Sections:
+    - Sub-Section Title: "Admin Use Cases and Troubleshooting"
+      File Name: 
+      - "oadp-self-service-cluster-admin-use-cases"
+      - "oadp-self-service-namespace-admin-use-cases"
+      - "oadp-self-service-troubleshooting"
+      Mapping Logic: "Tasks specific to delegated administrators."
+      Job Logic: "User Need: When acting as a namespace admin, I need specialized troubleshooting and procedures within my designated permissions."
+
+- Topic Name: "8. Advanced Environments"
+  Job: "Job 8: Configure Advanced Environments"
+  JTBD Tasks:
+  - JTBD Task: "8.1 Configure to ROSA STS"
+    Sub-Sections:
+    - Sub-Section Title: "ROSA Backup and Restore"
+      File Name: 
+      - "oadp-rosa-backing-up-applications"
+      - "oadp-rosa-backup-restore"
+      Mapping Logic: "Specialized content for operating in a specific advanced environment."
+      Job Logic: "User Need: When I am operating on a managed cloud like ROSA STS, I need specific configuration details that comply with platform constraints. (Advanced Configuration)"
+
+  - JTBD Task: "8.2 Configure for AWS STS"
+    Sub-Sections:
+    - Sub-Section Title: "AWS STS Environments"
+      File Name: "oadp-aws-sts"
+      Mapping Logic: "Specialized content for operating in AWS STS."
+      Job Logic: "User Need: When using AWS Security Token Service, I need targeted configuration procedures."
+
+- Topic Name: "9. Troubleshooting"
+  Job: "Job 9: Troubleshooting & Optimization"
+  JTBD Tasks:
+  - JTBD Task: "9.1 Troubleshoot OADP Overview"
+    Sub-Sections:
+    - Sub-Section Title: "General Troubleshooting"
+      File Name: 
+      - "troubleshooting"
+      - "velero-cli-tool"
+      - "restoring-workarounds-for-velero-backups-that-use-admission-webhooks"
+      Mapping Logic: "Entry point and general solutions for failing jobs."
+      Job Logic: "User Need: When a backup or restore fails, I need the starting point for diagnosis so I can quickly apply the solution. (Resolution Entry Point)"
+
+  - JTBD Task: "9.2 Troubleshoot Installs"
+    Sub-Sections:
+    - Sub-Section Title: "Installation Issues"
+      File Name: "oadp-installation-issues"
+      Mapping Logic: "Content designed for users when setup fails."
+      Job Logic: "User Need: When OADP fails to deploy, I need known causes and solutions."
+
+  - JTBD Task: "9.3 Troubleshoot OADP Operator"
+    Sub-Sections:
+    - Sub-Section Title: "Operator Issues"
+      File Name: 
+      - "oadp-operator-issues"
+      - "oadp-timeouts"
+      Mapping Logic: "Content designed for users when foundational layers malfunction."
+      Job Logic: "User Need: When the Operator is malfunctioning, I need to restore the foundational management layer of OADP."
+
+  - JTBD Task: "9.4 Troubleshoot Backup and Restore"
+    Sub-Sections:
+    - Sub-Section Title: "Backup and Restore Issues"
+      File Name: 
+      - "backup-and-restore-cr-issues"
+      - "restic-issues"
+      - "oadp-data-protection-test"
+      Mapping Logic: "Content designed for users when core jobs fail requiring investigation."
+      Job Logic: "User Need: When my Custom Resources fail during operations, I need to fix the specific CR so that I can proceed."
+
+  - JTBD Task: "9.5 Use the Must Gather Tool"
+    Sub-Sections:
+    - Sub-Section Title: "Must Gather"
+      File Name: 
+      - "using-the-must-gather-tool"
+      - "oadp-monitoring"
+      Mapping Logic: "Content related to analyzing performance and extracting logs."
+      Job Logic: "User Need: When I need to provide diagnostic data for support, I need the procedures to configure monitoring and collect logs."
+
+- Topic Name: "10. Performance"
+  Job: "Job 10: Performance & Advanced"
+  JTBD Tasks:
+  - JTBD Task: "10.1 Tune Network Performance"
+    Sub-Sections:
+    - Sub-Section Title: "Network Settings"
+      File Name: "oadp-recommended-network-settings"
+      Mapping Logic: "Content aimed at improving execution speed of the Job."
+      Job Logic: "User Need: When backups are slow, I need recommended configuration changes for networking so I can maximize performance."
