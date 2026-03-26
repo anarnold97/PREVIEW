@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map id="mtv_jtbd_migration_master_map">
+<!--
+To move this map into production, ensure the following steps are completed:
+
+File Naming: Ensure the .dita or .adoc filenames match the href attributes in the map exactly.
+
+
+Metadata Integration: Add the "User Needs Statement" to the short description of each topic to aid searchability and clarify intent for the user.
+
+Topic Typing: Use task topic types for execution guides (e.g., Run Migration) and reference topic types for settings (e.g., Controller Settings).
+
+Final Validation: Run the AEM build process to verify that the job-based navigation reflects the desired "After" state from your mapping.
+-->    
+    <title>Migrating Virtual Machines with the Migration Toolkit for Virtualization</title>
+
+    <topicref href="understand-migration-process.dita" navtitle="Understand the Migration Process">
+        <topicref href="select-migration-strategy.dita" navtitle="Select a Migration Strategy"/>
+    </topicref>
+
+    <topicref href="validate-target-environment.dita" navtitle="Validate Target Environment">
+        <topicref href="ensure-vmware-ready.dita" navtitle="Ensure VMware is Ready"/>
+    </topicref>
+
+    <topicref href="setup-migration-toolkit.dita" navtitle="Set up the Migration Toolkit">
+        <topicref href="define-pathways.dita" navtitle="Define Network and Storage Pathways"/>
+    </topicref>
+
+    <topichead navtitle="Executing Your Migration">
+        <topicref href="migrate-from-vsphere.dita" navtitle="Migrating from VMware vSphere"/>
+        <topicref href="migrate-from-rhv.dita" navtitle="Migrating from RHV"/>
+        <topicref href="migrate-from-openstack.dita" navtitle="Migrating from OpenStack"/>
+        <topicref href="migrate-from-ova.dita" navtitle="Migrating from OVA Files"/>
+        <topicref href="migrate-between-clusters.dita" navtitle="Migrating between OpenShift Clusters"/>
+    </topichead>
+
+    <topichead navtitle="Choosing Your Interface">
+        <topicref href="run-migration-console.dita" navtitle="Run Migration using the Web Console"/>
+        <topicref href="run-migration-cli.dita" navtitle="Run Migration using the CLI"/>
+    </topichead>
+
+    <topichead navtitle="Post-Migration and Performance">
+        <topicref href="rename-vms.dita" navtitle="Rename VMs for OpenShift Compliance"/>
+        <topicref href="control-post-migration-power.dita" navtitle="Control Post-Migration Power State"/>
+        <topicref href="fine-tune-throughput.dita" navtitle="Fine-Tune for Maximum Throughput"/>
+    </topichead>
+
+    <topicref href="troubleshoot-common-failures.dita" navtitle="Troubleshoot Common Migration Failures"/>
+</map>

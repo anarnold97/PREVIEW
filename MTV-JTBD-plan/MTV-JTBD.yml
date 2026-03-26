@@ -1,0 +1,85 @@
+mtv_documentation_transformation:
+  - original_reference: "Chapter 1 Planning a Migration"
+    job_focused_title: "Understand the Migration Process"
+    jtbd_statement: "When I am tasked with a migration, I want to see the end-to-end workflow so I can plan my timeline and resources accurately."
+    user_needs_statement: "The user needs a high-level architectural overview and a step-by-step roadmap."
+
+  - original_reference: "Chapters 2 & 3: Migration Modes"
+    job_focused_title: "Select a Migration Strategy"
+    jtbd_statement: "When I evaluate my application requirements, I want to compare migration types so I can choose the one that minimizes downtime."
+    user_needs_statement: "The user needs a comparison matrix of Cold, Warm, and Live migration pros/cons."
+
+  - original_reference: "Chapter 4: Prerequisites"
+    job_focused_title: "Validate Target Environment"
+    jtbd_statement: "When I prepare for migration, I want to verify that my destination cluster is ready so I can avoid 'blocked' migrations."
+    user_needs_statement: "The user needs a pre-flight checklist for hardware, storage, and networking requirements."
+
+  - original_reference: "4.11. VMware Prerequisites"
+    job_focused_title: "Ensure VMware is Ready"
+    jtbd_statement: "When my source is VMware, I want to configure the specific permissions and VDDK settings so I can enable successful data transfer"
+    user_needs_statement: "The user needs the specific vSphere user roles and software versions required for MTV."
+
+  - original_reference: "Chapter 5: Installing MTV"
+    job_focused_title: "Set up the Migration Toolkit"
+    jtbd_statement: "When I am ready to start, I want to install the MTV operator so I can begin creating migration plans in the UI."
+    user_needs_statement: "The user needs simple installation steps for the OpenShift Operator Hub"
+
+  - original_reference: "Chapter 8: Mapping Networks"
+    job_focused_title: "Define Network/Storage Pathways"
+    jtbd_statement: "When I move a VM, I want to map source networks to target networks so I can ensure the VM stays connected after the move."
+    user_needs_statement: "The user needs to understand how to bridge different network namespaces and storage classes."
+
+  - original_reference: "Chapter 9: VMware vSphere"
+    job_focused_title: "Migrate from VMware vSphere"
+    jtbd_statement: "When I have VMs on ESXi, I want a dedicated walkthrough so I can move them to OpenShift without hunting for platform-specific steps."
+    user_needs_statement: "The user needs a focused execution guide tailored specifically for VMware sources."
+
+  - original_reference: "Chapter 10: RHV"
+    job_focused_title: "Migrate from RHV"
+    jtbd_statement: "When I am decommissioning my RHV environment, I want to move my workloads to OpenShift so I can modernize my infrastructure."
+    user_needs_statement: "The user needs to know the specific API and credential requirements for connecting to RHV."
+
+  - original_reference: "Chapter 11: OpenStack"
+    job_focused_title: "Migrate from OpenStack"
+    jtbd_statement: "When I move from private cloud to Kubernetes, I want to migrate my OpenStack instances so I can consolidate my management tools."
+    user_needs_statement: "The user needs guidance on handling OpenStack-specific image formats and metadata."
+
+  - original_reference: "Chapter 12: OVA Files"
+    job_focused_title: "Migrate from OVA Files"
+    jtbd_statement: "When I have standalone VM exports, I want to import them directly so I can avoid setting up a complex source provider connection."
+    user_needs_statement: "The user needs instructions on where to host and how to point MTV to OVA files"
+
+  - original_reference: "Chapter 13: OpenShift"
+    job_focused_title: "Migrate between Clusters"
+    jtbd_statement: "When I upgrade my hardware, I want to move VMs between OpenShift clusters so I can retire old infrastructure with no data loss."
+    user_needs_statement: "The user needs cluster-to-cluster migration steps using the MTV interface."
+
+  - original_reference: "Chapter 6: Web Console"
+    job_focused_title: "Run Migration using Web Console"
+    jtbd_statement: "When I prefer a visual interface, I want to use the OpenShift console so I can easily track the progress of multiple VMs."
+    user_needs_statement: "The user needs a UI walkthrough with screenshots of the migration wizard."
+
+  - original_reference: "Chapter 7: CLI"
+    job_focused_title: "Run Migration using CLI"
+    jtbd_statement: "When I need to automate or script migrations, I want to use the oc command line so I can perform bulk operations efficiently."
+    user_needs_statement: "The user needs YAML examples and command-line syntax for migration CRDs."
+
+  - original_reference: "6.4. Renaming VMs"
+    job_focused_title: "Rename VMs for OpenShift"
+    jtbd_statement: "When my source VM name uses invalid characters, I want to rename it during migration so I can comply with Kubernetes naming rules."
+    user_needs_statement: "The user needs to know the naming restrictions (DNS-1123) and how to apply overrides."
+
+  - original_reference: "6.5. Target Power State"
+    job_focused_title: "Control Post-Migration Power"
+    jtbd_statement: "When a migration finishes, I want to choose if the VM starts automatically so I can perform final checks before it goes live."
+    user_needs_statement: "The user needs to know where to find the 'Power on after migration' toggle in the plan."
+
+  - original_reference: "5.4. Controller Settings"
+    job_focused_title: "Fine-Tune for Throughput"
+    jtbd_statement: "When I am migrating hundreds of VMs, I want to adjust concurrency settings so I can finish the project faster without crashing the network."
+    user_needs_statement: "The user needs to know how to edit the max_vm_inflight parameter for the MTV controller."
+
+  - original_reference: "(Scattered details)"
+    job_focused_title: "Troubleshoot Common Failures"
+    jtbd_statement: "When a migration status shows 'Failed,' I want a single place to look up error codes so I can fix the issue and retry."
+    user_needs_statement: "The user needs a centralized troubleshooting table with logs locations and common error resolutions."

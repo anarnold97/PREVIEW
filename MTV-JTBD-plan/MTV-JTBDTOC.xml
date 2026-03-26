@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map id="mtv_jtbd_migration_map">
+    <title>Migrating Virtual Machines with the Migration Toolkit for Virtualization</title>
+
+    <topicref href="understanding-migration-process.dita" navtitle="Understand the Migration Process">
+        <topicref href="migration-workflow-overview.dita" navtitle="End-to-end workflow overview"/>
+        <topicref href="architectural-roadmap.dita" navtitle="Architectural roadmap"/>
+    </topicref>
+
+    <topicref href="selecting-migration-strategy.dita" navtitle="Select a Migration Strategy">
+        <topicref href="comparison-migration-types.dita" navtitle="Comparison: Cold vs. Warm vs. Live migration"/>
+    </topicref>
+
+    <topicref href="validating-target-environment.dita" navtitle="Validate Target Environment">
+        <topicref href="pre-flight-checklist.dita" navtitle="Pre-flight checklist: Hardware, storage, and networking"/>
+    </topicref>
+
+    <topicref href="ensuring-source-readiness.dita" navtitle="Ensure Source Provider Readiness">
+        <topicref href="vmware-prerequisites.dita" navtitle="Configuring VMware vSphere permissions and VDDK"/>
+        <topicref href="rhv-requirements.dita" navtitle="RHV API and credential requirements"/>
+        <topicref href="openstack-requirements.dita" navtitle="OpenStack image formats and metadata"/>
+    </topicref>
+
+    <topicref href="setting-up-mtv.dita" navtitle="Set up the Migration Toolkit">
+        <topicref href="installing-mtv-operator.dita" navtitle="Installing the MTV Operator via Operator Hub"/>
+    </topicref>
+
+    <topicref href="defining-migration-pathways.dita" navtitle="Define Migration Pathways">
+        <topicref href="mapping-networks.dita" navtitle="Mapping source-to-target networks"/>
+        <topicref href="mapping-storage.dita" navtitle="Mapping storage classes"/>
+    </topicref>
+
+    <topicref href="executing-migrations.dita" navtitle="Executing Migrations">
+        <topicref href="run-migration-web-console.dita" navtitle="Run Migration using the Web Console"/>
+        <topicref href="run-migration-cli.dita" navtitle="Run Migration using the CLI"/>
+        <topicref href="migrate-from-vmware.dita" navtitle="Migrating from VMware vSphere"/>
+        <topicref href="migrate-from-rhv.dita" navtitle="Migrating from RHV"/>
+        <topicref href="migrate-from-openstack.dita" navtitle="Migrating from OpenStack"/>
+        <topicref href="migrate-from-ova.dita" navtitle="Migrating from OVA Files"/>
+        <topicref href="migrate-between-openshift-clusters.dita" navtitle="Migrating between OpenShift Clusters"/>
+    </topicref>
+
+    <topicref href="post-migration-tasks.dita" navtitle="Manage Post-Migration Settings">
+        <topicref href="renaming-vms.dita" navtitle="Renaming VMs for Kubernetes compliance (DNS-1123)"/>
+        <topicref href="controlling-power-state.dita" navtitle="Controlling target power state"/>
+    </topicref>
+
+    <topicref href="fine-tuning-performance.dita" navtitle="Fine-Tune for Performance">
+        <topicref href="adjusting-concurrency.dita" navtitle="Adjusting concurrency and throughput settings"/>
