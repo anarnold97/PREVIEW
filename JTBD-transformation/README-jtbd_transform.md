@@ -1,22 +1,20 @@
 # **JTBD Transform: AsciiDoc Stylist**
 
-jtbd\_transform.py is a specialized automation tool designed to refactor AsciiDoc documentation. It converts subjective, person-centric phrasing into impersonal, action-oriented language consistent with the **Jobs To Be Done (JTBD)** framework.
+jtbd_transform.py is a specialized automation tool designed to refactor AsciiDoc documentation. It converts subjective, person-centric phrasing into impersonal, action-oriented language consistent with the **Jobs To Be Done (JTBD)** framework.
 
 Beyond text transformation, the script automates the Git workflow, ensuring your changes are isolated in a dedicated feature branch and staged for review.
 
 ## **Key Features**
 
-* **Smart Transformation:** Replaces first/second-person pronouns with impersonal task statements.  
-* **AsciiDoc Aware:** Intelligently ignores code blocks (\----, ....), attributes (:attr:), and block metadata (\[...\]) to prevent breaking technical syntax.  
+* **Smart Transformation:** Replaces first/second-person pronouns with impersonal task statements and cleans up gerunds.  
+* **Deep AsciiDoc Awareness:** Intelligently ignores code blocks, admonition blocks, attributes, include statements, and conditional tags to prevent breaking technical syntax.  
 * **Automated Git Workflow:** \* Detects the repository root automatically.  
-  * Creates a unique branch based on the filename: jtbd-transformation-\<filename\>.  
+  * Creates a unique branch based on the filename: `jtbd-transformation-\<filename\>`.  
   * Handles branch name collisions with interactive prompts.  
   * Stages changes (git add) automatically.  
-* **Regex-Powered Refactoring:** Handles complex patterns including question-to-statement conversion and gerund cleanup (e.g., "To Migrating" → "Migrating").
+* **Regex-Powered Refactoring:** Handles complex patterns including question-to-statement conversion and user-centric phrase mapping (e.g., "allows you to" → "allows users to").
 
 ---
-
-## 
 
 ## **Getting Started**
 
@@ -28,52 +26,37 @@ Beyond text transformation, the script automates the Git workflow, ensuring your
 
 ### **Installation**
 
-1. Save jtbd\_transform.py to your local machine.  
+1. Save `jtbd_transform.py` to your local machine.  
 2. Make the script executable:  
    Bash
 
-```
-chmod +x jtbd_transform.py
+```bash
+chmod +x jtbd_transform.py
 ```
 
 3. 
 
 ### **Usage**
 
-Run the script and follow the interactive prompts:
+You can now pass the file path directly as an argument or enter it when prompted:
 
 Bash
 
 ```
+# Pass path as an argument
+./jtbd_transform.py path/to/file.adoc
+
+# Or run interactively
 ./jtbd_transform.py
 ```
 
 **Process Flow:**
 
-1. **Input:** Provide the path to the .adoc file.  
-2. **Validation:** The script verifies the file exists and is an AsciiDoc file.  
-3. **Branching:** It checks out a new branch. If the branch exists, it asks if you'd like to reuse it.  
-4. **Transformation:** It rewrites the file content.  
-5. **Staging:** It adds the file to the Git index.
-
----
-
-## **Dry Run Mode**
-
-Before making any changes to your Git state, you can preview the transformations directly in the terminal:
-
-Bash
-
-```
-./jtbd_transform.py path/to/file.adoc --dry-run
-```
-
-**What Dry Run does:**
-
-* Generates a **Unified Diff** (`-` for removed lines, `+` for added lines).  
-* Does **not** create a new branch.  
-* Does **not** overwrite the original file.  
-* Does **not** require a Git repository (useful for quick local testing).
+1. **Input:** Path to the .adoc file (converted to absolute path for reliability).  
+2. **Validation:** Verifies the file exists and confirms if it lacks a .adoc extension.  
+3. **Branching:** Checks out a new branch. If the branch exists, it asks to switch/reuse.  
+4. **Transformation:** Rewrites the file content while preserving technical markers.  
+5. **Staging:** Adds the file to the Git index for immediate review.
 
 ---
 
@@ -87,49 +70,39 @@ The script applies a series of regex patterns to ensure the documentation focuse
 | :---- | :---- | :---- |
 | **Questions** | "How do I migrate VMs?" | "How to migrate VMs" |
 | **Inquiry** | "Can I use warm migration?" | "Whether to use warm migration" |
-| **Intent** | "I want to install the operator" | "To install the operator" |
+| **Complex Phrases** | "Allows you to scale..." | "Allows users to scale..." |
 | **Directives** | "You should configure the network" | "To configure the network" |
 | **Possessives** | "Your migration plan" | "The migration plan" |
 | **Gerunds** | "To Migrating the data" | "Migrating the data" |
 
 ### **Protected Elements**
 
-The script is designed to be "syntax-safe." It will **not** modify text inside:
+The script is highly "syntax-safe" and explicitly ignores:
 
-* **Code Blocks:** Lines between \---- or .... delimiters.  
-* **Attributes:** Lines starting with : (e.g., :description: ...).  
-* **Block Tags:** Lines starting with \[ (e.g., \[id="target"\]).
-
----
-
-## 
-
-## **Technical Workflow (Under the Hood)**
-
-1. **Repo Root Discovery:** The script traverses upward from the file path to find the .git directory.  
-2. **Safety First:** It uses subprocess with check=True to ensure Git commands succeed before proceeding.  
-3. **Content Parsing:** \* It reads the file line-by-line.  
-   * It toggles an in\_code\_block flag to bypass technical snippets.  
-   * It applies a multi-pass regex filter to titles and body text separately.  
-4. **Cleanup:** It performs whitespace normalization to remove accidental double-spaces introduced during regex replacement.
-
-**Visual Indicators:**
-
-* \<span style="color:green"\>**Green (+)**\</span\>: New JTBD-style phrasing.  
-* \<span style="color:red"\>**Red (-)**\</span\>: Original subjective/person-centric phrasing.  
-* \<span style="color:cyan"\>**Cyan (@@)**\</span\>: Chunk headers (line numbers and context).
+* **Code Blocks:** Lines between `----` or `....` delimiters.  
+* **Admonition Blocks:** Lines contained within `====` delimiters.  
+* **Directives:** `include::`, `ifdef::`, `ifndef::`, and `endif::`.  
+* **Metadata:** Attributes starting with : or block tags starting with `\[`.  
+* **Comments:** Lines starting with //.
 
 ---
 
-## 
+## **Technical Workflow**
+
+1. **Repo Root Discovery:** Traverses upward from the file path to locate the .git directory.  
+2. **Safety First:** Uses subprocess with `check=True` to ensure Git commands succeed before proceeding.  
+3. **Content Parsing:** \* Reads the file line-by-line.  
+   * Toggles in\_code\_block and in\_admonition\_block flags to skip technical content.  
+   * Applies a multi-pass regex filter to titles and body text separately.  
+4. **Cleanup:** Performs whitespace normalization while strictly preserving newlines.
+
+---
 
 ## **Next Steps After Running**
 
 Once the script finishes, your file is staged. You should:
 
 1. **Review:** git diff \--cached to verify the transformation.  
-2. **Commit:** git commit \-m "docs: transform \<filename\> to JTBD format"  
-3. **Push:** git push origin jtbd-transformation-\<filename\>
-
----
+2. **Commit:** git commit \-m "docs: transform \<filename\> to JTBD format".  
+3. **Push:** git push origin jtbd-transformation-\<filename\>.
 
