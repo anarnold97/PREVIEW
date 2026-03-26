@@ -2,7 +2,7 @@
 """
 AsciiDoc to JTBD Transformation Script
 
-This script transforms AsciiDoc files to use impersonal, JTBD-like language.
+This script transforms AsciiDoc files to use JTBD-like language.
 It creates a new branch, updates the file, and stages it for review.
 """
 
