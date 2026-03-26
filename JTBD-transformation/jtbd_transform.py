@@ -37,52 +37,33 @@ def run_command(cmd, cwd=None, capture=True):
 
 def transform_to_jtbd(text):
     """
-    Transform text to impersonal JTBD-like format.
+    Transform text to task-oriented JTBD-like format.
 
     Converts:
-    - First-person to impersonal form
-    - Questions to statements
-    - User-centric to task-centric language
+    - Questions to task statements
+    - Make text more action-oriented
+    - Keep pronouns but focus on tasks
     """
-    # Remove first-person pronouns and make impersonal
+    # Task-oriented transformations (keeping pronouns)
     replacements = [
-        # Questions to statements
+        # Questions to task statements (keep pronouns where natural)
         (r'\bHow do I\b', 'How to'),
         (r'\bHow can I\b', 'How to'),
-        (r'\bCan I\b', 'Whether to'),
-        (r'\bShould I\b', 'Whether to'),
-        (r'\bWhat do I need to\b', 'What is needed to'),
-        (r'\bWhen should I\b', 'When to'),
-        (r'\bWhere do I\b', 'Where to'),
-        (r'\bWhy should I\b', 'Why to'),
+        (r'\bHow do you\b', 'How to'),
+        (r'\bHow can you\b', 'How to'),
 
-        # First-person to impersonal
-        (r'\bI want to\b', 'To'),
-        (r'\bI need to\b', 'To'),
-        (r'\bI can\b', 'One can'),
-        (r'\bI am\b', 'Users are'),
-        (r'\bmy\b', 'the'),
-        (r'\bMy\b', 'The'),
+        # Direct task statements - remove filler words
+        (r'\bYou can use\b', 'Use'),
+        (r'\bYou can migrate\b', 'Migrate'),
+        (r'\bYou can configure\b', 'Configure'),
+        (r'\bYou can create\b', 'Create'),
+        (r'\bYou can add\b', 'Add'),
+        (r'\bYou can set\b', 'Set'),
+        (r'\bYou can install\b', 'Install'),
+        (r'\bYou can perform\b', 'Perform'),
 
-        # Second-person complex phrases
-        (r'\ballowing you to\b', 'allowing users to'),
-        (r'\ballows you to\b', 'allows users to'),
-        (r'\benables you to\b', 'enables users to'),
-        (r'\blets you\b', 'allows users to'),
-        (r'\bgiving you\b', 'providing users'),
-        (r'\bgives you\b', 'provides users'),
-        (r'\bhelps you\b', 'helps users'),
-        (r'\bhelping you\b', 'helping users'),
-
-        # Make action-oriented
-        (r'\bYou can\b', 'To'),
-        (r'\bYou should\b', 'To'),
-        (r'\bYou need to\b', 'To'),
-        (r'\byour\b', 'the'),
-        (r'\bYour\b', 'The'),
-
-        # Clean up gerunds for consistency
-        (r'^To ([a-z]+)ing\b', r'\1ing'),  # "To Migrating" -> "Migrating"
+        # Keep "you" in descriptive/benefit statements but make more direct
+        # (These patterns are more conservative)
     ]
 
     result = text
