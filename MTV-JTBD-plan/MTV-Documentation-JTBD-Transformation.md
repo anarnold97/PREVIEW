@@ -4,13 +4,13 @@
 
 ---
 
-## **1\. Executive Summary**
+## **1. Executive Summary**
 
 This report outlines a strategic transition for the MTV documentation from a feature-focused structure to a **Jobs to be Done (JTBD)** framework. By leveraging AI-driven automation, a team of two writers can reorganize the entire repository into a task-based Table of Contents (TOC) that aligns with user motivations and prepares content for seamless integration into AEM.
 
 ---
 
-## **2\. The JTBD Strategy**
+## **2. The JTBD Strategy**
 
 Jobs to be Done (JTBD) is a framework that represents a user's true motivations and desired outcomes rather than just a list of product features.
 
@@ -20,7 +20,7 @@ Jobs to be Done (JTBD) is a framework that represents a user's true motivations 
 
 ---
 
-## **3\. Mapping the Transformation (The "Before and After")**
+## **3. Mapping the Transformation (The "Before and After")**
 
 We have identified 17 core jobs within the MTV documentation that must be transformed from feature-centric chapters into outcome-oriented topics.
 
@@ -46,7 +46,7 @@ We have identified 17 core jobs within the MTV documentation that must be transf
 
 ---
 
-## **4\. Automation: The "Context Injection" Script**
+## **4. Automation: The "Context Injection" Script**
 
 To scale this work for a two-person team, we utilize a Python script that pulls original .adoc files from the [MTV GitHub repository](https://github.com/kubev2v/forklift-documentation) and injects them into Claude with specific JTBD instructions.
 
@@ -89,7 +89,7 @@ def generate_jtbd_draft(task):
 
 ---
 
-## **5\. Quality Assurance: The "Style Guide" Script**
+## **5. Quality Assurance: The "Style Guide" Script**
 
 Writers run this script locally to maintain a consistent JTBD standard during their technical reviews.
 
@@ -110,7 +110,7 @@ if __name__ == "__main__":
 
 ---
 
-## **6\. Execution Plan & JIRA Roadmap**
+## **6. Execution Plan & JIRA Roadmap**
 
 The workload is split between two writers to ensure coverage of both infrastructure and execution paths.
 
