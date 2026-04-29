@@ -1,0 +1,18 @@
+= Getting started
+
+== Access requirements
+
+To use the OpenShift Migration Advisor (OMA), log in to the Red{nbsp}Hat Hybrid Cloud Console at link:https://console.redhat.com[] using a Red{nbsp}Hat account.
+
+== User prerequisites
+
+Before you begin, ensure that you are familiar with your VMware environment. You must also know how to use RVTools.
+
+== No OpenShift experience needed
+
+You do not need prior OpenShift knowledge or experience to run the initial assessment. The OMA service provides a guided, self-explanatory experience, which means you do not need OpenShift expertise to run the OVA file.
+
+[NOTE]
+====
+RVTools is a lightweight Windows utility used by VMware administrators to audit, monitor, and report on their virtual infrastructure. It interfaces with VMware environments to pull detailed inventory and configuration data regarding virtual machines (VMs), clusters, hosts, datastores, and networks, and allows users to export that data into Excel spreadsheets.
+====

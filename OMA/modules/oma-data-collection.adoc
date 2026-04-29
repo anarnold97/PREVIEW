@@ -1,0 +1,11 @@
+= Data collection methods
+
+During the discovery process, the OpenShift Migration Advisor (OMA) identifies the assets in your VMware environment. You can choose between two methods to collect this data: uploading an RVTools spreadsheet or deploying an agent virtual machine (VM).
+
+== Option A: RVTools upload
+
+You can generate an `.xlsx` file from RVTools and upload it directly to the OMA service. This method requires you to run RVTools in your vCenter environment to capture the necessary inventory data.
+
+== Option B: Agent VM deployment
+
+Alternatively, you can deploy a lightweight agent VM into your VMware environment for automated discovery. The OMA service provides an OVA file for this deployment. You do not need OpenShift experience to run the OVA file because the deployment process is guided and self-explanatory.

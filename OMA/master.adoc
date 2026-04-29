@@ -1,0 +1,19 @@
+[id="assembly_evaluating-vcenter-environments-with-oma"]
+= Evaluating vCenter environments with the OpenShift Migration Advisor
+:_mod-docs-content-type: ASSEMBLY
+:context: oma-guide
+
+// [role="_abstract"]
+// You can use the OpenShift Migration Advisor (OMA) web-based service on the Red{nbsp}Hat Hybrid Cloud Console to evaluate vCenter environments for migration. Review this guide to understand how to collect inventory data, analyze the assessment results, and plan your next steps for migration.
+
+include::modules/oma-introduction.adoc[leveloffset=+1]
+
+include::modules/oma-getting-started.adoc[leveloffset=+1]
+
+include::modules/oma-data-collection.adoc[leveloffset=+1]
+
+include::modules/oma-analyzing-assessment-results.adoc[leveloffset=+1]
+
+include::modules/oma-post-assessment-and-next-steps.adoc[leveloffset=+1]
+
+include::modules/oma-faqs.adoc[leveloffset=+1]

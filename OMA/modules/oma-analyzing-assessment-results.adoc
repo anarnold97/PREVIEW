@@ -1,0 +1,24 @@
+= Analyzing assessment results
+
+After the discovery process completes, the OpenShift Migration Advisor (OMA) provides a detailed assessment report. Review these results to evaluate your vCenter environments for migration.
+
+[IMPORTANT]
+====
+All insights, capacity plans, and time requirements that OMA provides are estimations for planning purposes, not guarantees[.
+====
+
+== Risk identification
+
+The assessment identifies technical risks associated with your current inventory. Review this section to interpret any "problematic indications" and migration blockers that might prevent or delay a successful migration.
+
+== Capacity planning
+
+Use the capacity planning insights to understand the infrastructure requirements for your target environment. The report provides a recommended OpenShift cluster size required to support your migrated workloads.
+
+== Migration time estimation
+
+The assessment results include a migration time calculator to help you understand the estimated duration of the migration process. To better estimate these migration times, the tool uses telemetry data from the Migration Toolkit for Virtualization (MTV).
+
+== Complexity insights
+
+Review the complexity insights to understand the overall complexity level of the proposed migration.

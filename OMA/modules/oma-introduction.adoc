@@ -1,0 +1,14 @@
+= Introduction and overview
+
+*What is OMA?* +
+You can use the OpenShift Migration Advisor (OMA) web-based service on the Red{nbsp}Hat Hybrid Cloud Console to evaluate vCenter environments for migration.
+
+*Core goals* +
+Use OMA to identify technical risks and infrastructure requirements. Identifying these factors early builds migration confidence. OMA acts as a precursor to the Migration Toolkit for Virtualization (MTV), which you use to execute the actual migration plan.
+
+*Target audience* +
+OMA is for VMware administrators and IT architects who manage 200 to 2,000 virtual machines. You do not need prior OpenShift experience to run the initial assessment.
+
+*Understanding estimations* +
+
+All insights, capacity plans, and time requirements that OMA provides are estimations for planning purposes. These estimations are not guarantees.

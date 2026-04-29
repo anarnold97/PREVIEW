@@ -1,0 +1,12 @@
+= Frequently asked questions
+
+Find answers to common questions about the OpenShift Migration Advisor (OMA) to better understand the service capabilities and limitations. Review information about release schedules, supported languages, and recommendations for large VMware environments.
+
+== Release cadence
+OMA is a continuously growing web project[cite: 12, 24]. Development utilizes monthly sprints for releasing larger features. Additionally, the service receives weekly feature updates.
+
+== Language support
+Currently, the OMA tool and its accompanying documentation are available in English only. Future releases might include support for other regions and languages, potentially utilizing AI for translation.
+
+== Support for large customers
+OMA primarily targets midsize business customers who manage an average of 2,000 virtual machines[cite: 14, 31, 62, 126]. However, customers with over 2,000 virtual machines are not explicitly excluded. If you manage a larger environment, you can still use OMA to conduct your initial investigations and assessments.

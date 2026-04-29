@@ -1,0 +1,21 @@
+= Post-assessment and next steps
+
+After you analyze your assessment results, you can determine the best path forward for your migration.
+
+== Engaging with partners
+
+You can use the Partner Portal to select one of six certified partners for migration assistance[cite: 78, 142]. Partners use a dedicated landing page to structure and manage the assessment progress.
+
+== Red{nbsp}Hat Consulting
+
+If your assessment identifies that you have a larger or high-risk environment, you can engage Red{nbsp}Hat Consulting for assistance.
+
+== Integration with MTV
+
+The OpenShift Migration Advisor (OMA) acts as a precursor to the Migration Toolkit for Virtualization (MTV)[cite: 80, 144]. While OMA helps you assess your environment, you use MTV to execute the actual migration plan. In future releases, OMA will be able to suggest or create migration plans for MTV.
+
+For more information about using MTV, see the following documentation:
+
+* link:https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.11/html/release_notes[Release notes]
+* link:https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.11/html/planning_your_migration_to_red_hat_openshift_virtualization[Planning your migration to Red{nbsp}Hat OpenShift Virtualization]
+* link:https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.11/html/migrating_your_virtual_machines_to_red_hat_openshift_virtualization[Migrating your virtual machines to Red{nbsp}Hat OpenShift Virtualization]
