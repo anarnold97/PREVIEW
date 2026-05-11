@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.26">
+<title>OpenShift&#160;migration&#160;advisor</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<style>
+/*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+/* Uncomment the following line when using as a custom stylesheet */
+/* @import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700"; */
+html{font-family:sans-serif;-webkit-text-size-adjust:100%}
+a{background:none}
+a:focus{outline:thin dotted}
+a:active,a:hover{outline:0}
+h1{font-size:2em;margin:.67em 0}
+b,strong{font-weight:bold}
+abbr{font-size:.9em}
+abbr[title]{cursor:help;border-bottom:1px dotted #dddddf;text-decoration:none}
+dfn{font-style:italic}
+hr{height:0}
+mark{background:#ff0;color:#000}
+code,kbd,pre,samp{font-family:monospace;font-size:1em}
+pre{white-space:pre-wrap}
+q{quotes:"\201C" "\201D" "\2018" "\2019"}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-.5em}
+sub{bottom:-.25em}
+img{border:0}
+svg:not(:root){overflow:hidden}
+figure{margin:0}
+audio,video{display:inline-block}
+audio:not([controls]){display:none;height:0}
+fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}
+legend{border:0;padding:0}
+button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}
+button,input{line-height:normal}
+button,select{text-transform:none}
+button,html input[type=button],input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer}
+button[disabled],html input[disabled]{cursor:default}
+input[type=checkbox],input[type=radio]{padding:0}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+textarea{overflow:auto;vertical-align:top}
+table{border-collapse:collapse;border-spacing:0}
+*,::before,::after{box-sizing:border-box}
+html,body{font-size:100%}
+body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;line-height:1;position:relative;cursor:auto;-moz-tab-size:4;-o-tab-size:4;tab-size:4;word-wrap:anywhere;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
+a:hover{cursor:pointer}
+img,object,embed{max-width:100%;height:auto}
+object,embed{height:100%}
+img{-ms-interpolation-mode:bicubic}
+.left{float:left!important}
+.right{float:right!important}
+.text-left{text-align:left!important}
+.text-right{text-align:right!important}
+.text-center{text-align:center!important}
+.text-justify{text-align:justify!important}
+.hide{display:none}
+img,object,svg{display:inline-block;vertical-align:middle}
+textarea{height:auto;min-height:50px}
+select{width:100%}
+.subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0}
+a{color:#2156a5;text-decoration:underline;line-height:inherit}
+a:hover,a:focus{color:#1d4b8f}
+a img{border:0}
+p{line-height:1.6;margin-bottom:1.25em;text-rendering:optimizeLegibility}
+p aside{font-size:.875em;line-height:1.35;font-style:italic}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{font-family:"Open Sans","DejaVu Sans",sans-serif;font-weight:300;font-style:normal;color:#ba3925;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
+h1 small,h2 small,h3 small,#toctitle small,.sidebarblock>.content>.title small,h4 small,h5 small,h6 small{font-size:60%;color:#e99b8f;line-height:0}
+h1{font-size:2.125em}
+h2{font-size:1.6875em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.375em}
+h4,h5{font-size:1.125em}
+h6{font-size:1em}
+hr{border:solid #dddddf;border-width:1px 0 0;clear:both;margin:1.25em 0 1.1875em}
+em,i{font-style:italic;line-height:inherit}
+strong,b{font-weight:bold;line-height:inherit}
+small{font-size:60%;line-height:inherit}
+code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;color:rgba(0,0,0,.9)}
+ul,ol,dl{line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
+ul,ol{margin-left:1.5em}
+ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0}
+ul.circle{list-style-type:circle}
+ul.disc{list-style-type:disc}
+ul.square{list-style-type:square}
+ul.circle ul:not([class]),ul.disc ul:not([class]),ul.square ul:not([class]){list-style:inherit}
+ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
+dl dt{margin-bottom:.3125em;font-weight:bold}
+dl dd{margin-bottom:1.25em}
+blockquote{margin:0 0 1.25em;padding:.5625em 1.25em 0 1.1875em;border-left:1px solid #ddd}
+blockquote,blockquote p{line-height:1.6;color:rgba(0,0,0,.85)}
+@media screen and (min-width:768px){h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2}
+h1{font-size:2.75em}
+h2{font-size:2.3125em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
+h4{font-size:1.4375em}}
+table{background:#fff;margin-bottom:1.25em;border:1px solid #dedede;word-wrap:normal}
+table thead,table tfoot{background:#f7f8f7}
+table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
+table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
+table tr.even,table tr.alt{background:#f8f8f7}
+table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{line-height:1.6}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
+h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
+.center{margin-left:auto;margin-right:auto}
+.stretch{width:100%}
+.clearfix::before,.clearfix::after,.float-group::before,.float-group::after{content:" ";display:table}
+.clearfix::after,.float-group::after{clear:both}
+:not(pre).nobreak{word-wrap:normal}
+:not(pre).nowrap{white-space:nowrap}
+:not(pre).pre-wrap{white-space:pre-wrap}
+:not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
+pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
+pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
+pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
+em em{font-style:normal}
+strong strong{font-weight:400}
+.keyseq{color:rgba(51,51,51,.8)}
+kbd{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;display:inline-block;color:rgba(0,0,0,.8);font-size:.65em;line-height:1.45;background:#f7f7f7;border:1px solid #ccc;border-radius:3px;box-shadow:0 1px 0 rgba(0,0,0,.2),inset 0 0 0 .1em #fff;margin:0 .15em;padding:.2em .5em;vertical-align:middle;position:relative;top:-.1em;white-space:nowrap}
+.keyseq kbd:first-child{margin-left:0}
+.keyseq kbd:last-child{margin-right:0}
+.menuseq,.menuref{color:#000}
+.menuseq b:not(.caret),.menuref{font-weight:inherit}
+.menuseq{word-spacing:-.02em}
+.menuseq b.caret{font-size:1.25em;line-height:.8}
+.menuseq i.caret{font-weight:bold;text-align:center;width:.45em}
+b.button::before,b.button::after{position:relative;top:-1px;font-weight:400}
+b.button::before{content:"[";padding:0 3px 0 2px}
+b.button::after{content:"]";padding:0 2px 0 3px}
+p a>code:hover{color:rgba(0,0,0,.9)}
+#header,#content,#footnotes,#footer{width:100%;margin:0 auto;max-width:62.5em;*zoom:1;position:relative;padding-left:.9375em;padding-right:.9375em}
+#header::before,#header::after,#content::before,#content::after,#footnotes::before,#footnotes::after,#footer::before,#footer::after{content:" ";display:table}
+#header::after,#content::after,#footnotes::after,#footer::after{clear:both}
+#content{margin-top:1.25em}
+#content::before{content:none}
+#header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
+#header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
+#header>h1:only-child{border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
+#header .details span:first-child{margin-left:-.125em}
+#header .details span.email a{color:rgba(0,0,0,.85)}
+#header .details br{display:none}
+#header .details br+span::before{content:"\00a0\2013\00a0"}
+#header .details br+span.author::before{content:"\00a0\22c5\00a0";color:rgba(0,0,0,.85)}
+#header .details br+span#revremark::before{content:"\00a0|\00a0"}
+#header #revnumber{text-transform:capitalize}
+#header #revnumber::after{content:"\00a0"}
+#content>h1:first-child:not([class]){color:rgba(0,0,0,.85);border-bottom:1px solid #dddddf;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
+#toc{border-bottom:1px solid #e7e7e9;padding-bottom:.5em}
+#toc>ul{margin-left:.125em}
+#toc ul.sectlevel0>li>a{font-style:italic}
+#toc ul.sectlevel0 ul.sectlevel1{margin:.5em 0}
+#toc ul{font-family:"Open Sans","DejaVu Sans",sans-serif;list-style-type:none}
+#toc li{line-height:1.3334;margin-top:.3334em}
+#toc a{text-decoration:none}
+#toc a:active{text-decoration:underline}
+#toctitle{color:#7a2518;font-size:1.2em}
+@media screen and (min-width:768px){#toctitle{font-size:1.375em}
+body.toc2{padding-left:15em;padding-right:0}
+body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc.toc2>ul{font-size:.9em;margin-bottom:0}
+#toc.toc2 ul ul{margin-left:0;padding-left:1em}
+#toc.toc2 ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+body.toc2.toc-right{padding-left:0;padding-right:15em}
+body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #e7e7e9;left:auto;right:0}}
+@media screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc.toc2{width:20em}
+#toc.toc2 #toctitle{font-size:1.375em}
+#toc.toc2>ul{font-size:.95em}
+#toc.toc2 ul ul{padding-left:1.25em}
+body.toc2.toc-right{padding-left:0;padding-right:20em}}
+#content #toc{border:1px solid #e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;border-radius:4px}
+#content #toc>:first-child{margin-top:0}
+#content #toc>:last-child{margin-bottom:0}
+#footer{max-width:none;background:rgba(0,0,0,.8);padding:1.25em}
+#footer-text{color:hsla(0,0%,100%,.8);line-height:1.44}
+#content{margin-bottom:.625em}
+.sect1{padding-bottom:.625em}
+@media screen and (min-width:768px){#content{margin-bottom:1.25em}
+.sect1{padding-bottom:1.25em}}
+.sect1:last-child{padding-bottom:0}
+.sect1+.sect1{border-top:1px solid #e7e7e9}
+#content h1>a.anchor,h2>a.anchor,h3>a.anchor,#toctitle>a.anchor,.sidebarblock>.content>.title>a.anchor,h4>a.anchor,h5>a.anchor,h6>a.anchor{position:absolute;z-index:1001;width:1.5ex;margin-left:-1.5ex;display:block;text-decoration:none!important;visibility:hidden;text-align:center;font-weight:400}
+#content h1>a.anchor::before,h2>a.anchor::before,h3>a.anchor::before,#toctitle>a.anchor::before,.sidebarblock>.content>.title>a.anchor::before,h4>a.anchor::before,h5>a.anchor::before,h6>a.anchor::before{content:"\00A7";font-size:.85em;display:block;padding-top:.1em}
+#content h1:hover>a.anchor,#content h1>a.anchor:hover,h2:hover>a.anchor,h2>a.anchor:hover,h3:hover>a.anchor,#toctitle:hover>a.anchor,.sidebarblock>.content>.title:hover>a.anchor,h3>a.anchor:hover,#toctitle>a.anchor:hover,.sidebarblock>.content>.title>a.anchor:hover,h4:hover>a.anchor,h4>a.anchor:hover,h5:hover>a.anchor,h5>a.anchor:hover,h6:hover>a.anchor,h6>a.anchor:hover{visibility:visible}
+#content h1>a.link,h2>a.link,h3>a.link,#toctitle>a.link,.sidebarblock>.content>.title>a.link,h4>a.link,h5>a.link,h6>a.link{color:#ba3925;text-decoration:none}
+#content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
+details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
+details{margin-left:1.25rem}
+details>summary{cursor:pointer;display:block;position:relative;line-height:1.6;margin-bottom:.625rem;outline:none;-webkit-tap-highlight-color:transparent}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"";border:solid transparent;border-left:solid;border-width:.3em 0 .3em .5em;position:absolute;top:.5em;left:-1.25rem;transform:translateX(15%)}
+details[open]>summary::before{border:solid transparent;border-top:solid;border-width:.5em .3em 0;transform:translateY(15%)}
+details>summary::after{content:"";width:1.25rem;height:1em;position:absolute;top:.3em;left:-1.25rem}
+.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-family:"Noto Serif","DejaVu Serif",serif;font-size:1rem;font-style:italic}
+table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
+.paragraph.lead>p,#preamble>.sectionbody>[class=paragraph]:first-of-type p{font-size:1.21875em;line-height:1.6;color:rgba(0,0,0,.85)}
+.admonitionblock>table{border-collapse:separate;border:0;background:none;width:100%}
+.admonitionblock>table td.icon{text-align:center;width:80px}
+.admonitionblock>table td.icon img{max-width:none}
+.admonitionblock>table td.icon .title{font-weight:bold;font-family:"Open Sans","DejaVu Sans",sans-serif;text-transform:uppercase}
+.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
+.admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content{border:1px solid #e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;border-radius:4px}
+.sidebarblock{border:1px solid #dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;border-radius:4px}
+.sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
+.exampleblock>.content>:first-child,.sidebarblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child,.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.literalblock pre,.listingblock>.content>pre{border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
+@media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
+@media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
+.literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class=highlight],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
+.literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
+.listingblock>.content{position:relative}
+.listingblock pre>code{display:block}
+.listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
+.listingblock:hover code[data-lang]::before{display:block}
+.listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
+.listingblock.terminal pre .command:not([data-prompt])::before{content:"$"}
+.listingblock pre.highlightjs{padding:0}
+.listingblock pre.highlightjs>code{padding:1em;border-radius:4px}
+.listingblock pre.prettyprint{border-width:0}
+.prettyprint{background:#f7f7f8}
+pre.prettyprint .linenums{line-height:1.45;margin-left:2em}
+pre.prettyprint li{background:none;list-style-type:inherit;padding-left:0}
+pre.prettyprint li code[data-lang]::before{opacity:1}
+pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
+table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
+table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
+table.linenotable td.code{padding-left:.75em}
+table.linenotable td.linenos,pre.pygments .linenos{border-right:1px solid;opacity:.35;padding-right:.5em;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+pre.pygments span.linenos{display:inline-block;margin-right:.75em}
+.quoteblock{margin:0 1em 1.25em 1.5em;display:table}
+.quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
+.quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
+.quoteblock blockquote{margin:0;padding:0;border:0}
+.quoteblock blockquote::before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+.quoteblock blockquote>.paragraph:last-child p{margin-bottom:0}
+.quoteblock .attribution{margin-top:.75em;margin-right:.5ex;text-align:right}
+.verseblock{margin:0 1em 1.25em}
+.verseblock pre{font-family:"Open Sans","DejaVu Sans",sans-serif;font-size:1.15rem;color:rgba(0,0,0,.85);font-weight:300;text-rendering:optimizeLegibility}
+.verseblock pre strong{font-weight:400}
+.verseblock .attribution{margin-top:1.25rem;margin-left:.5ex}
+.quoteblock .attribution,.verseblock .attribution{font-size:.9375em;line-height:1.45;font-style:italic}
+.quoteblock .attribution br,.verseblock .attribution br{display:none}
+.quoteblock .attribution cite,.verseblock .attribution cite{display:block;letter-spacing:-.025em;color:rgba(0,0,0,.6)}
+.quoteblock.abstract blockquote::before,.quoteblock.excerpt blockquote::before,.quoteblock .quoteblock blockquote::before{display:none}
+.quoteblock.abstract blockquote,.quoteblock.abstract p,.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{line-height:1.6;word-spacing:0}
+.quoteblock.abstract{margin:0 1em 1.25em;display:block}
+.quoteblock.abstract>.title{margin:0 0 .375em;font-size:1.15em;text-align:center}
+.quoteblock.excerpt>blockquote,.quoteblock .quoteblock{padding:0 0 .25em 1em;border-left:.25em solid #dddddf}
+.quoteblock.excerpt,.quoteblock .quoteblock{margin-left:0}
+.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{color:inherit;font-size:1.0625rem}
+.quoteblock.excerpt .attribution,.quoteblock .quoteblock .attribution{color:inherit;font-size:.85rem;text-align:left;margin-right:0}
+p.tableblock:last-child{margin-bottom:0}
+td.tableblock>.content{margin-bottom:1.25em;word-wrap:anywhere}
+td.tableblock>.content>:last-child{margin-bottom:-1.25em}
+table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
+table.grid-all>*>tr>*{border-width:1px}
+table.grid-cols>*>tr>*{border-width:0 1px}
+table.grid-rows>*>tr>*{border-width:1px 0}
+table.frame-all{border-width:1px}
+table.frame-ends{border-width:1px 0}
+table.frame-sides{border-width:0 1px}
+table.frame-none>colgroup+*>:first-child>*,table.frame-sides>colgroup+*>:first-child>*{border-top-width:0}
+table.frame-none>:last-child>:last-child>*,table.frame-sides>:last-child>:last-child>*{border-bottom-width:0}
+table.frame-none>*>tr>:first-child,table.frame-ends>*>tr>:first-child{border-left-width:0}
+table.frame-none>*>tr>:last-child,table.frame-ends>*>tr>:last-child{border-right-width:0}
+table.stripes-all>*>tr,table.stripes-odd>*>tr:nth-of-type(odd),table.stripes-even>*>tr:nth-of-type(even),table.stripes-hover>*>tr:hover{background:#f8f8f7}
+th.halign-left,td.halign-left{text-align:left}
+th.halign-right,td.halign-right{text-align:right}
+th.halign-center,td.halign-center{text-align:center}
+th.valign-top,td.valign-top{vertical-align:top}
+th.valign-bottom,td.valign-bottom{vertical-align:bottom}
+th.valign-middle,td.valign-middle{vertical-align:middle}
+table thead th,table tfoot th{font-weight:bold}
+tbody tr th{background:#f7f8f7}
+tbody tr th,tbody tr th p,tfoot tr th,tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
+p.tableblock>code:only-child{background:none;padding:0}
+p.tableblock{font-size:1em}
+ol{margin-left:1.75em}
+ul li ol{margin-left:1.5em}
+dl dd{margin-left:1.125em}
+dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
+li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
+ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
+ul.unstyled,ol.unstyled{margin-left:0}
+li>p:empty:only-child::before{content:"";display:inline-block}
+ul.checklist>li>p:first-child{margin-left:-1em}
+ul.checklist>li>p:first-child>.fa-square-o:first-child,ul.checklist>li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
+ul.checklist>li>p:first-child>input[type=checkbox]:first-child{margin-right:.25em}
+ul.inline{display:flex;flex-flow:row wrap;list-style:none;margin:0 0 .625em -1.25em}
+ul.inline>li{margin-left:1.25em}
+.unstyled dl dt{font-weight:400;font-style:normal}
+ol.arabic{list-style-type:decimal}
+ol.decimal{list-style-type:decimal-leading-zero}
+ol.loweralpha{list-style-type:lower-alpha}
+ol.upperalpha{list-style-type:upper-alpha}
+ol.lowerroman{list-style-type:lower-roman}
+ol.upperroman{list-style-type:upper-roman}
+ol.lowergreek{list-style-type:lower-greek}
+.hdlist>table,.colist>table{border:0;background:none}
+.hdlist>table>tbody>tr,.colist>table>tbody>tr{background:none}
+td.hdlist1,td.hdlist2{vertical-align:top;padding:0 .625em}
+td.hdlist1{font-weight:bold;padding-bottom:1.25em}
+td.hdlist2{word-wrap:anywhere}
+.literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
+.colist td:not([class]):first-child{padding:.4em .75em 0;line-height:1;vertical-align:top}
+.colist td:not([class]):first-child img{max-width:none}
+.colist td:not([class]):last-child{padding:.25em 0}
+.thumb,.th{line-height:0;display:inline-block;border:4px solid #fff;box-shadow:0 0 0 1px #ddd}
+.imageblock.left{margin:.25em .625em 1.25em 0}
+.imageblock.right{margin:.25em 0 1.25em .625em}
+.imageblock>.title{margin-bottom:0}
+.imageblock.thumb,.imageblock.th{border-width:6px}
+.imageblock.thumb>.title,.imageblock.th>.title{padding:0 .125em}
+.image.left,.image.right{margin-top:.25em;margin-bottom:.25em;display:inline-block;line-height:0}
+.image.left{margin-right:.625em}
+.image.right{margin-left:.625em}
+a.image{text-decoration:none;display:inline-block}
+a.image object{pointer-events:none}
+sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
+sup.footnote a,sup.footnoteref a{text-decoration:none}
+sup.footnote a:active,sup.footnoteref a:active,#footnotes .footnote a:first-of-type:active{text-decoration:underline}
+#footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
+#footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
+#footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
+#footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
+#footnotes .footnote:last-of-type{margin-bottom:0}
+#content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
+div.unbreakable{page-break-inside:avoid}
+.big{font-size:larger}
+.small{font-size:smaller}
+.underline{text-decoration:underline}
+.overline{text-decoration:overline}
+.line-through{text-decoration:line-through}
+.aqua{color:#00bfbf}
+.aqua-background{background:#00fafa}
+.black{color:#000}
+.black-background{background:#000}
+.blue{color:#0000bf}
+.blue-background{background:#0000fa}
+.fuchsia{color:#bf00bf}
+.fuchsia-background{background:#fa00fa}
+.gray{color:#606060}
+.gray-background{background:#7d7d7d}
+.green{color:#006000}
+.green-background{background:#007d00}
+.lime{color:#00bf00}
+.lime-background{background:#00fa00}
+.maroon{color:#600000}
+.maroon-background{background:#7d0000}
+.navy{color:#000060}
+.navy-background{background:#00007d}
+.olive{color:#606000}
+.olive-background{background:#7d7d00}
+.purple{color:#600060}
+.purple-background{background:#7d007d}
+.red{color:#bf0000}
+.red-background{background:#fa0000}
+.silver{color:#909090}
+.silver-background{background:#bcbcbc}
+.teal{color:#006060}
+.teal-background{background:#007d7d}
+.white{color:#bfbfbf}
+.white-background{background:#fafafa}
+.yellow{color:#bfbf00}
+.yellow-background{background:#fafa00}
+span.icon>.fa{cursor:default}
+a span.icon>.fa{cursor:inherit}
+.admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
+.admonitionblock td.icon .icon-note::before{content:"\f05a";color:#19407c}
+.admonitionblock td.icon .icon-tip::before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
+.admonitionblock td.icon .icon-warning::before{content:"\f071";color:#bf6900}
+.admonitionblock td.icon .icon-caution::before{content:"\f06d";color:#bf3400}
+.admonitionblock td.icon .icon-important::before{content:"\f06a";color:#bf0000}
+.conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);border-radius:50%;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
+.conum[data-value] *{color:#fff!important}
+.conum[data-value]+b{display:none}
+.conum[data-value]::after{content:attr(data-value)}
+pre .conum[data-value]{position:relative;top:-.125em}
+b.conum *{color:inherit!important}
+.conum:not([data-value]):empty{display:none}
+dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
+h1,h2,p,td.content,span.alt,summary{letter-spacing:-.01em}
+p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
+p,blockquote,dt,td.content,td.hdlist1,span.alt,summary{font-size:1.0625rem}
+p{margin-bottom:1.25rem}
+.sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
+.exampleblock>.content{background:#fffef7;border-color:#e0e0dc;box-shadow:0 1px 4px #e0e0dc}
+.print-only{display:none!important}
+@page{margin:1.25cm .75cm}
+@media print{*{box-shadow:none!important;text-shadow:none!important}
+html{font-size:80%}
+a{color:inherit!important;text-decoration:underline!important}
+a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
+a[href^="http:"]:not(.bare)::after,a[href^="https:"]:not(.bare)::after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+abbr[title]{border-bottom:1px dotted}
+abbr[title]::after{content:" (" attr(title) ")"}
+pre,blockquote,tr,img,object,svg{page-break-inside:avoid}
+thead{display:table-header-group}
+svg{max-width:100%}
+p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
+h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
+#header,#content,#footnotes,#footer{max-width:none}
+#toc,.sidebarblock,.exampleblock>.content{background:none!important}
+#toc{border-bottom:1px solid #dddddf!important;padding-bottom:0!important}
+body.book #header{text-align:center}
+body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em}
+body.book #header .details{border:0!important;display:block;padding:0!important}
+body.book #header .details span:first-child{margin-left:0!important}
+body.book #header .details br{display:block}
+body.book #header .details br+span::before{content:none!important}
+body.book #toc{border:0!important;text-align:left!important;padding:0!important;margin:0!important}
+body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-break-before:always}
+.listingblock code[data-lang]::before{display:block}
+#footer{padding:0 .9375em}
+.hide-on-print{display:none!important}
+.print-only{display:block!important}
+.hide-for-print{display:none!important}
+.show-for-print{display:inherit!important}}
+@media amzn-kf8,print{#header>h1:first-child{margin-top:1.25rem}
+.sect1{padding:0!important}
+.sect1+.sect1{border:0}
+#footer{background:none}
+#footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
+@media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
+</style>
+</head>
+<body id="guide-oma-product-overview" class="book">
+<div id="header">
+<h1>OpenShift&#160;migration&#160;advisor</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#introducing-openshift-migration-advisor">Introducing the OpenShift&#160;migration&#160;advisor</a>
+<ul class="sectlevel2">
+<li><a href="#what-is-openshift-migration-advisor">Overview of the OpenShift&#160;migration&#160;advisor</a>
+<ul class="sectlevel3">
+<li><a href="#_key_features_and_implementation">Key features and implementation</a></li>
+</ul>
+</li>
+<li><a href="#problems-that-an-automated-migration-report-is-meant-to-help-with">Problems that an automated migration report is meant to help with</a></li>
+<li><a href="#audience-and-scale-for-oma">Who typically uses the service, and at what scale</a></li>
+<li><a href="#how-you-access-oma">How you use the OpenShift&#160;migration&#160;advisor in the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console</a></li>
+</ul>
+</li>
+<li><a href="#before-you-start-an-automated-migration-report">Before you start an automated migration report</a>
+<ul class="sectlevel2">
+<li><a href="#prerequisites-to-use-an-automated-migration-report">Prerequisites to use an automated migration report</a></li>
+<li><a href="#data-handling-and-choices-oma">How data handling differs between a file upload and an agent</a></li>
+<li><a href="#planning-only-estimates-oma">Planning outputs are estimates, not promises</a></li>
+<li><a href="#rvtools-and-agent-comparison-oma">RVTools upload compared with a VMware agent</a></li>
+</ul>
+</li>
+<li><a href="#creating-an-automated-migration-report">Creating an automated migration report</a>
+<ul class="sectlevel2">
+<li><a href="#about-rvtools-for-automated-migration-reports">About RVTools for automated migration reports</a></li>
+<li><a href="#starting-automated-migration-report-with-rvtools-data">Starting an automated migration report with an RVTools file</a></li>
+<li><a href="#starting-an-automated-migration-report-with-a-vmware-agent">Starting an automated migration report with a VMware agent</a></li>
+<li><a href="#categories-of-vsphere-data-the-automated-report-can-use">Categories of vSphere data the automated report can use</a></li>
+</ul>
+</li>
+<li><a href="#agent-capabilities-and-assessment-methodology">What the agent can assess</a>
+<ul class="sectlevel2">
+<li><a href="#how-the-agent-classifies-virtual-machines">How the agent classifies virtual machines</a>
+<ul class="sectlevel3">
+<li><a href="#oma-migratable">Migratable</a></li>
+<li><a href="#oma-migratable-warnings">Migratable with warnings</a></li>
+<li><a href="#oma-not-migratable">Not migratable</a></li>
+</ul>
+</li>
+<li><a href="#how-complexity-scores-work">How complexity scores work</a>
+<ul class="sectlevel3">
+<li><a href="#os-complexity-scores">OS complexity scores</a></li>
+<li><a href="#disk-complexity-scores">Disk complexity scores</a></li>
+<li><a href="#how-to-use-complexity-scores">How to use complexity scores</a></li>
+</ul>
+</li>
+<li><a href="#how-migration-time-estimates-are-calculated">How migration time estimates are calculated</a>
+<ul class="sectlevel3">
+<li><a href="#storage-migration-phase">Storage migration phase</a></li>
+<li><a href="#post-migration-phase">Post-migration troubleshooting phase</a></li>
+<li><a href="#combined-estimate">Combined estimate</a></li>
+</ul>
+</li>
+<li><a href="#benchmarking-storage-throughput-with-the-migration-forecaster">Benchmarking storage throughput with the Migration Forecaster</a>
+<ul class="sectlevel3">
+<li><a href="#oma-migration-forecaster">How the Migration Forecaster works</a></li>
+<li><a href="#oma-temporary-resources">Temporary resources created in vCenter</a></li>
+<li><a href="#_required_vsphere_privileges">Required vSphere privileges</a></li>
+<li><a href="#_when_to_use_the_migration_forecaster">When to use the Migration Forecaster</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#understanding-the-automated-report">Understanding the automated report</a>
+<ul class="sectlevel2">
+<li><a href="#interpreting-risks-and-migration-considerations-in-an-automated-migration-report">Interpreting risks and migration considerations in an automated migration report</a></li>
+<li><a href="#sizing-recommendations-oma">Sizing and capacity-related outputs</a></li>
+<li><a href="#time-and-complexity-outputs-oma">Migration time and complexity in the product</a></li>
+</ul>
+</li>
+<li><a href="#after-the-automated-report">After the automated report</a>
+<ul class="sectlevel2">
+<li><a href="#oma-and-mtv-complementary-use">How the OpenShift&#160;migration&#160;advisor relates to Migration&#160;Toolkit&#160;for&#160;Virtualization in a migration program</a></li>
+<li><a href="#what-to-do-after-the-automated-report">What to do after the automated report</a></li>
+</ul>
+</li>
+<li><a href="#frequently-asked-questions-for-oma">Questions and answers about the OpenShift&#160;migration&#160;advisor</a>
+<ul class="sectlevel2">
+<li><a href="#_what_is_the_openshiftmigrationadvisor">What is the OpenShift&#160;migration&#160;advisor?</a></li>
+<li><a href="#_who_can_access_the_openshiftmigrationadvisor_and_how_is_it_accessed">Who can access the OpenShift&#160;migration&#160;advisor, and how is it accessed?</a></li>
+<li><a href="#_what_types_of_insights_does_the_openshiftmigrationadvisor_provide">What types of insights does the OpenShift&#160;migration&#160;advisor provide?</a></li>
+<li><a href="#_how_is_the_openshiftmigrationadvisor_different_from_the_virtualization_migration_assessment_vma">How is the OpenShift&#160;migration&#160;advisor different from the Virtualization Migration Assessment (VMA)?</a></li>
+<li><a href="#_how_is_the_openshiftmigrationadvisor_different_from_rvtools">How is the OpenShift&#160;migration&#160;advisor different from RVTools?</a></li>
+<li><a href="#_what_are_the_two_ways_you_can_create_an_automated_migration_report">What are the two ways you can create an automated migration report?</a></li>
+<li><a href="#_how_much_does_the_openshiftmigrationadvisor_cost">How much does the OpenShift&#160;migration&#160;advisor cost?</a></li>
+<li><a href="#_what_is_the_target_audience_for_this_solution">What is the target audience for this solution?</a></li>
+<li><a href="#_how_does_this_help_my_migration_planning">How does this help my migration planning?</a></li>
+<li><a href="#_when_should_we_use_this_in_our_evaluation_process">When should we use this in our evaluation process?</a></li>
+<li><a href="#_what_documentation_and_learning_materials_are_available">What documentation and learning materials are available?</a></li>
+<li><a href="#release-cadence-oma">How often the OpenShift&#160;migration&#160;advisor changes</a></li>
+<li><a href="#language-support-oma">Language availability for the product and this guide</a></li>
+<li><a href="#support-for-large-environments-oma">Using the OpenShift&#160;migration&#160;advisor in large VMware estates</a></li>
+</ul>
+</li>
+<li><a href="#additional-documentation-resources-for-oma">Glossary and additional resources</a>
+<ul class="sectlevel2">
+<li><a href="#glossary-terms-migration-advisor">Glossary of terms for this guide</a></li>
+<li><a href="#open-source-projects-that-implement-the-automated-reporting-stack">Open source projects that implement the automated reporting stack</a></li>
+</ul>
+</li>
+<li><a href="#providing-feedback-on-red-hat-documentation">Providing feedback on Red Hat documentation</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph _abstract">
+<p>Documentation for the OpenShift migration advisor (OMA), a Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console service for planning migration from VMware vSphere toward Red&#160;Hat OpenShift. Scope includes prerequisites, generating an automated migration report from an RVTools export or assisted migration agent, data-handling and estimate limits, interpreting report outputs and next steps, positioning relative to Migration&#160;Toolkit&#160;for&#160;Virtualization, reference FAQs and glossary material, and related kubev2v repositories.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="introducing-openshift-migration-advisor">Introducing the OpenShift&#160;migration&#160;advisor</h2>
+<div class="sectionbody">
+<div class="paragraph _abstract">
+<p>Read this chapter for an overview of the OpenShift&#160;migration&#160;advisor, which problems an automated migration report helps you address, who the service is for, and how you reach it in the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console.</p>
+</div>
+<div class="sect2">
+<h3 id="what-is-openshift-migration-advisor">Overview of the OpenShift&#160;migration&#160;advisor</h3>
+<div class="paragraph _abstract">
+<p>The OpenShift&#160;migration&#160;advisor is a Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console service designed to help you evaluate VMware vSphere environments when considering Red&#160;Hat OpenShift&#160;Container&#160;Platform (specifically OpenShift&#160;Virtualization) as a migration target.</p>
+</div>
+<div class="paragraph">
+<p>By analyzing data that you provide, the service generates an <strong>automated migration report</strong> that highlights infrastructure and workload details, identifies risk or compatibility signals, and provides planning outputs such as sizing context. It is strictly a planning tool and does not migrate virtual machines itself.</p>
+</div>
+<div class="sect3">
+<h4 id="_key_features_and_implementation">Key features and implementation</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Access</strong> — The advisor runs as a web service within the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console.</p>
+</li>
+<li>
+<p><strong>Data collection</strong> — You can provide data by using either an RVTools export in a supported format (upload) or an assisted migration agent deployed directly in your VMware environment.</p>
+</li>
+<li>
+<p><strong>Requirements</strong> — You do not need to be a Red&#160;Hat OpenShift administrator to generate a report, but you must have access to your vSphere environment or existing RVTools output, depending on your chosen path.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="problems-that-an-automated-migration-report-is-meant-to-help-with">Problems that an automated migration report is meant to help with</h3>
+<div class="paragraph _abstract">
+<p>Teams moving from VMware to Red Hat OpenShift often need a comprehensive overview of what is running in their environment before they commit to designs and project dates. The OpenShift migration advisor is intended to help with the following needs:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Visibility</strong> — Identify which virtual machines and related resources exist in scope and what the inventory looks like in summary form, subject to the collection method and product limits.</p>
+</li>
+<li>
+<p><strong>Sizing context</strong> — Get guidance about CPU, memory, and storage scale that supports discussion of a target OpenShift Virtualization or OpenShift environment. Outputs depend on the data you supply and the version of the product, and are not a substitute for a capacity analysis that your organization still wants to run.</p>
+</li>
+<li>
+<p><strong>Readiness signals</strong> — Surface items that the product can flag, such as operating system compatibility, health-related signals where available, storage and network context, and other migration considerations the rules engine reports.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The assessment is limited by the depth of data collection and the rules available in the product. The automated report is a snapshot in time and does not replace a full design review.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="audience-and-scale-for-oma">Who typically uses the service, and at what scale</h3>
+<div class="paragraph _abstract">
+<p>This service is intended for VMware administrators, IT architects, and platform architects who are familiar with their vSphere environments. You can find or export the data that the service accepts, and you must understand what you are authorizing when you use an agent in your environment.</p>
+</div>
+<div class="paragraph">
+<p>Organizations with moderate VMware environments can use a self-service assessment for initial analysis. Very large environments can combine this assessment with a comprehensive analysis through Red&#160;Hat or internal practices. Practical limits on inventory volume per self-service flow depend on product capabilities and your organization&#8217;s operational policies.</p>
+</div>
+<div class="paragraph">
+<p>The service does not replace a formal project plan, resource planning, or a signed infrastructure design. It is only one input to those decisions.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="how-you-access-oma">How you use the OpenShift&#160;migration&#160;advisor in the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console</h3>
+<div class="paragraph _abstract">
+<p>The Red&#160;Hat OpenShift&#160;migration&#160;advisor is offered as a no-cost web service after you sign in to the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console with your Red&#160;Hat account. The interface guides you through creating an automated migration report. The prompts, labels, and legal notices in the product are the authoritative source for the exact process in your environment.</p>
+</div>
+<div class="paragraph">
+<p>To open the service, use the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console applications menu or search to find the OpenShift&#160;migration&#160;advisor or the automated migration report entry, and then follow the on-screen steps. The service might be labeled to reflect your product bundle. Do not bookmark or share internal, nonproduction, or partner-only URLs. Use only the console that your Red&#160;Hat subscription or program assigns you.</p>
+</div>
+<div class="paragraph">
+<p>If your organization does not have access to the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console, contact Red&#160;Hat or a Red&#160;Hat partner to determine which automated report options apply to you.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="before-you-start-an-automated-migration-report">Before you start an automated migration report</h2>
+<div class="sectionbody">
+<div class="paragraph _abstract">
+<p>Review the prerequisites for the service, understand how data handling differs between an RVTools file upload and an agent-based flow, and learn how to use the planning and sizing outputs.</p>
+</div>
+<div class="sect2">
+<h3 id="prerequisites-to-use-an-automated-migration-report">Prerequisites to use an automated migration report</h3>
+<div class="paragraph _abstract">
+<p>You need the following in place before you can complete a useful automated report. Exact checks appear in the console in your build.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A Red&#160;Hat account with access to the OpenShift&#160;migration&#160;advisor in the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console. Your organization must have an entitlement through a Red&#160;Hat subscription or another eligible program.</p>
+</li>
+<li>
+<p>A supported web browser to load the Red Hat Hybrid Cloud Console. For details about web browser requirements, see the Browser Support link at the bottom of the <a href="https://console.redhat.com/">Hybrid Cloud Console</a> landing page.</p>
+</li>
+<li>
+<p><strong>For RVTools</strong> — The ability to run RVTools in your vSphere environment and to export an RVTools spreadsheet in a supported format for upload.</p>
+</li>
+<li>
+<p><strong>For an agent</strong> — A VMware vSphere deployment where you can import the assisted migration agent OVA and power on a VM that meets the image requirements for your release, as described in <a href="#starting-an-automated-migration-report-with-a-vmware-agent">Starting an automated migration report with a VMware agent</a>, network paths that allow the agent to reach the reporting service when you use connected mode, and credentials or tokens as the product user interface and your security policy requirements</p>
+</li>
+<li>
+<p>Familiarity with your own change control and with who may approve data leaving your data center, even in anonymized form, if a collection path or optional data sharing is offered</p>
+</li>
+<li>
+<p><strong>OpenShift</strong> — You do not have to be an OpenShift&#160;Virtualization day-one expert to <strong>start</strong> an automated report. You need a basic understanding of why you are targeting OpenShift&#160;Virtualization and who will own the target design after the automated report</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="data-handling-and-choices-oma">How data handling differs between a file upload and an agent</h3>
+<div class="paragraph _abstract">
+<p>You can build an automated report in more than one way, depending on what the product in your build supports. A common choice is <strong>upload</strong> (for example, RVTools) versus a <strong>local agent</strong> in VMware. Data handling, reporting depth, and whether anything is available to the cloud console can differ.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><a href="https://interact.redhat.com/share/pkPLJELVr45LbdXg3InF">RVTools upload</a></strong> — The upload usually shares a <strong>minimal</strong> or anonymized set of data with the service, according to the privacy statement and the technical behavior described for your release. The console shows what you are agreeing to.</p>
+</li>
+<li>
+<p><strong><a href="https://interact.redhat.com/share/kEinYphM8Zyt7wXLys53">Agent in VMware</a></strong> — A default for many connected-agent flows is to keep detailed inspection data in the <strong>local</strong> appliance, not to share it with Red&#160;Hat unless you turn on a separate, explicit consent. Some recommendations or views may appear only in the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console <strong>after</strong> you opt in, while full per-VM drill down may be available in the local appliance, depending on the product version. Always use the in-product data sharing terms for your environment.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="planning-only-estimates-oma">Planning outputs are estimates, not promises</h3>
+<div class="paragraph _abstract">
+<p>Any suggested cluster size, migration time window, <strong>complexity</strong> view, or similar output from the OpenShift&#160;migration&#160;advisor is an <strong>estimate</strong> for your planning. It is based on the inventory and rules the product can see, heuristics that your build implements, and limits on how well any automated model can reflect your runbooks, maintenance windows, network reality, and storage performance.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Treat numbers as a starting point for design workshops and for comparing scenarios, not as a service level agreement, quote, or guarantee.</p>
+</li>
+<li>
+<p>Update your plan after you have a real target design, a migration path with Migration&#160;Toolkit&#160;for&#160;Virtualization or any other tool you use, and validation in your test environment.</p>
+</li>
+<li>
+<p>If a number appears incorrect, validate your inputs (for example, a stale RVTools file or a subset of the environment that the agent detects) before you make project commitments.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Your organization and your Red&#160;Hat services team, not the automated report alone, are responsible for final sizing, scheduling, and risk sign-off for a production cutover.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="rvtools-and-agent-comparison-oma">RVTools upload compared with a VMware agent</h3>
+<div class="paragraph _abstract">
+<p>The product may offer one or both of these paths. Use what your build exposes and what your security model allows.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 40%;">
+<col style="width: 40%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Criteria</th>
+<th class="tableblock halign-left valign-top"><strong>RVTools</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Assisted agent in vSphere</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">When to use</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">You already have RVTools, you want a light-touch upload, and you can accept a summary or anonymized view that matches your chosen privacy setting.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">You need a richer view of the environment — including views that may be available <strong>only</strong> on a local agent appliance — and you can deploy software in the VMware environment.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">What you give up / what to plan for</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A file alone does not run live queries or deep in-guest checks in the VMware estate. The depth of the automated migration report matches what the spreadsheet and product rules can derive.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Import, credentials, OPA or policy folders if your build requires them, and network paths. Use the product documentation and runbooks for your build for the exact image name and size.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data handling</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The upload shares a minimal or anonymized set of data with the service, according to the privacy statement for your release.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Detailed inspection data stays in the local appliance by default. It is not shared with Red&#160;Hat unless you enable a separate, explicit consent.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>For where to obtain RVTools and how to upload an export in the OpenShift&#160;migration&#160;advisor, see <a href="#about-rvtools-for-automated-migration-reports">About RVTools for automated migration reports</a> and <a href="#starting-automated-migration-report-with-rvtools-data">Starting an automated migration report with an RVTools file</a> in <a href="#creating-an-automated-migration-report">Creating an automated migration report</a>.</p>
+</div>
+<div class="paragraph">
+<p>Guided demo (Arcade): <a href="https://interact.redhat.com/share/pkPLJELVr45LbdXg3InF">Evaluate VMware migration-readiness with the OpenShift migration advisor</a>.</p>
+</div>
+<div class="paragraph">
+<p>Guided demo (Arcade): <a href="https://interact.redhat.com/share/kEinYphM8Zyt7wXLys53">The OpenShift migration advisor using OVA Agent</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="creating-an-automated-migration-report">Creating an automated migration report</h2>
+<div class="sectionbody">
+<div class="paragraph _abstract">
+<p>Follow one of the procedures that matches the data path your OpenShift&#160;migration&#160;advisor build makes available, and read the reference on what the planner or agent can collect. Your release may offer only one of these paths.</p>
+</div>
+<div class="sect2">
+<h3 id="about-rvtools-for-automated-migration-reports">About RVTools for automated migration reports</h3>
+<div class="paragraph _abstract">
+<p>RVTools is a free utility from Dell Technologies that exports VMware vSphere data to a spreadsheet. The OpenShift&#160;migration&#160;advisor can accept an RVTools file in a supported format when your product build enables the file-based path for an automated migration report.</p>
+</div>
+<div class="paragraph">
+<p>RVTools is a Windows application for auditing and reporting on virtual machines, clusters, datastores, and related inventory in your VMware environment. You generate the spreadsheet export outside the OpenShift&#160;migration&#160;advisor.</p>
+</div>
+<div class="paragraph">
+<p>When your build exposes the RVTools path, you can upload an RVTools export in a supported format and version in the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console. Exports that do not match what the product validates are rejected.</p>
+</div>
+<div class="paragraph">
+<p>For the official RVTools download, documentation, and support options, see <a href="https://www.dell.com/en-ie/shop/vmware/sl/rvtools">RVTools on Dell Technologies</a>.</p>
+</div>
+<div class="paragraph">
+<p>For a guided walkthrough of evaluating VMware migration readiness with the OpenShift&#160;migration&#160;advisor using a file-based path, see <a href="https://interact.redhat.com/share/pkPLJELVr45LbdXg3InF">Evaluate VMware migration-readiness with the OpenShift migration advisor</a> (Red Hat Arcade).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="starting-automated-migration-report-with-rvtools-data">Starting an automated migration report with an RVTools file</h3>
+<div class="paragraph _abstract">
+<p>Use this path when you can create an automated report from a supported RVTools export in the OpenShift&#160;migration&#160;advisor console, and you have permission to create that file in vSphere and upload it.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>For a hands-on Arcade demo of this flow, see <a href="https://interact.redhat.com/share/pkPLJELVr45LbdXg3InF">Evaluate VMware migration-readiness with the OpenShift migration advisor</a>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You have completed the prerequisites for using an automated migration report, and you can generate a supported RVTools file format and version. The service rejects unsupported formats.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>In the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console, sign in with your Red&#160;Hat account and open the OpenShift&#160;migration&#160;advisor or the automated migration report feature.</p>
+</li>
+<li>
+<p>Start a new automated migration report and select the RVTools or file-based option if it is available. If the option is missing, your environment or your entitlement might not include this path, or the flow might be renamed.</p>
+</li>
+<li>
+<p>On the workstation where you run RVTools, connect to your vSphere environment, refresh the data that you need, and export a spreadsheet in the format that is described by the product help text or validation messages.</p>
+</li>
+<li>
+<p>In the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console, click <strong>Upload</strong> or <strong>Choose file</strong> and select your export. Wait until the file passes validation. Fix any errors that are reported in the console, for example, by re-exporting from RVTools or by removing unsupported sheets if instructed.</p>
+</li>
+<li>
+<p>Complete the remaining on-screen questions. Accept any consent or privacy notices that are displayed before the automated report is saved or processed. Read these carefully because they are specific to the path that you use and to the region in which the service runs.</p>
+</li>
+<li>
+<p>Open the new automated report in the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console and review the status until the result is <strong>Ready</strong> or a similar completed state.</p>
+</li>
+<li>
+<p>If errors are displayed, use the in-product help or the messages next to the failure. Do not attach sensitive exports in an email unless your security process provides a secure channel.</p>
+</li>
+</ol>
+</div>
+<div class="ulist">
+<div class="title">Next steps</div>
+<ul>
+<li>
+<p>After the automated report is ready, see <em>Interpreting risks and migration considerations in an automated migration report</em> and the other result topics in this guide. If you are considering an agent later for more detailed data, see <em>How data handling differs between a file upload and an agent</em>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="starting-an-automated-migration-report-with-a-vmware-agent">Starting an automated migration report with a VMware agent</h3>
+<div class="paragraph _abstract">
+<p>The assisted migration agent connects to the Migration Planner service, collects vSphere data according to your configured policies, and sends data to the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console in supported modes. The following steps provide a typical, high-level sequence. For the authoritative steps, follow the instructions you receive when you generate or download the OVA, and see the agent and planner documentation for your version.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>For a hands-on Arcade demo of deploying and using the OVA agent with the OpenShift&#160;migration&#160;advisor, see <a href="https://interact.redhat.com/share/kEinYphM8Zyt7wXLys53">The OpenShift migration advisor using OVA Agent</a>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>A VMware vSphere deployment where you can import an OVA and power on a VM that meets the image requirements.</p>
+</li>
+<li>
+<p>Network and firewall settings that enable the agent to connect to the reporting and planner endpoints in the mode that you select (<strong>connected</strong> or <strong>disconnected</strong>), and any proxy settings that your site requires. Your organization must allow these connections under its policies.</p>
+</li>
+<li>
+<p>Identifiers that the service assigns, such as an <strong>agent</strong> ID and <strong>source</strong> ID in UUID format, and a folder of OPA policy files if your environment requires OPA for VM validation. Use the value placeholders that your operator provides, not examples from a document.</p>
+</li>
+<li>
+<p>Optional JWT or other authentication material if the console in your environment requires a token to register the agent with the planner service. This material must be generated through the process that your organization uses, not with sample keys from a repository.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>In the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console, start a new automated migration report and choose the agent-based path if it is available. Alternatively, click <strong>Generate</strong> or <strong>Download agent</strong> if either option is displayed before an automated report is created, depending on your environment.</p>
+</li>
+<li>
+<p>Record the UUIDs and any registration steps that are provided. Store secrets in a password safe, not in plain text in tickets or wikis.</p>
+</li>
+<li>
+<p>Import the OVA into the VMware cluster that your design specifies. Allocate CPU, memory, and disk to match the <strong>release notes</strong> for the <strong>agent image</strong> that you are using, not a generic size.</p>
+</li>
+<li>
+<p>Configure the agent to run in the mode that your design requires, <strong>connected</strong> or <strong>disconnected</strong>, and point it to the <strong>console</strong> and <strong>planner</strong> endpoints that are specified in the product user interface or by your Red&#160;Hat operator for your environment only. Do not copy internal hostnames from a lab into production.</p>
+</li>
+<li>
+<p>Start the agent and confirm in the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console that the <strong>source</strong> moves to a healthy, reporting state by using the status that is displayed.</p>
+</li>
+<li>
+<p>After the automated report is complete, open the results in the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console. If your environment also provides a local appliance with a report view, use that for any detailed views that are documented for that path.</p>
+</li>
+</ol>
+</div>
+<div class="ulist">
+<div class="title">Next steps</div>
+<ul>
+<li>
+<p>Review the automated report outputs as described in <em>Interpreting risks and migration considerations in an automated migration report</em>. For command lines, flags, and version-specific deployment details, see the Red&#160;Hat <strong>Migration Planner</strong> and assisted migration <strong>agent</strong> documentation for your product version, not generic upstream examples.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Example commands in open-source repositories are technical references only. Use your own tokens, UUIDs, and endpoints. Never post credentials or real identifiers in a public or shared log.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="categories-of-vsphere-data-the-automated-report-can-use">Categories of vSphere data the automated report can use</h3>
+<div class="paragraph _abstract">
+<p>The <strong>Migration Planner</strong> service and the <strong>assisted migration agent</strong> are built to work with a defined set of vSphere and workload signals. An RVTools file contains a subset of this data in spreadsheet form. A live agent can collect a broader or fresher view, depending on the version, mode, and your consent settings.</p>
+</div>
+<div class="paragraph">
+<p><strong>Summary of categories</strong> (exact fields depend on the release and the path you use)</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Datastores</strong> — Free and total capacity, and storage or protocol type, when the data source provides them.</p>
+</li>
+<li>
+<p><strong>Hosts</strong> — Count and high-level state where exposed.</p>
+</li>
+<li>
+<p><strong>Networks</strong> — Type and network identifiers, such as VLAN, when the export includes them.</p>
+</li>
+<li>
+<p><strong>Clusters</strong> and <strong>datacenters</strong> — Counts in summary form.</p>
+</li>
+<li>
+<p><strong>General inventory</strong> — A vCenter or inventory scope identifier the automated report uses to associate the collection run.</p>
+</li>
+<li>
+<p><strong>Virtual machines</strong> — In aggregate, counts and sizing, including virtual CPUs, memory, virtual disk count and size, and guest operating system where the collector can read it, plus a status or health signal. The product applies rules to decide whether a VM is <strong>supported for migration</strong>, or should be reviewed manually, according to the policies installed for your run.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>This list reflects the <strong>categories</strong> the upstream <strong>migration-planner</strong> project documents for automated report design. A specific OpenShift migration advisor build or subscription might expose only part of a category, or label fields with different names in the console. Use the in-product help and data-handling information in your <strong>release</strong> as the final reference.</p>
+</div>
+<div class="paragraph">
+<p>Do not paste an RVTools workbook in full or a raw export into any channel that is not approved for confidential infrastructure data.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="agent-capabilities-and-assessment-methodology">What the agent can assess</h2>
+<div class="sectionbody">
+<div class="paragraph _abstract">
+<p>The assisted migration agent goes beyond static inventory to classify virtual machines for migration readiness and produce planning outputs such as complexity scores and time estimates. This chapter explains how those outputs are derived so you can interpret and act on them effectively.</p>
+</div>
+<div class="sect2">
+<h3 id="how-the-agent-classifies-virtual-machines">How the agent classifies virtual machines</h3>
+<div class="paragraph _abstract">
+<p>The assisted migration agent evaluates each virtual machine in your vSphere inventory and assigns it to one of three readiness categories. These categories appear in the automated migration report and help you prioritize remediation work before you plan a migration cutover.</p>
+</div>
+<div class="sect3">
+<h4 id="oma-migratable">Migratable</h4>
+<div class="paragraph">
+<p>The virtual machine passes all rules the product applies. No blockers or warnings are detected.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="oma-migratable-warnings">Migratable with warnings</h4>
+<div class="paragraph">
+<p>The virtual machine can be migrated, but the agent has detected conditions you should review and resolve before or during the migration. Common warnings include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Changed Block Tracking (CBT) not enabled</strong> — CBT improves incremental migration efficiency. Enable it on the VM in vSphere before migration.</p>
+</li>
+<li>
+<p><strong>VMware Tools not installed or outdated</strong> — VMware Tools must be installed and at a supported version for a reliable migration.</p>
+</li>
+<li>
+<p><strong>More than 4 NICs attached</strong> — Virtual machines with a high NIC count require additional network configuration planning on the target.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Warnings do not prevent migration, but they increase the risk of issues during cutover if left unaddressed.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="oma-not-migratable">Not migratable</h4>
+<div class="paragraph">
+<p>The virtual machine has at least one condition that blocks migration based on the product rules. Common blockers include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Unsupported disk types</strong> — Raw Device Mappings (RDM) and shared VMDKs are not supported by the migration toolchain.</p>
+</li>
+<li>
+<p><strong>Unsupported guest operating system</strong> — The OS has not been verified for conversion by the underlying migration toolchain.</p>
+</li>
+<li>
+<p><strong>Snapshots present</strong> — Consolidate or remove all snapshots before migration.</p>
+</li>
+<li>
+<p><strong>USB devices attached</strong> — Virtual USB devices are not supported and must be removed before migration.</p>
+</li>
+<li>
+<p><strong>NVRAM encryption</strong> — VMs with NVRAM encryption require additional handling before migration is possible.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When a VM is marked as not migratable, the report shows the specific reason. Address each blocker before including the VM in a migration plan.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Classification rules depend on the version of the product and the policies installed in your environment. Use the in-product help as the final reference for your release.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="how-complexity-scores-work">How complexity scores work</h3>
+<div class="paragraph _abstract">
+<p>When your OpenShift&#160;migration&#160;advisor build displays a complexity view, each virtual machine or workload group is assigned a score from 1 to 4. The score is derived from two independent dimensions: the guest operating system type and the total provisioned disk size. A higher score indicates a more complex migration that may need more preparation or manual handling.</p>
+</div>
+<div class="sect3">
+<h4 id="os-complexity-scores">OS complexity scores</h4>
+<div class="paragraph">
+<p>The product determines the OS score by matching the guest OS name that VMware reports against a defined list. Matching is case-insensitive. If the OS name does not match any known entry, the VM receives a score of 0, which means complexity cannot be assessed automatically.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Score</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>1</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Straightforward migration, minimal intervention expected</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Red Hat Enterprise Linux 6–10, Fedora, CentOS 6–9, Oracle Linux 6–9, Rocky Linux 8–9</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>2</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Standard migration, some attention required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Red Hat Enterprise Linux 4–5, SUSE Linux Enterprise 12–15, Windows Server 2016–2025, Windows 10 and 11</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>3</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">More complex migration, additional effort expected</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ubuntu, Debian, SUSE Linux Enterprise 8–11, openSUSE, AlmaLinux 8–9, older Windows Server (2000–2012 R2), Windows XP–8, Oracle Solaris, FreeBSD</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>4</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">May require manual intervention or special handling</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Database workloads such as Microsoft SQL Server</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>0</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OS not recognized; complexity cannot be assessed automatically</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unknown or custom operating systems</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="disk-complexity-scores">Disk complexity scores</h4>
+<div class="paragraph">
+<p>The disk score is based on the total provisioned disk size across the virtual machine.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 28.5714%;">
+<col style="width: 57.1429%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Score</th>
+<th class="tableblock halign-left valign-top">Total provisioned disk size</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>1</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">≤ 10 TB</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Small to moderate storage; standard migration path</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>2</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11–20 TB</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Larger storage; plan transfer time carefully</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>3</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">21–50 TB</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Significant storage; time estimates and throughput planning are important</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>4</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&gt; 50 TB</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Very large storage; requires detailed migration scheduling and throughput benchmarking</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="how-to-use-complexity-scores">How to use complexity scores</h4>
+<div class="paragraph">
+<p>Use complexity scores to prioritize and sequence your migration work:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Start with score-1 VMs to build confidence and validate your target environment before tackling more complex workloads.</p>
+</li>
+<li>
+<p>Review score-3 and score-4 VMs with your application owners early, as they are likely to need design decisions, extra testing, or manual steps that are not visible from inventory alone.</p>
+</li>
+<li>
+<p>A score-0 OS is a signal to verify the guest OS manually before including the VM in any migration batch.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Complexity scores are planning inputs, not migration results. They indicate the relative level of effort typically associated with that OS type or disk size, not whether a migration will succeed.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="how-migration-time-estimates-are-calculated">How migration time estimates are calculated</h3>
+<div class="paragraph _abstract">
+<p>When your OpenShift&#160;migration&#160;advisor build displays a migration time estimate, the value is the sum of two modelled phases: storage data transfer and post-migration troubleshooting. Understanding the assumptions behind each phase helps you interpret the estimate and adjust inputs to better reflect your environment.</p>
+</div>
+<div class="sect3">
+<h4 id="storage-migration-phase">Storage migration phase</h4>
+<div class="paragraph">
+<p>The storage phase estimates the time required to copy VM disk data from the source VMware datastore to the target cluster over the network.</p>
+</div>
+<div class="paragraph">
+<p>The default assumptions are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Transfer rate</strong>: 620 Mbps (approximately 77.5 MB/s), equivalent to roughly 110 minutes per 500 GB of provisioned data.</p>
+</li>
+<li>
+<p><strong>Data size</strong>: Total provisioned disk size across all VMs in scope, measured in GB.</p>
+</li>
+<li>
+<p><strong>Transfer model</strong>: Linear sustained transfer; the estimate does not account for concurrent migrations running in parallel.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If your network has higher or lower throughput than the default, the resulting estimate may differ significantly from real migration time. Use the Migration Forecaster, where available in your build, to measure real datastore-to-datastore throughput. See <a href="#benchmarking-storage-throughput-with-the-migration-forecaster">Benchmarking storage throughput with the Migration Forecaster</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="post-migration-phase">Post-migration troubleshooting phase</h4>
+<div class="paragraph">
+<p>The troubleshooting phase estimates the calendar time your team spends on post-migration checks and remediation after VMs are moved.</p>
+</div>
+<div class="paragraph">
+<p>The default assumptions are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Time per VM</strong>: 60 minutes of engineer time per VM.</p>
+</li>
+<li>
+<p><strong>Team size</strong>: 10 engineers working in parallel.</p>
+</li>
+<li>
+<p><strong>Working hours</strong>: 8 hours per day.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The model divides total engineer-minutes by the number of engineers to produce wall-clock time. For example, 50 VMs at 60 minutes each with 10 engineers working in parallel gives a 5-hour window.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="combined-estimate">Combined estimate</h4>
+<div class="paragraph">
+<p>The total estimated migration time is the sum of the storage phase and the troubleshooting phase. The product presents this as a range, not a fixed commitment.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Migration time estimates are planning inputs for internal order-of-magnitude discussions. They do not account for application-specific blackout windows, data migration work outside VM storage, or dependencies between workloads. Compare the estimate against your runbooks and team capacity before using it for scheduling.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="benchmarking-storage-throughput-with-the-migration-forecaster">Benchmarking storage throughput with the Migration Forecaster</h3>
+<div class="paragraph _abstract">
+<p>The Migration Forecaster measures actual disk-copy throughput between VMware datastore pairs in your vCenter environment. Where your OpenShift&#160;migration&#160;advisor build includes this feature, you can use real throughput measurements instead of the default transfer rate assumption to produce more accurate migration time estimates.</p>
+</div>
+<div class="sect3">
+<h4 id="oma-migration-forecaster">How the Migration Forecaster works</h4>
+<div class="paragraph">
+<p>The forecaster runs disk-copy benchmarks directly on your vCenter infrastructure:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>It creates a temporary virtual machine and a benchmark disk on the source datastore.</p>
+</li>
+<li>
+<p>It copies the benchmark disk to the target datastore multiple times and measures wall-clock transfer time for each iteration.</p>
+</li>
+<li>
+<p>It computes throughput statistics—including mean, median, and confidence intervals—from the measured results.</p>
+</li>
+<li>
+<p>It uses those statistics to project a data-driven migration time estimate for each datastore pair.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>All temporary resources are cleaned up automatically when each benchmark completes, whether or not it succeeds.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="oma-temporary-resources">Temporary resources created in vCenter</h4>
+<div class="paragraph">
+<p>The forecaster creates the following resources in your vCenter environment while a benchmark is running:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Resource</th>
+<th class="tableblock halign-left valign-top">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Filler VM (Alpine Linux, ~256 MB)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fills the benchmark disk with random data so the copy reflects realistic conditions. Destroyed when filling completes.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alpine boot disk and seed ISO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Operating system and configuration for the filler VM. Deleted after each datastore pair completes.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Benchmark disk (default 10 GB)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The disk filled with random data that the forecaster copies to the target. Deleted after each pair completes.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Clone disk on target datastore</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Copy of the benchmark disk created on the target during each iteration. Deleted after each iteration.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Temporary resource names are prefixed with <code>forecaster-</code> or <code>filler-image-</code> so they are easy to identify if manual cleanup is needed.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If the agent stops while a benchmark is in progress, temporary files or directories may remain on the datastores and require manual cleanup.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_required_vsphere_privileges">Required vSphere privileges</h4>
+<div class="paragraph">
+<p>The vCenter credentials used for benchmarking must include the following privileges. The forecaster verifies these before it starts and reports any that are missing.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Datastore.AllocateSpace</code></p>
+</li>
+<li>
+<p><code>Datastore.Browse</code></p>
+</li>
+<li>
+<p><code>Datastore.DeleteFile</code></p>
+</li>
+<li>
+<p><code>Datastore.FileManagement</code></p>
+</li>
+<li>
+<p><code>VirtualMachine.Inventory.Create</code></p>
+</li>
+<li>
+<p><code>VirtualMachine.Inventory.Delete</code></p>
+</li>
+<li>
+<p><code>VirtualMachine.Provisioning.Clone</code></p>
+</li>
+<li>
+<p><code>VirtualMachine.Interact.PowerOn</code></p>
+</li>
+<li>
+<p><code>VirtualMachine.Config.AddRemoveDevice</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_when_to_use_the_migration_forecaster">When to use the Migration Forecaster</h4>
+<div class="paragraph">
+<p>Use the Migration Forecaster when:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The default 620 Mbps transfer rate assumption does not reflect your actual network and storage performance.</p>
+</li>
+<li>
+<p>You are planning migration for a large estate where time estimate accuracy is important for scheduling decisions.</p>
+</li>
+<li>
+<p>You want to compare throughput across different source-and-target datastore combinations before committing to a migration topology.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Do not run the forecaster during a production maintenance window, as temporary VM creation in vCenter could affect other workloads running at the same time.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The Migration Forecaster is available in specific OpenShift&#160;migration&#160;advisor builds. Check the in-product help and your release notes to confirm whether this feature is available in your environment.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="understanding-the-automated-report">Understanding the automated report</h2>
+<div class="sectionbody">
+<div class="paragraph _abstract">
+<p>This chapter helps you read risk and readiness information, capacity-style outputs, and, when your build offers them, time-and-complexity-style views.</p>
+</div>
+<div class="sect2">
+<h3 id="interpreting-risks-and-migration-considerations-in-an-automated-migration-report">Interpreting risks and migration considerations in an automated migration report</h3>
+<div class="paragraph _abstract">
+<p>When an automated migration report is ready, the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console and, where your build offers it, a local appliance, display <strong>findings</strong> the product derives from the data. These may be labeled as risks, <strong>blockers</strong>, <strong>warnings</strong>, or <strong>considerations</strong> depending on the release.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>What the result is</strong> — A machine-driven view of items that match rules in the product and, where your version uses them, in optional policy engines such as OPA for virtual machine validation. The report does not replace a full human review of application behavior or of data and compliance needs.</p>
+</li>
+<li>
+<p><strong>What you should do</strong> — Triage each line with the owner of the workload and its dependencies. If the user interface links to a remediation note or a Red&#160;Hat document, use that as the source for the <strong>pattern</strong> the product detected, not a third-party copy.</p>
+</li>
+<li>
+<p><strong>What the result is not</strong> — The automated report is not a guarantee that every workload will run on OpenShift&#160;Virtualization or OpenShift without design or change work, or that all edge cases are covered.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Treating a message as a formal security or compliance <strong>finding</strong> is a decision for your own governance process beyond what the tool reports.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="sizing-recommendations-oma">Sizing and capacity-related outputs</h3>
+<div class="paragraph _abstract">
+<p>An automated migration report can include sizing <strong>guidance</strong> for a target OpenShift or OpenShift&#160;Virtualization footprint, in the form the product offers in your version. The service compares the aggregate resource picture from your RVTools file or agent run to the overhead and planning assumptions built into that release. It is not a substitute for measuring real utilization and storage performance on the cluster you eventually build, or for your resiliency and high-availability design.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>How to use the output</strong> — Compare the suggested size to your own rules for headroom, maintenance windows, and separate failure domains. If you split work across many OpenShift <strong>projects</strong> or <strong>namespaces</strong>, you might need more <strong>nodes</strong> or <strong>pools</strong> than a single top-level line item shows.</p>
+</li>
+<li>
+<p><strong>When to investigate further</strong> — If very uneven resource use, unusual storage or network patterns, or traditional guests that are hard to size from inventory alone are indicated in the report, treat the sizing line as a preliminary estimate.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Final hardware or cloud shape and storage classes are decisions you make at detailed design, with your Red&#160;Hat account or services team and your own internal review when applicable.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="time-and-complexity-outputs-oma">Migration time and complexity in the product</h3>
+<div class="paragraph _abstract">
+<p>Some of the OpenShift&#160;migration&#160;advisor builds may show a migration time estimate, a complexity view, or other planning hints next to sizing and risk information. The exact labels and controls come from the console. Do not treat a time range or a score as a service level agreement, a project deadline, or a full picture of work for every application team.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Migration time-and-complexity-style outputs are partial or still evolving in many builds. They are not as mature as core inventory and risk views. The product may add, move, or hide them between updates. Your product release notes and the in-product help for your entitlement are the source of truth. If a field is missing, experimental, or labeled as beta in the user interface, do not use it for contractual planning.</p>
+</div>
+<div class="paragraph">
+<p>When you do see a time or complexity line and you use it only for internal order-of-magnitude planning, still compare the result to your runbooks, maintenance windows, and application dependencies. The model does not account for blackout dates or data migration work outside the scope of the inventory.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="after-the-automated-report">After the automated report</h2>
+<div class="sectionbody">
+<div class="paragraph _abstract">
+<p>This chapter places the OpenShift&#160;migration&#160;advisor next to migration toolkit for virtualization in a migration program, and suggests clear next steps once you have a result. It does not include partner or third party marketplaces.</p>
+</div>
+<div class="sect2">
+<h3 id="oma-and-mtv-complementary-use">How the OpenShift&#160;migration&#160;advisor relates to Migration&#160;Toolkit&#160;for&#160;Virtualization in a migration program</h3>
+<div class="paragraph _abstract">
+<p>The OpenShift&#160;migration&#160;advisor and Migration&#160;Toolkit&#160;for&#160;Virtualization have different jobs in a typical program that moves virtual machines from VMware to OpenShift&#160;Virtualization. The OpenShift&#160;migration&#160;advisor is for a pre-migration automated migration report and planning view of the estate. Migration&#160;Toolkit&#160;for&#160;Virtualization is the Red&#160;Hat product line for executing the migration and managing the movement of virtual machines after you have a design and a target cluster that your organization has approved.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Use the OpenShift&#160;migration&#160;advisor when you need a structured inventory and readiness view and planning outputs from an RVTools file in a supported format or assisted agent run, as your build of the product allows.</p>
+</li>
+<li>
+<p>Use Migration&#160;Toolkit&#160;for&#160;Virtualization when you are ready to create migration plans and to run cutover in line with the Migration&#160;Toolkit&#160;for&#160;Virtualization product documentation and your own change and security process.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>A fully automated handover from a finished result from the OpenShift&#160;migration&#160;advisor into a Migration&#160;Toolkit&#160;for&#160;Virtualization plan is not guaranteed in every Red&#160;Hat offering, OpenShift and OpenShift&#160;Virtualization version, or subscription. Read the product documentation for the OpenShift&#160;migration&#160;advisor, OpenShift&#160;Virtualization, and Migration&#160;Toolkit&#160;for&#160;Virtualization for your environment and use only the integrated workflows that are documented by Red&#160;Hat for your release.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="what-to-do-after-the-automated-report">What to do after the automated report</h3>
+<div class="paragraph _abstract">
+<p>An automated migration report is an input to a larger program, not the end of the work. After you are satisfied with the data that you submitted and the result in the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console, you can do the following with your own organization and, if you have a contract, with Red&#160;Hat:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Align owners</strong> — Share the result with the platform, application, and security owners who will sign off on a target design.</p>
+</li>
+<li>
+<p><strong>Close gaps</strong> — Address any high-severity items the report lists before you invest in a full Migration&#160;Toolkit&#160;for&#160;Virtualization cutover plan. Some items will need a human decision even when the tool cannot automate a fix.</p>
+</li>
+<li>
+<p><strong>Design the target</strong> — Build a final OpenShift and OpenShift&#160;Virtualization design that includes networks, storage, identity, and Day 2 operations. The automated report supports that design; it does not replace it.</p>
+</li>
+<li>
+<p><strong>Engage Red&#160;Hat</strong> — If you have a Red&#160;Hat account or support contract, use the support and services paths that are documented by your account team. Internal contact details or nonpublic programs are not included here.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="frequently-asked-questions-for-oma">Questions and answers about the OpenShift&#160;migration&#160;advisor</h2>
+<div class="sectionbody">
+<div class="paragraph _abstract">
+<p>Common questions about the OpenShift&#160;migration&#160;advisor, including release cadence, language availability, and support for large VMware estates.⁠</p>
+</div>
+<div class="sect2">
+<h3 id="_what_is_the_openshiftmigrationadvisor">What is the OpenShift&#160;migration&#160;advisor?</h3>
+<div class="paragraph">
+<p>The OpenShift&#160;migration&#160;advisor is a self-service tool designed to evaluate the migration readiness of your VMware workloads before you commit. By discovering your vCenter environment, an automated migration report is generated that provides the technical details that you need to plan your journey with confidence. With the OpenShift&#160;migration&#160;advisor, you can assess your virtual machine workload migration path as you plan your move to OpenShift.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_who_can_access_the_openshiftmigrationadvisor_and_how_is_it_accessed">Who can access the OpenShift&#160;migration&#160;advisor, and how is it accessed?</h3>
+<div class="paragraph">
+<p>You access the OpenShift&#160;migration&#160;advisor through the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console. Anyone with a Red&#160;Hat account can use the tool; you do not need a Red&#160;Hat subscription.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_what_types_of_insights_does_the_openshiftmigrationadvisor_provide">What types of insights does the OpenShift&#160;migration&#160;advisor provide?</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Discovery</strong> — A clear snapshot of your connected VMware clusters, including CPU and memory, disks, networks, and related inventory.</p>
+</li>
+<li>
+<p><strong>Warnings and risks</strong> — Identification of potential obstacles that could affect your migration, such as specific hardware configurations or guest operating system versions. Future releases might add more remediation guidance when it is available.</p>
+</li>
+<li>
+<p><strong>Recommendations</strong> — Technical guidance on how workloads can be configured in a OpenShift environment, plus estimates such as migration time windows and complexity views if they are displayed in your environment, based on the inventory and rules that are available in your version.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_is_the_openshiftmigrationadvisor_different_from_the_virtualization_migration_assessment_vma">How is the OpenShift&#160;migration&#160;advisor different from the Virtualization Migration Assessment (VMA)?</h3>
+<div class="paragraph">
+<p>VMA is a Red&#160;Hat consulting engagement with workshops and architects for large or complex migration programs. The OpenShift&#160;migration&#160;advisor is an automated report in the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console. Teams often run the OpenShift&#160;migration&#160;advisor first to establish a baseline, then use VMA or other programs to operationalize.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_is_the_openshiftmigrationadvisor_different_from_rvtools">How is the OpenShift&#160;migration&#160;advisor different from RVTools?</h3>
+<div class="paragraph">
+<p>RVTools exports vSphere inventory to a spreadsheet. The OpenShift&#160;migration&#160;advisor consumes an RVTools export in a supported format or agent-collected inventory and applies rules and analytics to produce migration-oriented views in an automated migration report.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_what_are_the_two_ways_you_can_create_an_automated_migration_report">What are the two ways you can create an automated migration report?</h3>
+<div class="paragraph">
+<p>You can create an automated migration report by uploading a supported RVTools export or by deploying the assisted migration agent in your VMware vSphere environment. Your environment might offer one or both paths. See <a href="#rvtools-and-agent-comparison-oma">RVTools upload compared with a VMware agent</a> for a comparison.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_much_does_the_openshiftmigrationadvisor_cost">How much does the OpenShift&#160;migration&#160;advisor cost?</h3>
+<div class="paragraph">
+<p>The OpenShift&#160;migration&#160;advisor is a self-service tool in typical offerings. Console availability and labels follow your Red&#160;Hat entitlement or program. For navigation details, see <a href="#how-you-access-oma">How you use the OpenShift migration advisor in the Hybrid Cloud Console</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_what_is_the_target_audience_for_this_solution">What is the target audience for this solution?</h3>
+<div class="paragraph">
+<p>The OpenShift&#160;migration&#160;advisor is intended for VMware administrators, IT architects, and platform architects who are familiar with their vSphere environments and are evaluating OpenShift as a migration target. You must be able to generate or export the data that the service accepts, and you must understand what you are authorizing if you use an agent in your environment.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_does_this_help_my_migration_planning">How does this help my migration planning?</h3>
+<div class="paragraph">
+<p>The automated migration report gives you inventory-backed data, risk signals, and sizing context before you commit to a migration design or project timeline. It helps you identify potential issues early and establish a baseline for your migration program. See <a href="#problems-that-an-automated-migration-report-is-meant-to-help-with">Problems that an automated migration report is meant to help with</a> for more detail.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_when_should_we_use_this_in_our_evaluation_process">When should we use this in our evaluation process?</h3>
+<div class="paragraph">
+<p>During discovery and evaluation—before you finalize designs or execution—when administrators and architects want inventory-backed signals without committing to a full migration plan yet. See also <a href="#problems-that-an-automated-migration-report-is-meant-to-help-with">Problems that an automated migration report is meant to help with</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_what_documentation_and_learning_materials_are_available">What documentation and learning materials are available?</h3>
+<div class="paragraph">
+<p>Beyond this guide: Red&#160;Hat blogs and recordings where your program publishes them. Your account team or partner can share decks under your agreement.</p>
+</div>
+<div class="paragraph">
+<p>Interactive Arcade demos:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://interact.redhat.com/share/pkPLJELVr45LbdXg3InF">Evaluate VMware migration-readiness with the OpenShift migration advisor</a></p>
+</li>
+<li>
+<p><a href="https://interact.redhat.com/share/kEinYphM8Zyt7wXLys53">The OpenShift migration advisor using OVA Agent</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="release-cadence-oma">How often the OpenShift&#160;migration&#160;advisor changes</h3>
+<div class="paragraph">
+<p>The OpenShift&#160;migration&#160;advisor is a continuously updated web service on the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console. The release schedule combines major enhancements with frequent updates to the active service.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="language-support-oma">Language availability for the product and this guide</h3>
+<div class="paragraph">
+<p>Currently, the OpenShift&#160;migration&#160;advisor user interface and documentation are available in English. Future releases might broaden regional or language coverage. Any changes will be announced through normal product communication channels.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="support-for-large-environments-oma">Using the OpenShift&#160;migration&#160;advisor in large VMware estates</h3>
+<div class="paragraph">
+<p>The service is designed for common midsize environments. However, if you have a larger organization, you can still use the service for an initial assessment within the product limits and your own policies.</p>
+</div>
+<div class="paragraph">
+<p>The OpenShift&#160;migration&#160;advisor is designed for average midsize VMware environments, including those with approximately 2,000 virtual machines. However, you can still upload inventory from a larger estate to use the service for initial investigation and automated reporting. If you operate at a large scale, confirm the product limits, support expectations, and operational approach with your Red&#160;Hat account team or partner.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="additional-documentation-resources-for-oma">Glossary and additional resources</h2>
+<div class="sectionbody">
+<div class="paragraph _abstract">
+<p>This chapter defines terms used in this user guide and lists public <strong>kubev2v</strong> repositories for readers who work with source at a high level. It does not replace the Red&#160;Hat product documentation for a given release.</p>
+</div>
+<div class="sect2">
+<h3 id="glossary-terms-migration-advisor">Glossary of terms for this guide</h3>
+<div class="paragraph _abstract">
+<p>Short definitions to align language in the rest of this user guide. Product names and feature labels in the live console are authoritative for a given release.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Assisted migration agent</strong> — Software, distributed as an OVA or other supported image, that you deploy within your vSphere environment to collect inventory and send it to the reporting service according to the mode and consent settings you select.</p>
+</li>
+<li>
+<p><strong>Connected mode</strong> — An agent deployment mode in which the assisted migration agent has network access to the OpenShift&#160;migration&#160;advisor service endpoints and sends data directly. Contrast with disconnected mode.</p>
+</li>
+<li>
+<p><strong>Disconnected mode</strong> — An agent deployment mode in which the assisted migration agent operates without direct network access to OpenShift&#160;migration&#160;advisor service endpoints. Data is collected locally and transferred by another method. Contrast with connected mode.</p>
+</li>
+<li>
+<p><strong>kubev2v</strong> — The GitHub organization that publishes the open source components behind OpenShift&#160;migration&#160;advisor, including the Migration Planner service, the console UI, and the assisted migration agent. Red&#160;Hat support and product scope follow your subscription, not the public repositories.</p>
+</li>
+<li>
+<p><strong>Automated migration report</strong> — A result from the OpenShift&#160;migration&#160;advisor that is built from a supported data set and the rules and analytics in the product. It is a planning view, not a live migration.</p>
+</li>
+<li>
+<p><strong>Migration Planner</strong> — The Red&#160;Hat backend service that receives inventory data from the assisted migration agent or an RVTools upload, stores automated migration reports, and makes results available in the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console. The term also refers to the open source project of the same name in the kubev2v organization; the product and the repository are related but not identical in scope or support.</p>
+</li>
+<li>
+<p><strong>Migration&#160;Toolkit&#160;for&#160;Virtualization</strong> — The Red&#160;Hat software used to execute migration of virtual machines to OpenShift&#160;Virtualization. It is for migration execution, not a substitute for a pre-migration <strong>automated migration report</strong>, though you may use both in the same program of work.</p>
+</li>
+<li>
+<p><strong>OPA (Open Policy Agent)</strong> — An open source policy engine that some OpenShift&#160;migration&#160;advisor builds use to validate virtual machines against a set of rules before including them in an automated migration report. If your build requires OPA policy folders, the product documentation for your version describes how to supply them.</p>
+</li>
+<li>
+<p><strong>OVA (Open Virtualization Appliance)</strong> — A standard packaging format for virtual machine images. The assisted migration agent is distributed as an OVA that you import into your VMware environment.</p>
+</li>
+<li>
+<p><strong>RVTools</strong> — A free Windows utility from Dell Technologies that exports VMware vSphere inventory data to a spreadsheet. OpenShift&#160;migration&#160;advisor can accept an RVTools export in a supported format when that path is enabled in your product build.</p>
+</li>
+<li>
+<p><strong>vCenter</strong> — The VMware management platform that the assisted migration agent and RVTools both connect to in order to collect inventory. OpenShift&#160;migration&#160;advisor uses vCenter as the scope boundary for an automated migration report.</p>
+</li>
+<li>
+<p><strong>vSphere estate</strong> — The full set of VMware infrastructure — virtual machines, hosts, clusters, datastores, and networks — managed under a vCenter deployment. Used in this guide to refer to the VMware environment that an automated migration report targets.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="open-source-projects-that-implement-the-automated-reporting-stack">Open source projects that implement the automated reporting stack</h3>
+<div class="paragraph _abstract">
+<p>The OpenShift&#160;migration&#160;advisor on the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console is a Red&#160;Hat product. The <strong>kubev2v</strong> community on GitHub publishes source code for related components. Red&#160;Hat support, scope, and build identifiers follow your subscription and your product version, not a public repo alone.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/kubev2v/migration-planner">migration-planner</a> — Migration Planner service in the <strong>kubev2v</strong> organization.</p>
+</li>
+<li>
+<p><a href="https://github.com/kubev2v/migration-planner-ui-app">migration-planner-ui-app</a> — Console user interface in the <strong>kubev2v</strong> organization.</p>
+</li>
+<li>
+<p><a href="https://github.com/kubev2v/assisted-migration-agent">assisted-migration-agent</a> — Assisted migration agent in the <strong>kubev2v</strong> organization.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If you open a public issue or a fork, remove host names, account identifiers, and credentials from logs or command output before you post, in line with your information security process.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="providing-feedback-on-red-hat-documentation">Providing feedback on Red Hat documentation</h2>
+<div class="sectionbody">
+<div class="paragraph _abstract">
+<p>We are committed to providing high-quality documentation and value your feedback. This guide covers the OpenShift&#160;migration&#160;advisor in the Red&#160;Hat&#160;Hybrid&#160;Cloud&#160;Console and related automated migration report content. To help us improve, you can submit suggestions or report errors through the Red&#160;Hat Jira tracking system.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Log in to the <a href="https://redhat.atlassian.net/jira/software/c/projects/MTV/issues/">Jira</a> website.</p>
+<div class="paragraph">
+<p>If you do not have an account, select the option to create one.</p>
+</div>
+</li>
+<li>
+<p>Click <strong>Create</strong> in the top navigation bar.</p>
+</li>
+<li>
+<p>Enter a descriptive title in the <strong>Summary</strong> field.</p>
+</li>
+<li>
+<p>Enter your suggestion for improvement in the <strong>Description</strong> field. Include links to the relevant parts of the documentation.</p>
+</li>
+<li>
+<p>Click <strong>Create</strong> at the bottom of the window.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2026-05-11 21:14:53 +0100
+</div>
+</div>
+</body>
+</html>
