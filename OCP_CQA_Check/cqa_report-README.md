@@ -9,7 +9,7 @@ Instead of just checking the files you have recently modified, this tool runs a 
 * **Smart Module Resolution:** It scans your assemblies, finds every `include::[]` statement, and automatically pulls in the active files from the `/modules` directory. It skips orphaned or unused modules.  
 * **Interactive Selection:** Easily choose whether to audit the Virt or OADP documentation sets.  
 * **Targeted Scanning:** Narrow down your audit to specific subdirectories (like `install` or `updating`) to assess just the book you are working on, saving time.  
-* **CQA 2.1 Alignment:** Uses the `vale-cqa.ini` configuration to enforce automated rules.  
+* **CQA 2.1 Alignment:** Uses the [`vale-cqa.ini`](https://redhat.atlassian.net/wiki/spaces/cnv/pages/268599849/.vale-cqa.ini) configuration to enforce automated rules.  
 * **Pinpoint Accuracy:** The terminal output shows you the exact word, phrase, or symbol in your file that triggered a rule violation.  
 * **Readability Scoring:** Uses the Flesch-Kincaid grade level formula to assess content complexity. It intelligently strips out AsciiDoc code blocks, URLs, and attributes so they don't artificially inflate the reading age.
 
@@ -27,7 +27,7 @@ pip install textstat
 ```
 
 3. **Vale CLI:** The linting engine. [See Vale Installation Instructions](https://www.google.com/search?q=https://vale.sh/docs/vale-cli/installation/).  
-4. **`vale-cqa.ini`:** The official CQA configuration file must be present in the root of the repository.
+4. [**`vale-cqa.ini`:**](https://redhat.atlassian.net/wiki/spaces/cnv/pages/268599849/.vale-cqa.ini) The official CQA configuration file must be present in the root of the repository.
 
 ---
 
