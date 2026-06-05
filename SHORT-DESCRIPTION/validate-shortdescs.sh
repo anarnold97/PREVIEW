@@ -9,36 +9,40 @@
 #
 # Usage: ./validate-shortdescs.sh [DIRECTORY] [OPTIONS]
 #
-#   DIRECTORY            Directory to scan recursively (default: current dir)
+#   DIRECTORY            Directory to scan (default: current dir).
+#                        All .adoc files under DIRECTORY are the primary set.
+#                        Any modules referenced via include:: from those files
+#                        are automatically added to the scan — so only modules
+#                        used by the target product area are checked.
 #
 #   --attrs FILE         Additional AsciiDoc attributes file to parse.
-#                        May be specified multiple times. Applied after the
-#                        auto-discovered file, so these values take precedence.
+#                        May be specified multiple times.
 #
 #   --ifdef-tag TAG      When parsing attributes files, treat TAG as defined
 #                        (include ifdef::TAG[] blocks, exclude ifndef::TAG[]).
 #                        Can be specified multiple times.
-#                        Example: --ifdef-tag mta  (for MTA documentation)
-#                                 --ifdef-tag downstream
+#                        Example: --ifdef-tag mta
 #
 #   --no-auto-attrs      Disable automatic attributes file discovery.
-#                        Useful when you want full control via --attrs.
 #
-# Attribute file auto-discovery
-# ─────────────────────────────
-# When DIRECTORY is inside a git repo, the script searches the repo root for
-# the first matching file from the following list:
+# Include resolution:
+#   openshift-docs resolves include:: paths relative to the git repo root.
+#   For example, include::modules/oadp-foo.adoc in an assembly under
+#   backup_and_restore/ resolves to {repo_root}/modules/oadp-foo.adoc.
+#   The script tries this git-root-relative resolution first, then falls back
+#   to file-relative resolution for other repos.
 #
-#   _attributes/common-attributes.adoc             openshift-docs (OADP, CNV)
-#   documentation/modules/common-attributes.adoc    forklift-documentation (MTV)
-#   docs/topics/templates/document-attributes.adoc  mta-documentation (MTA)
-#
-# Attributes inside ifdef/ifndef/ifeval blocks in the file are skipped unless
-# the matching tag is activated via --ifdef-tag.
+# Attribute file auto-discovery:
+#   Searches the git repo root for known attributes files:
+#     _attributes/common-attributes.adoc             openshift-docs (OADP, CNV)
+#     documentation/modules/common-attributes.adoc    forklift (MTV)
+#     docs/topics/templates/document-attributes.adoc  mta-documentation (MTA)
 #
 # Dependencies: asciidoctor   gem install asciidoctor
 #               xmllint       apt install libxml2-utils  |  brew install libxml2
 # ==============================================================================
+
+set -euo pipefail
 
 # --- Dependency checks --------------------------------------------------------
 for cmd in asciidoctor xmllint git; do
@@ -76,49 +80,44 @@ fi
 
 SEARCH_DIR=$(cd "$SEARCH_DIR" && pwd)
 
+# --- Git repo root ------------------------------------------------------------
+# Used for:
+#   (a) include:: path resolution (openshift-docs resolves from repo root)
+#   (b) clean relative paths in report output
+#   (c) attributes file auto-discovery
+GIT_ROOT=$(git -C "$SEARCH_DIR" rev-parse --show-toplevel 2>/dev/null) || GIT_ROOT=""
+
 # --- Hardcoded fallback attributes --------------------------------------------
-# These cover common OpenShift/Red Hat product names that may not be in every
-# repo's attributes file. They are applied first; values from the auto-
-# discovered or user-supplied attributes files override these.
-# attribute-missing=drop causes undefined attributes to render as empty string
-# rather than literal {name} text, keeping character counts accurate.
+# Applied first; values from auto-discovered / --attrs files take precedence.
+# attribute-missing=drop causes undefined attributes to render as empty string.
 ATTRS=(
     -a "attribute-missing=drop"
     -a experimental
     -a openshift-enterprise
-    # OpenShift
     -a "product-title=OpenShift Container Platform"
     -a "product-version=4.17"
     -a "ocp-short=OCP"
     -a "oc-first=OpenShift CLI (oc)"
-    # Virtualization
     -a "VirtProductName=OpenShift Virtualization"
     -a "VirtVersion=4.17"
-    # OADP
     -a "oadp-short=OADP"
     -a "oadp-first=OpenShift API for Data Protection (OADP)"
-    # MTV
     -a "project-short=MTV"
     -a "project-full=Migration Toolkit for Virtualization"
-    # MTA
     -a "ProductShortName=MTA"
     -a "ProductName=migration toolkit for applications"
-    # Cloud
     -a "aws-short=AWS"
     -a "ibm-name=IBM"
     -a "ibm-z-name=IBM Z"
     -a "ibm-linuxone-name=IBM LinuxONE"
     -a "ibm-cloud-title=IBM Cloud"
-    # OS / platform
     -a "op-system-base=RHEL"
     -a "op-system-base-full=Red Hat Enterprise Linux"
     -a "op-system-first=Red Hat Enterprise Linux CoreOS (RHCOS)"
     -a "op-system=RHCOS"
     -a "sno=single-node OpenShift"
-    # Storage / networking
     -a "rh-storage=OpenShift Data Foundation"
     -a "rh-storage-first=Red Hat OpenShift Data Foundation"
-    # Other products
     -a "pipelines-shortname=Red Hat OpenShift Pipelines"
     -a "mtv-first=Migration Toolkit for Virtualization (MTV)"
     -a "rh-rhacm-first=Red Hat Advanced Cluster Management"
@@ -129,148 +128,106 @@ ATTRS=(
 # --- Known repo attributes file paths (relative to git root) ------------------
 KNOWN_ATTR_PATHS=(
     "_attributes/common-attributes.adoc"             # openshift-docs (OADP, CNV)
-    "documentation/modules/common-attributes.adoc"   # forklift-documentation (MTV)
+    "documentation/modules/common-attributes.adoc"   # forklift (MTV)
     "docs/topics/templates/document-attributes.adoc" # mta-documentation (MTA)
 )
 
 # --- parse_attrs_file ---------------------------------------------------------
 # Parses :name: value lines from an AsciiDoc attributes file.
-#
-# Handles ifdef/ifndef/ifeval conditional blocks:
-#   - ifdef::TAG[]  blocks are included only if TAG is in IFDEF_TAGS
-#   - ifndef::TAG[] blocks are included only if TAG is NOT in IFDEF_TAGS
-#   - ifeval::[]    blocks are always excluded (expressions cannot be evaluated)
-#   - Nesting is handled correctly via a stack
-#
-# Lines with cross-attribute references (e.g. :foo: {bar} value) are included
-# as-is; asciidoctor resolves them at render time from the full attribute set.
+# Handles ifdef/ifndef/ifeval conditional blocks via a stack; only includes
+# blocks whose guard tag is listed in IFDEF_TAGS. ifeval blocks are always
+# excluded (expressions cannot be evaluated statically).
 parse_attrs_file() {
     local file="$1"
     [[ -f "$file" ]] || { echo "Warning: Attributes file '$file' not found." >&2; return; }
     echo "Loading attributes from: $file"
 
-    local -a cond_stack=()  # each entry: 1 = include, 0 = skip
-    local active=1           # 1 = currently including lines, 0 = skipping
+    local -a cond_stack=()
+    local active=1
 
-    _tag_is_active() {
-        local tag="$1"
+    _tag_active() {
+        local t
         for t in "${IFDEF_TAGS[@]}"; do
-            [[ "$t" == "$tag" ]] && return 0
+            if [[ "$t" == "$1" ]]; then return 0; fi
         done
         return 1
     }
 
-    _recalc_active() {
+    _recalc() {
         active=1
         local s
         for s in "${cond_stack[@]}"; do
-            [[ "$s" -eq 0 ]] && active=0 && return
+            if [[ $s -eq 0 ]]; then active=0; return; fi
         done
     }
 
     while IFS= read -r line; do
-        # ifdef::TAG[]
         if [[ "$line" =~ ^ifdef::([^[]+)\[\] ]]; then
-            local tag="${BASH_REMATCH[1]}"
-            if _tag_is_active "$tag"; then
-                cond_stack+=(1)
-            else
-                cond_stack+=(0)
-            fi
-            _recalc_active
-            continue
+            _tag_active "${BASH_REMATCH[1]}" && cond_stack+=(1) || cond_stack+=(0)
+            _recalc; continue
         fi
-
-        # ifndef::TAG[]
         if [[ "$line" =~ ^ifndef::([^[]+)\[\] ]]; then
-            local tag="${BASH_REMATCH[1]}"
-            if _tag_is_active "$tag"; then
-                cond_stack+=(0)
-            else
-                cond_stack+=(1)
-            fi
-            _recalc_active
-            continue
+            _tag_active "${BASH_REMATCH[1]}" && cond_stack+=(0) || cond_stack+=(1)
+            _recalc; continue
         fi
-
-        # ifeval::[] — always excluded; we cannot evaluate arbitrary expressions
         if [[ "$line" =~ ^ifeval:: ]]; then
-            cond_stack+=(0)
-            _recalc_active
-            continue
+            cond_stack+=(0); _recalc; continue
         fi
-
-        # endif::[]
         if [[ "$line" =~ ^endif:: ]]; then
-            if [[ ${#cond_stack[@]} -gt 0 ]]; then
-                unset 'cond_stack[-1]'
-            fi
-            _recalc_active
-            continue
+            [[ ${#cond_stack[@]} -gt 0 ]] && unset 'cond_stack[-1]'
+            _recalc; continue
         fi
-
-        # Parse :name: value line if currently active
         if [[ $active -eq 1 ]] && \
            [[ "$line" =~ ^:([a-zA-Z][a-zA-Z0-9_-]*):([[:space:]]+(.*))? ]]; then
-            local name="${BASH_REMATCH[1]}"
-            local value="${BASH_REMATCH[3]:-}"
-            ATTRS+=(-a "$name=$value")
+            ATTRS+=(-a "${BASH_REMATCH[1]}=${BASH_REMATCH[3]:-}")
         fi
     done < "$file"
 }
 
 # --- auto_discover_attrs ------------------------------------------------------
-# Finds the repo root via git and loads the first matching known attributes file.
 auto_discover_attrs() {
-    local git_root
-    git_root=$(git -C "$SEARCH_DIR" rev-parse --show-toplevel 2>/dev/null) || {
-        echo "Warning: '$SEARCH_DIR' is not inside a git repo — skipping attribute auto-discovery." >&2
+    [[ -z "$GIT_ROOT" ]] && {
+        echo "Warning: Not inside a git repo — skipping attribute auto-discovery." >&2
         return
     }
-
-    local rel_path candidate
-    for rel_path in "${KNOWN_ATTR_PATHS[@]}"; do
-        candidate="$git_root/$rel_path"
+    local rel candidate
+    for rel in "${KNOWN_ATTR_PATHS[@]}"; do
+        candidate="$GIT_ROOT/$rel"
         if [[ -f "$candidate" ]]; then
             parse_attrs_file "$candidate"
             return
         fi
     done
-
-    echo "Warning: No known attributes file found under '$git_root'." >&2
-    echo "         Use --attrs to specify one manually." >&2
+    echo "Warning: No known attributes file found under '$GIT_ROOT'. Use --attrs to specify one." >&2
 }
 
 # --- Load attributes ----------------------------------------------------------
-# Auto-discovered file first, then user-specified files (which can override).
-if [[ $AUTO_ATTRS -eq 1 ]]; then
-    auto_discover_attrs
-fi
-
-for f in "${USER_ATTRS_FILES[@]}"; do
-    parse_attrs_file "$f"
-done
+[[ $AUTO_ATTRS -eq 1 ]] && auto_discover_attrs
+for f in "${USER_ATTRS_FILES[@]}"; do parse_attrs_file "$f"; done
 
 # --- collect_scan_files -------------------------------------------------------
-# Finds all .adoc files directly under SEARCH_DIR (the "primary" assembly and
-# topic files), then follows include:: directives in each to discover the
-# modules those assemblies actually reference. Only included modules are added
-# to the scan list — the entire modules/ directory is never scanned wholesale.
+# Returns the list of files to scan:
+#   1. All .adoc files found directly under SEARCH_DIR (primary set).
+#   2. Files discovered by following include:: directives recursively.
+#      The BFS terminates naturally because leaf nodes (modules, snippets) do
+#      not include other modules. Depth in practice: 1–3 levels.
 #
-# The queue is processed iteratively so nested includes (modules that include
-# sub-modules) are followed automatically. A seen-file guard prevents loops.
-# Include paths containing unresolved attribute references ({...}) are skipped.
+# Include path resolution (two-step):
+#   Step 1 — git-root-relative: try $GIT_ROOT/$inc_path first.
+#             openshift-docs resolves include::modules/foo.adoc relative to
+#             the repo root, not the including file's directory.
+#   Step 2 — file-relative: fallback for repos like forklift / mta-documentation
+#             that use standard AsciiDoc path resolution.
 #
-# Sets two globals after completion:
-#   primary_count  — number of files found directly in SEARCH_DIR
-#   module_count   — number of additional files discovered via includes
+# Sets globals: primary_count, module_count
+primary_count=0
+module_count=0
+
 collect_scan_files() {
     local -A seen=()
     local -a queue=()
 
-    # Seed with all .adoc files directly under SEARCH_DIR.
-    # find -type f does not follow symlinks, so virt/modules -> ../../modules/
-    # is never traversed.
+    # --- Primary files --------------------------------------------------------
     while IFS= read -r f; do
         seen["$f"]=1
         queue+=("$f")
@@ -278,33 +235,42 @@ collect_scan_files() {
 
     primary_count=${#queue[@]}
 
-    # Process queue item by item. Items appended during iteration are also
-    # processed, giving automatic recursive include following.
+    # --- Follow includes (BFS) ------------------------------------------------
+    # i=$(( )) is always exit-0; avoids set -e pitfall of (( i++ )) when i=0.
+    # [[ ]] comparison likewise safe under set -e.
+    local f dir inc_path resolved abs
     local i=0
-    local f dir inc_path resolved inc_dir inc_base
-    while (( i < ${#queue[@]} )); do
+
+    while [[ $i -lt ${#queue[@]} ]]; do
         f="${queue[$i]}"
         dir=$(dirname "$f")
-        (( i++ ))
+        i=$(( i + 1 ))
 
         while IFS= read -r inc_path; do
-            # Skip paths with unresolved attribute references
+            # Skip unresolved attribute references
             [[ "$inc_path" == *"{"* ]] && continue
 
-            # Resolve the include path relative to the including file's directory.
-            # The subshell cd chain handles ../ sequences correctly.
-            resolved=$(
-                cd "$dir" 2>/dev/null || exit 1
-                inc_dir=$(dirname "$inc_path")
-                inc_base=$(basename "$inc_path")
-                cd "$inc_dir" 2>/dev/null || exit 1
-                echo "$(pwd)/$inc_base"
-            ) || continue
+            resolved=""
 
-            [[ -f "$resolved" ]] || continue
+            # Step 1: git-root-relative (openshift-docs convention)
+            if [[ -n "$GIT_ROOT" && -f "$GIT_ROOT/$inc_path" ]]; then
+                resolved="$GIT_ROOT/$inc_path"
+            fi
+
+            # Step 2: file-relative (standard AsciiDoc — forklift, mta-documentation)
+            if [[ -z "$resolved" ]]; then
+                abs=$(cd "$dir" 2>/dev/null && \
+                      cd "$(dirname "$inc_path")" 2>/dev/null && \
+                      echo "$(pwd)/$(basename "$inc_path")") 2>/dev/null || true
+                [[ -n "$abs" && -f "$abs" ]] && resolved="$abs"
+            fi
+
+            [[ -z "$resolved" ]] && continue
             [[ -n "${seen[$resolved]+_}" ]] && continue
+
             seen["$resolved"]=1
             queue+=("$resolved")
+
         done < <(grep -oE 'include::([^[]+\.adoc)\[' "$f" 2>/dev/null \
                      | sed 's/include:://;s/\[.*//')
     done
@@ -313,10 +279,19 @@ collect_scan_files() {
     printf '%s\n' "${queue[@]}" | sort
 }
 
-# Resolve git root for clean relative paths on modules outside SEARCH_DIR.
-GIT_ROOT=$(git -C "$SEARCH_DIR" rev-parse --show-toplevel 2>/dev/null)
-primary_count=0
-module_count=0
+# --- relpath helper -----------------------------------------------------------
+# Returns a clean repo-relative path for display. Falls back to SEARCH_DIR-
+# relative, then absolute if the file is somehow outside both.
+display_path() {
+    local file="$1"
+    if [[ -n "$GIT_ROOT" && "$file" == "$GIT_ROOT"/* ]]; then
+        echo "${file#"$GIT_ROOT"/}"
+    elif [[ "$file" == "$SEARCH_DIR"/* ]]; then
+        echo "${file#"$SEARCH_DIR"/}"
+    else
+        echo "$file"
+    fi
+}
 
 # --- Setup --------------------------------------------------------------------
 DATE_TODAY=$(date +%Y-%m-%d)
@@ -332,13 +307,11 @@ cond_count=0
 tmp_short=$(mktemp)
 tmp_long=$(mktemp)
 tmp_cond=$(mktemp)
-
-# --- Scan ---------------------------------------------------------------------
-echo "Collecting files from '$SEARCH_DIR' (following include:: directives)..."
-
 tmp_filelist=$(mktemp)
 trap 'rm -f "$tmp_short" "$tmp_long" "$tmp_cond" "$tmp_filelist"' EXIT
 
+# --- Collect files ------------------------------------------------------------
+echo "Collecting files from '$(display_path "$SEARCH_DIR")' (following include:: directives)..."
 collect_scan_files > "$tmp_filelist"
 total=$(wc -l < "$tmp_filelist" | tr -d ' ')
 
@@ -347,20 +320,22 @@ if [[ "$total" -eq 0 ]]; then
     exit 0
 fi
 
-echo "Found: ${primary_count} files in scope + ${module_count} included modules = ${total} total"
+echo "Scope: ${primary_count} files in target directory + ${module_count} included modules = ${total} total"
+
+# --- Scan ---------------------------------------------------------------------
 echo "Scanning..."
+
+set +e   # disable exit-on-error for the scan loop; errors are non-fatal per file
 
 while IFS= read -r file; do
     total_files=$(( total_files + 1 ))
     pct=$(( total_files * 100 / total ))
     printf "[%3d%%] %d/%d: %-55s\r" "$pct" "$total_files" "$total" "$(basename "$file")"
 
-    # Single render per file — cache HTML to avoid calling asciidoctor twice.
-    # -S safe allows local includes but prevents external file access.
+    # Single render per file. -S safe allows local includes.
     html=$(asciidoctor "${ATTRS[@]}" -S safe -o - "$file" 2>/dev/null)
 
-    # Measure rendered abstract length via XPath on the HTML DOM.
-    # Returns 0 if no [role="_abstract"] paragraph is present.
+    # Measure rendered abstract length via XPath.
     length=$(printf '%s\n' "$html" | \
         xmllint --html \
                 --xpath 'string-length(//div[contains(@class,"_abstract")][1]/p)' \
@@ -371,22 +346,10 @@ while IFS= read -r file; do
         continue
     fi
 
-    # Truncate any decimal from xmllint output (e.g. "143.0" → "143")
     length="${length%.*}"
+    relpath=$(display_path "$file")
 
-    # Display path relative to git root (so modules outside SEARCH_DIR still
-    # show a clean repo-relative path). Fall back to SEARCH_DIR-relative, then
-    # absolute if neither applies.
-    if [[ -n "$GIT_ROOT" && "$file" == "$GIT_ROOT"/* ]]; then
-        relpath="${file#"$GIT_ROOT"/}"
-    elif [[ "$file" == "$SEARCH_DIR"/* ]]; then
-        relpath="${file#"$SEARCH_DIR"/}"
-    else
-        relpath="$file"
-    fi
-
-    # Check raw source for conditional directives inside the abstract block.
-    # These can cause the rendered length to vary across build targets.
+    # Check for conditional directives inside the abstract block.
     raw_abstract=$(awk '
         /\[role="_abstract"\]/ { flag=1; next }
         flag && /^[[:space:]]*$/ { exit }
@@ -412,6 +375,7 @@ while IFS= read -r file; do
 done < "$tmp_filelist"
 
 printf '\n'
+set -e
 
 # --- Generate report ----------------------------------------------------------
 files_with_abstract=$(( total_files - no_abstract ))
@@ -422,10 +386,10 @@ cat << EOF
 # Short Description Validation Report
 
 **Date:** ${DATE_TODAY}
-**Target directory:** \`${SEARCH_DIR}\`
-**Files scanned:** ${total_files} (${primary_count} files in target directory + ${module_count} included modules discovered via \`include::\`)
+**Target directory:** \`$(display_path "$SEARCH_DIR")\`
+**Files scanned:** ${total_files} (${primary_count} in target directory + ${module_count} included modules)
 **Rules:**
-1. \`[role="_abstract"]\` paragraph must be **50–300 characters** (measured on rendered HTML after attribute expansion — not raw source).
+1. \`[role="_abstract"]\` paragraph must be **50–300 characters** (measured on rendered HTML after attribute expansion).
 2. Abstract must not contain conditional syntax (\`ifdef::\`, \`ifndef::\`, \`ifeval::\`), which can cause the rendered length to vary across build targets.
 
 ---
@@ -451,8 +415,7 @@ cat << EOF
 ## Contains Conditional Syntax — ${cond_count} file(s)
 
 These abstracts contain \`ifdef::\`, \`ifndef::\`, or \`ifeval::\` directives.
-The character count may be accurate for one build target but not others.
-Review manually to confirm the length is within range for all variants.
+Review manually to confirm the length is within range for all build targets.
 
 | File | Note |
 |------|------|
