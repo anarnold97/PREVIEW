@@ -30,8 +30,8 @@
 # the first matching file from the following list:
 #
 #   _attributes/common-attributes.adoc             openshift-docs (OADP, CNV)
-#   documentation/modules/common-attributes.adoc   forklift-documentation (MTV)
-#   docs/topics/templates/document-attributes.adoc mta-documentation (MTA)
+#   documentation/modules/common-attributes.adoc    forklift-documentation (MTV)
+#   docs/topics/templates/document-attributes.adoc  mta-documentation (MTA)
 #
 # Attributes inside ifdef/ifndef/ifeval blocks in the file are skipped unless
 # the matching tag is activated via --ifdef-tag.
@@ -82,19 +82,18 @@ SEARCH_DIR=$(cd "$SEARCH_DIR" && pwd)
 # discovered or user-supplied attributes files override these.
 # attribute-missing=drop causes undefined attributes to render as empty string
 # rather than literal {name} text, keeping character counts accurate.
-# i recommend updating 4.21 product-version to match whatever your current main working branch. 
 ATTRS=(
     -a "attribute-missing=drop"
     -a experimental
     -a openshift-enterprise
     # OpenShift
     -a "product-title=OpenShift Container Platform"
-    -a "product-version=4.21"
+    -a "product-version=4.17"
     -a "ocp-short=OCP"
     -a "oc-first=OpenShift CLI (oc)"
     # Virtualization
     -a "VirtProductName=OpenShift Virtualization"
-    -a "VirtVersion=4.21"
+    -a "VirtVersion=4.17"
     # OADP
     -a "oadp-short=OADP"
     -a "oadp-first=OpenShift API for Data Protection (OADP)"
@@ -252,6 +251,73 @@ for f in "${USER_ATTRS_FILES[@]}"; do
     parse_attrs_file "$f"
 done
 
+# --- collect_scan_files -------------------------------------------------------
+# Finds all .adoc files directly under SEARCH_DIR (the "primary" assembly and
+# topic files), then follows include:: directives in each to discover the
+# modules those assemblies actually reference. Only included modules are added
+# to the scan list — the entire modules/ directory is never scanned wholesale.
+#
+# The queue is processed iteratively so nested includes (modules that include
+# sub-modules) are followed automatically. A seen-file guard prevents loops.
+# Include paths containing unresolved attribute references ({...}) are skipped.
+#
+# Sets two globals after completion:
+#   primary_count  — number of files found directly in SEARCH_DIR
+#   module_count   — number of additional files discovered via includes
+collect_scan_files() {
+    local -A seen=()
+    local -a queue=()
+
+    # Seed with all .adoc files directly under SEARCH_DIR.
+    # find -type f does not follow symlinks, so virt/modules -> ../../modules/
+    # is never traversed.
+    while IFS= read -r f; do
+        seen["$f"]=1
+        queue+=("$f")
+    done < <(find "$SEARCH_DIR" -type f -name "*.adoc" | sort)
+
+    primary_count=${#queue[@]}
+
+    # Process queue item by item. Items appended during iteration are also
+    # processed, giving automatic recursive include following.
+    local i=0
+    local f dir inc_path resolved inc_dir inc_base
+    while (( i < ${#queue[@]} )); do
+        f="${queue[$i]}"
+        dir=$(dirname "$f")
+        (( i++ ))
+
+        while IFS= read -r inc_path; do
+            # Skip paths with unresolved attribute references
+            [[ "$inc_path" == *"{"* ]] && continue
+
+            # Resolve the include path relative to the including file's directory.
+            # The subshell cd chain handles ../ sequences correctly.
+            resolved=$(
+                cd "$dir" 2>/dev/null || exit 1
+                inc_dir=$(dirname "$inc_path")
+                inc_base=$(basename "$inc_path")
+                cd "$inc_dir" 2>/dev/null || exit 1
+                echo "$(pwd)/$inc_base"
+            ) || continue
+
+            [[ -f "$resolved" ]] || continue
+            [[ -n "${seen[$resolved]+_}" ]] && continue
+            seen["$resolved"]=1
+            queue+=("$resolved")
+        done < <(grep -oE 'include::([^[]+\.adoc)\[' "$f" 2>/dev/null \
+                     | sed 's/include:://;s/\[.*//')
+    done
+
+    module_count=$(( ${#queue[@]} - primary_count ))
+    printf '%s\n' "${queue[@]}" | sort
+}
+
+# Resolve git root for clean relative paths on modules outside SEARCH_DIR.
+GIT_ROOT=$(git -C "$SEARCH_DIR" rev-parse --show-toplevel 2>/dev/null)
+primary_count=0
+module_count=0
+
 # --- Setup --------------------------------------------------------------------
 DATE_TODAY=$(date +%Y-%m-%d)
 REPORT_FILE="shortdesc-validation-report-${DATE_TODAY}.md"
@@ -266,16 +332,23 @@ cond_count=0
 tmp_short=$(mktemp)
 tmp_long=$(mktemp)
 tmp_cond=$(mktemp)
-trap 'rm -f "$tmp_short" "$tmp_long" "$tmp_cond"' EXIT
 
 # --- Scan ---------------------------------------------------------------------
-echo "Scanning '$SEARCH_DIR'..."
-total=$(find "$SEARCH_DIR" -type f -name "*.adoc" | wc -l | tr -d ' ')
+echo "Collecting files from '$SEARCH_DIR' (following include:: directives)..."
+
+tmp_filelist=$(mktemp)
+trap 'rm -f "$tmp_short" "$tmp_long" "$tmp_cond" "$tmp_filelist"' EXIT
+
+collect_scan_files > "$tmp_filelist"
+total=$(wc -l < "$tmp_filelist" | tr -d ' ')
 
 if [[ "$total" -eq 0 ]]; then
     echo "No .adoc files found in '$SEARCH_DIR'." >&2
     exit 0
 fi
+
+echo "Found: ${primary_count} files in scope + ${module_count} included modules = ${total} total"
+echo "Scanning..."
 
 while IFS= read -r file; do
     total_files=$(( total_files + 1 ))
@@ -301,7 +374,16 @@ while IFS= read -r file; do
     # Truncate any decimal from xmllint output (e.g. "143.0" → "143")
     length="${length%.*}"
 
-    relpath="${file#"$SEARCH_DIR"/}"
+    # Display path relative to git root (so modules outside SEARCH_DIR still
+    # show a clean repo-relative path). Fall back to SEARCH_DIR-relative, then
+    # absolute if neither applies.
+    if [[ -n "$GIT_ROOT" && "$file" == "$GIT_ROOT"/* ]]; then
+        relpath="${file#"$GIT_ROOT"/}"
+    elif [[ "$file" == "$SEARCH_DIR"/* ]]; then
+        relpath="${file#"$SEARCH_DIR"/}"
+    else
+        relpath="$file"
+    fi
 
     # Check raw source for conditional directives inside the abstract block.
     # These can cause the rendered length to vary across build targets.
@@ -327,7 +409,7 @@ while IFS= read -r file; do
         ok_count=$(( ok_count + 1 ))
     fi
 
-done < <(find "$SEARCH_DIR" -type f -name "*.adoc" | sort)
+done < "$tmp_filelist"
 
 printf '\n'
 
@@ -341,7 +423,7 @@ cat << EOF
 
 **Date:** ${DATE_TODAY}
 **Target directory:** \`${SEARCH_DIR}\`
-**Files scanned:** ${total_files}
+**Files scanned:** ${total_files} (${primary_count} files in target directory + ${module_count} included modules discovered via \`include::\`)
 **Rules:**
 1. \`[role="_abstract"]\` paragraph must be **50–300 characters** (measured on rendered HTML after attribute expansion — not raw source).
 2. Abstract must not contain conditional syntax (\`ifdef::\`, \`ifndef::\`, \`ifeval::\`), which can cause the rendered length to vary across build targets.
