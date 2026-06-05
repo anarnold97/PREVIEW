@@ -303,12 +303,16 @@ ok_count=0
 too_short_count=0
 too_long_count=0
 cond_count=0
+colon_count=0
+selfref_count=0
 
 tmp_short=$(mktemp)
 tmp_long=$(mktemp)
 tmp_cond=$(mktemp)
+tmp_colon=$(mktemp)
+tmp_selfref=$(mktemp)
 tmp_filelist=$(mktemp)
-trap 'rm -f "$tmp_short" "$tmp_long" "$tmp_cond" "$tmp_filelist"' EXIT
+trap 'rm -f "$tmp_short" "$tmp_long" "$tmp_cond" "$tmp_colon" "$tmp_selfref" "$tmp_filelist"' EXIT
 
 # --- Collect files ------------------------------------------------------------
 echo "Collecting files from '$(display_path "$SEARCH_DIR")' (following include:: directives)..."
@@ -335,18 +339,19 @@ while IFS= read -r file; do
     # Single render per file. -S safe allows local includes.
     html=$(asciidoctor "${ATTRS[@]}" -S safe -o - "$file" 2>/dev/null)
 
-    # Measure rendered abstract length via XPath.
-    length=$(printf '%s\n' "$html" | \
+    # Extract rendered abstract text via XPath (normalize-space strips leading/trailing
+    # whitespace and collapses internal runs; used for both length and content checks).
+    text=$(printf '%s\n' "$html" | \
         xmllint --html \
-                --xpath 'string-length(//div[contains(@class,"_abstract")][1]/p)' \
+                --xpath 'normalize-space(//div[contains(@class,"_abstract")][1]/p)' \
                 - 2>/dev/null)
 
-    if [[ -z "$length" || ! "$length" =~ ^[0-9]+(\.[0-9]+)?$ || "${length%.*}" -eq 0 ]]; then
+    if [[ -z "$text" ]]; then
         no_abstract=$(( no_abstract + 1 ))
         continue
     fi
 
-    length="${length%.*}"
+    length=${#text}
     relpath=$(display_path "$file")
 
     # Check for conditional directives inside the abstract block.
@@ -372,6 +377,19 @@ while IFS= read -r file; do
         ok_count=$(( ok_count + 1 ))
     fi
 
+    # Check: abstract ends with a colon (introductory fragment, not a description).
+    if [[ "$text" =~ :[[:space:]]*$ ]]; then
+        colon_count=$(( colon_count + 1 ))
+        printf '| `%s` | `%s` |\n' "$relpath" "${text:0:120}" >> "$tmp_colon"
+    fi
+
+    # Check: self-referential or introductory opening ("This topic…", "The following table…").
+    if printf '%s' "$text" | grep -qiE \
+        '^(This (topic|section|module|document|chapter|guide|page|procedure|reference|concept|assembly|book|content|article|information|table|list|figure|example)|The following )'; then
+        selfref_count=$(( selfref_count + 1 ))
+        printf '| `%s` | `%s` |\n' "$relpath" "${text:0:120}" >> "$tmp_selfref"
+    fi
+
 done < "$tmp_filelist"
 
 printf '\n'
@@ -391,6 +409,8 @@ cat << EOF
 **Rules:**
 1. \`[role="_abstract"]\` paragraph must be **50–300 characters** (measured on rendered HTML after attribute expansion).
 2. Abstract must not contain conditional syntax (\`ifdef::\`, \`ifndef::\`, \`ifeval::\`), which can cause the rendered length to vary across build targets.
+3. Abstract must not end with a colon (indicates a leading fragment, not a description).
+4. Abstract must not open with self-referential or introductory language (\`This topic…\`, \`The following table…\`, etc.).
 
 ---
 
@@ -405,6 +425,8 @@ cat << EOF
 | **Too short (<50 chars)** | **${too_short_count}** | **$(pct_of $too_short_count $files_with_abstract)%** |
 | **Too long (>300 chars)** | **${too_long_count}** | **$(pct_of $too_long_count $files_with_abstract)%** |
 | **Contains conditionals** | **${cond_count}** | — |
+| **Ends with colon** | **${colon_count}** | — |
+| **Self-referential / introductory** | **${selfref_count}** | — |
 
 ---
 EOF
@@ -452,6 +474,37 @@ EOF
     printf '\n---\n'
 fi
 
+if [[ -s "$tmp_colon" ]]; then
+cat << EOF
+
+## Ends with Colon — ${colon_count} file(s)
+
+These abstracts end with \`:\`, which indicates an introductory fragment rather than a
+standalone description. Rewrite as a complete sentence that summarises the content.
+
+| File | Abstract (first 120 chars) |
+|------|---------------------------|
+EOF
+    cat "$tmp_colon"
+    printf '\n---\n'
+fi
+
+if [[ -s "$tmp_selfref" ]]; then
+cat << EOF
+
+## Self-Referential / Introductory Language — ${selfref_count} file(s)
+
+These abstracts open with phrases such as "This topic describes…" or "The following
+table shows…", which describe the content structure rather than the content itself.
+Rewrite to describe what the reader will learn or accomplish.
+
+| File | Abstract (first 120 chars) |
+|------|---------------------------|
+EOF
+    cat "$tmp_selfref"
+    printf '\n---\n'
+fi
+
 } > "$REPORT_FILE"
 
 # --- Terminal summary ---------------------------------------------------------
@@ -460,6 +513,8 @@ echo "  OK (50-300 chars) : ${ok_count}"
 echo "  Too short (<50)   : ${too_short_count}"
 echo "  Too long  (>300)  : ${too_long_count}"
 echo "  Conditionals      : ${cond_count}"
+echo "  Ends with colon   : ${colon_count}"
+echo "  Self-referential  : ${selfref_count}"
 echo "  No abstract       : ${no_abstract}"
 echo ""
 echo "Report: ${REPORT_FILE}"
