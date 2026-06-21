@@ -22,6 +22,8 @@ The script checks for the following conditions:
 
 ## **Prerequisites**
 
+The following prerequisites are required:
+
 ### **System Dependencies**
 
 The script relies on a few underlying system tools to process the AsciiDoc files and handle XML parsing:

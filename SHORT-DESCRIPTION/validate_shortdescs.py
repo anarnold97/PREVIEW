@@ -8,6 +8,7 @@ import subprocess
 from datetime import datetime
 import pandas as pd
 
+# The README.md is at https://github.com/anarnold97/PREVIEW/blob/main/SHORT-DESCRIPTION/README.md
 # --- Hardcoded fallback attributes --------------------------------------------
 DEFAULT_ATTRS = [
     "attribute-missing=drop", "experimental", "openshift-enterprise",
