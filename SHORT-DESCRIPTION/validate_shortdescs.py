@@ -9,6 +9,9 @@ from datetime import datetime
 import pandas as pd
 
 # The README.md is at https://github.com/anarnold97/PREVIEW/blob/main/SHORT-DESCRIPTION/README.md
+# The script relies on a few underlying system tools to process the AsciiDoc files and handle XML parsing:
+# * asciidoctor: gem install asciidoctor
+# * xmllint: apt install libxml2-utils (Ubuntu/Debian) or brew install libxml2 (macOS)
 # --- Hardcoded fallback attributes --------------------------------------------
 DEFAULT_ATTRS = [
     "attribute-missing=drop", "experimental", "openshift-enterprise",
