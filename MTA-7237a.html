@@ -1,0 +1,1053 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" class="chrometwo"><head><title>Installing the migration toolkit for applications</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css"/><meta name="generator" content="publican v4.3.2"/><meta name="description" content="By using the migration toolkit for applications (MTA), you can accelerate large-scale application modernization efforts across hybrid cloud environments on Red Hat OpenShift. For example, you can inventory, assess, analyze, and manage applications for faster migration to OpenShift through the user interface at both the portfolio and application levels."/><link rel="next" href="#making-open-source-more-inclusive" title="Making open source more inclusive"/><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><script type="text/javascript" src="Common_Content/scripts/jquery-1.7.1.min.js"> </script><script type="text/javascript" src="Common_Content/scripts/utils.js"> </script><script type="text/javascript" src="Common_Content/scripts/highlight.js/highlight.pack.js"> </script></head><body><div id="chrometwo"><div id="main"><div xml:lang="en-US" class="book" id="idm46383650050832"><div class="titlepage"><div><div class="producttitle"><span class="productname">migration toolkit for applications</span> <span class="productnumber">8.1</span></div><div><h1 class="title">Installing the migration toolkit for applications</h1></div><div><h2 class="subtitle">Installing the migration toolkit for applications user interface and command-line interface</h2></div><div><div xml:lang="en-US" class="authorgroup"><span class="orgname">Red Hat Customer Content Services</span></div></div><div><a href="#idm46383628923072">Legal Notice</a></div><div><div class="abstract"><p class="title"><strong>Abstract</strong></p><div class="para">
+				By using the migration toolkit for applications (MTA), you can accelerate large-scale application modernization efforts across hybrid cloud environments on Red Hat OpenShift. For example, you can inventory, assess, analyze, and manage applications for faster migration to OpenShift through the user interface at both the portfolio and application levels.
+			</div></div></div></div><hr/></div><div class="toc"><ul class="toc"><li><span class="preface"><a href="#making-open-source-more-inclusive">Making open source more inclusive</a></span></li><li><span class="chapter"><a href="#intro-to-mta_installing-mta-title">1. Introduction to the migration toolkit for applications</a></span><ul><li><span class="section"><a href="#mta-features_intro-to-mta">1.1. MTA features</a></span></li><li><span class="section"><a href="#mta-rules_intro-to-mta">1.2. MTA rules</a></span></li><li><span class="section"><a href="#mta-tools_intro-to-mta">1.3. MTA tools</a></span></li></ul></li><li><span class="chapter"><a href="#supported-migration-paths_installing-mta-title">2. Supported migration toolkit for applications migration paths</a></span></li><li><span class="chapter"><a href="#installing-mta-ui_installing-mta-title">3. Installing the migration toolkit for applications user interface</a></span><ul><li><span class="section"><a href="#persistent-volume-requirements_installing-mta-ui">3.1. Persistent volume requirements</a></span></li><li><span class="section"><a href="#red-hat-build-of-keycloak_installing-mta-ui">3.2. Red Hat build of Keycloak</a></span><ul><li><span class="section"><a href="#accessing-rhbk-admin-console_red-hat-build-of-keycloak">3.2.1. Accessing the RHBK Admin Console</a></span></li><li><span class="section"><a href="#roles-personas-users-permissions_red-hat-build-of-keycloak">3.2.2. Roles, personas, users, and permissions</a></span></li></ul></li><li><span class="section"><a href="#installing-mta-operator_installing-mta-ui">3.3. Installing the MTA Operator</a></span></li><li><span class="section"><a href="#creating-mta-instance_installing-mta-ui">3.4. Creating an MTA instance</a></span></li><li><span class="section"><a href="#custom-resource-settings_installing-mta-ui">3.5. Custom resource settings</a></span></li></ul></li><li><span class="chapter"><a href="#installing-mta-cli-overview_installing-mta-title">4. migration toolkit for applications command-line interface installation</a></span></li><li><span class="appendix"><a href="#contributing-to-mta-development">A. How to contribute to the MTA project</a></span></li></ul></div><section class="preface" id="making-open-source-more-inclusive"><div class="titlepage"><div><div><h1 class="title">Making open source more inclusive</h1></div></div></div><p class="_abstract _abstract">
+			Red Hat is committed to replacing problematic language in our code, documentation, and web properties. We are beginning with these four terms: master, slave, blacklist, and whitelist. Because of the enormity of this endeavor, these changes will be implemented gradually over several upcoming releases. For more details, see <a class="link" href="https://www.redhat.com/en/blog/making-open-source-more-inclusive-eradicating-problematic-language">our CTO Chris Wright’s message</a>.
+		</p></section><section class="chapter" id="intro-to-mta_installing-mta-title"><div class="titlepage"><div><div><h1 class="title">Chapter 1. Introduction to the migration toolkit for applications</h1></div></div></div><p class="_abstract _abstract">
+			The migration toolkit for applications (MTA) is a set of tools that you can use to accelerate large-scale application modernization efforts across hybrid cloud environments on Red Hat OpenShift. MTA looks for common resources and problematic spots when migrating applications. It gives a high-level view of the technologies used by the application. MTA also generates a detailed report that evaluates a migration or modernization path. By using this report, you can estimate the effort needed for large-scale projects and reduce the workload involved in the process.
+		</p><p>
+			By using MTA, you can perform the following tasks:
+		</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+					Use the MTA extensive default questionnaire to assess your applications, or create your own custom questionnaire to estimate the difficulty, time, and other resources needed to prepare an application for containerization. You can use the results of an assessment to determine applications suitable for containerization.
+				</li><li class="listitem">
+					Analyze applications by applying sets of rules to each application. You can use these rules to determine which specific lines of the application you must modify before modernizing the application.
+				</li><li class="listitem">
+					Examine application artifacts, including project source directories and application archives, and produce an HTML report that highlights areas that require changes.
+				</li></ul></div><section class="section" id="mta-features_intro-to-mta"><div class="titlepage"><div><div><h2 class="title">1.1. MTA features</h2></div></div></div><p class="_abstract _abstract">
+				The migration toolkit for applications (MTA) includes many features that simplify upgrades with multiple migration paths.
+			</p><p>
+				MTA brings the following benefits for application analysis and assessment:
+			</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						<span class="strong strong"><strong>Application inventory and assessment modules</strong></span> to help organizations assess applications' suitability for deployment in containers, including flagging potential risks for migration strategies.
+					</li><li class="listitem">
+						<span class="strong strong"><strong>Integration with source code and binary repositories</strong></span> to automate the applications' retrieval for analysis, along with proxy integration, including HTTP and HTTPS proxy configuration managed in the user interface.
+					</li><li class="listitem">
+						<span class="strong strong"><strong>Improved analysis capabilities</strong></span> with different analysis modes, including source and dependency modes. These modes parse repositories to gather dependencies and add these dependencies to the scope of the analysis. You can also use a simplified user experience to configure the analysis scope, including open source libraries.
+					</li><li class="listitem"><p class="simpara">
+						<span class="strong strong"><strong>Enhanced role-based access control (RBAC)</strong></span> powered by Red Hat build of Keycloak to define the following personas:
+					</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+								Administrator
+							</li><li class="listitem">
+								Architect
+							</li><li class="listitem">
+								Migrator
+							</li></ul></div><p class="simpara">
+						These personas have different permissions to suit the needs of each user, including credentials management for multiple credential types.
+					</p></li><li class="listitem">
+						<span class="strong strong"><strong>Administration perspective</strong></span> for administrators to manage tool-wide configuration.
+					</li><li class="listitem">
+						<span class="strong strong"><strong>Support for Red Hat OpenShift on AWS (ROSA)</strong></span>
+					</li><li class="listitem">
+						<span class="strong strong"><strong>Support for Azure Red Hat OpenShift (ARO)</strong></span>
+					</li><li class="listitem">
+						<span class="strong strong"><strong>Support for analyzing applications written in different languages</strong></span>
+					</li></ul></div><div class="itemizedlist _additional-resources"><p class="title"><strong>Additional resources</strong></p><ul class="itemizedlist _additional-resources" type="disc"><li class="listitem">
+						<a class="link" href="https://access.redhat.com/products/red-hat-build-of-keycloak">Red Hat build of Keycloak</a>
+					</li></ul></div></section><section class="section" id="mta-rules_intro-to-mta"><div class="titlepage"><div><div><h2 class="title">1.2. MTA rules</h2></div></div></div><p class="_abstract _abstract">
+				The migration toolkit for applications (MTA) contains rule-based migration tools called analyzers. You can use analyzers to examine the technologies, architectures, and application user interfaces (APIs) of the applications you want to move.
+			</p><p>
+				MTA analyzer rules use the following rule pattern:
+			</p><pre class="screen">when(condition)
+ message(message)
+ tag(tags)</pre><p>
+				You can use the MTA rules internally to perform the following tasks:
+			</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						Extract files from archives 
+					</li><li class="listitem">
+						Decompile files 
+					</li><li class="listitem">
+						Scan and classify file types
+					</li><li class="listitem">
+						Analyze XML and other file content
+					</li><li class="listitem">
+						Analyze the application code
+					</li><li class="listitem">
+						Build the reports
+					</li></ul></div><p>
+				MTA builds a data model based on the rule execution results and stores component data and relationships in a graph database. This database can then be queried and updated as needed by the migration rules and for reporting purposes.
+			</p><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+					You can create your own custom analyzer rules. You can use custom rules to identify the use of custom libraries or other components that the provided standard migration rules might not cover.
+				</p></div></div><div class="_additional-resources _additional-resources"><p class="title"><strong>Additional resources</strong></p><p>
+					<a class="link" href="https://docs.redhat.com/en/documentation/migration_toolkit_for_applications/8.1/html-single/configuring_and_using_rules_for_an_mta_analysis/index">Configuring and using rules for an MTA analysis</a>
+				</p></div></section><section class="section" id="mta-tools_intro-to-mta"><div class="titlepage"><div><div><h2 class="title">1.3. MTA tools</h2></div></div></div><p class="_abstract _abstract">
+				The migration toolkit for applications (MTA) tools help in the different stages of your migration and modernization efforts.
+			</p><p>
+				You can use the following MTA tools for assessing and analyzing your applications:
+			</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p class="simpara">
+						<span class="strong strong"><strong>User interface (UI)</strong></span>
+					</p><p class="simpara">
+						By using the user interface for the migration toolkit for applications, you can perform the following tasks:
+					</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+								Assess the risks involved in containerizing an application for hybrid cloud environments on Red Hat OpenShift.
+							</li><li class="listitem">
+								Analyze the changes that you might need to apply to the code of an application to containerize this application.
+							</li></ul></div></li><li class="listitem"><p class="simpara">
+						<span class="strong strong"><strong>Command-line interface (CLI)</strong></span>
+					</p><p class="simpara">
+						The CLI is a command-line tool in the migration toolkit for applications that you can use to assess migration and modernization efforts for applications. It provides reports that highlight the analysis without using the other tools. The CLI includes a wide array of customization options. By using the CLI, you can tune MTA analysis options or integrate with external automation tools.
+					</p></li><li class="listitem"><p class="simpara">
+						<span class="strong strong"><strong>Migration toolkit for applications (MTA) (MTA) Operator</strong></span>
+					</p><p class="simpara">
+						By using the MTA Operator, you can install the user interface on OpenShift Container Platform.
+					</p></li><li class="listitem"><p class="simpara">
+						<span class="strong strong"><strong>IDE add-ons</strong></span>
+					</p><p class="simpara">
+						You can migrate and modernize applications by using the migration toolkit for applications add-ons for the following applications:
+					</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+								Visual Studio Code
+							</li><li class="listitem">
+								IntelliJ IDEA
+							</li></ul></div><p class="simpara">
+						You can use these add-ons to perform the following tasks:
+					</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+								Analyze your projects by using customizable sets of rules
+							</li><li class="listitem">
+								Mark issues in the source code
+							</li><li class="listitem">
+								Fix the issues by using the provided guidance
+							</li><li class="listitem">
+								Use the automatic code replacement, if possible
+							</li></ul></div></li></ul></div><div class="itemizedlist _additional-resources"><p class="title"><strong>Additional resources</strong></p><ul class="itemizedlist _additional-resources" type="disc"><li class="listitem">
+						<a class="link" href="https://docs.redhat.com/en/documentation/migration_toolkit_for_applications/8.1/html-single/configuring_and_managing_the_migration_toolkit_for_applications_user_interface/index">Configuring and managing the migration toolkit for applications user interface</a>.
+					</li><li class="listitem">
+						<a class="link" href="https://docs.redhat.com/en/documentation/migration_toolkit_for_applications/8.1/html-single/using_the_migration_toolkit_for_applications_command-line_interface/index">Using the migration toolkit for applications command-line interface</a>
+					</li><li class="listitem">
+						<a class="link" href="https://access.redhat.com/support/policy/updates/openshift_operators">OpenShift Operator Life Cycles</a>
+					</li><li class="listitem">
+						<a class="link" href="https://docs.redhat.com/en/documentation/migration_toolkit_for_applications/8.1/html-single/intellij_idea_plugin_guide/index">IntelliJ IDEA Plugin Guide</a>
+					</li><li class="listitem">
+						<a class="link" href="https://docs.redhat.com/en/documentation/migration_toolkit_for_applications/8.1/html-single/configuring_and_using_the_visual_studio_code_extension_for_mta/index">Configuring and using the Visual Studio Code Extension for MTA</a>
+					</li></ul></div></section></section><section class="chapter" id="supported-migration-paths_installing-mta-title"><div class="titlepage"><div><div><h1 class="title">Chapter 2. Supported migration toolkit for applications migration paths</h1></div></div></div><p class="_abstract _abstract">
+			You can use the migration toolkit for applications (MTA) to assess your applications' suitability for the migration to multiple target platforms. Review the supported migration paths to verify that your planned migration uses a valid combination of source and target technologies. Adhering to these paths helps ensure that MTA can successfully analyze and migrate your applications.
+		</p><div class="table" id="idm46383640769056"><p class="title"><strong>Table 2.1. Supported Java migration paths</strong></p><div class="table-contents"><table class="gt-8-cols lt-7-rows"><colgroup><col style="width: 19%; " class="col_1"/><col style="width: 10%; " class="col_2"/><col style="width: 10%; " class="col_3"/><col style="width: 10%; " class="col_4"/><col style="width: 10%; " class="col_5"/><col style="width: 10%; " class="col_6"/><col style="width: 10%; " class="col_7"/><col style="width: 10%; " class="col_8"/><col style="width: 10%; " class="col_9"/></colgroup><thead><tr><th align="left" valign="top" id="idm46383631705248" scope="col">Source platform ⇒</th><th align="left" valign="top" id="idm46383714116576" scope="col">Migration to JBoss EAP 7 &amp; 8</th><th align="left" valign="top" id="idm46383633273968" scope="col">OpenShift (cloud readiness)</th><th align="left" valign="top" id="idm46383631699680" scope="col">OpenJDK 11, 17, and 21</th><th align="left" valign="top" id="idm46383631273024" scope="col">Jakarta EE 9</th><th align="left" valign="top" id="idm46383631668672" scope="col">Camel 3 &amp; 4</th><th align="left" valign="top" id="idm46383633606832" scope="col">Spring Boot in Red Hat Runtimes</th><th align="left" valign="top" id="idm46383625336992" scope="col">Quarkus</th><th align="left" valign="top" id="idm46383625728640" scope="col">Open Liberty</th></tr></thead><tbody><tr><td align="left" valign="top" headers="idm46383631705248">
+						<p>
+							Oracle WebLogic Server
+						</p>
+						</td><td align="left" valign="top" headers="idm46383714116576">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633273968">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631699680">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631273024">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631668672">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633606832">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625336992">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625728640">
+						<p>
+							-
+						</p>
+						</td></tr><tr><td align="left" valign="top" headers="idm46383631705248">
+						<p>
+							IBM WebSphere Application Server
+						</p>
+						</td><td align="left" valign="top" headers="idm46383714116576">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633273968">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631699680">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631273024">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631668672">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633606832">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625336992">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625728640">
+						<p>
+							✔
+						</p>
+						</td></tr><tr><td align="left" valign="top" headers="idm46383631705248">
+						<p>
+							JBoss EAP 4
+						</p>
+						</td><td align="left" valign="top" headers="idm46383714116576">
+						<p>
+							✘ <a href="#ftn.note2" class="footnote"><sup class="footnote" id="note2">[a]</sup></a>
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633273968">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631699680">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631273024">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631668672">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633606832">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625336992">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625728640">
+						<p>
+							-
+						</p>
+						</td></tr><tr><td align="left" valign="top" headers="idm46383631705248">
+						<p>
+							JBoss EAP 5
+						</p>
+						</td><td align="left" valign="top" headers="idm46383714116576">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633273968">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631699680">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631273024">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631668672">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633606832">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625336992">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625728640">
+						<p>
+							-
+						</p>
+						</td></tr><tr><td align="left" valign="top" headers="idm46383631705248">
+						<p>
+							JBoss EAP 6
+						</p>
+						</td><td align="left" valign="top" headers="idm46383714116576">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633273968">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631699680">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631273024">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631668672">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633606832">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625336992">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625728640">
+						<p>
+							-
+						</p>
+						</td></tr><tr><td align="left" valign="top" headers="idm46383631705248">
+						<p>
+							JBoss EAP 7
+						</p>
+						</td><td align="left" valign="top" headers="idm46383714116576">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633273968">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631699680">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631273024">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631668672">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633606832">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625336992">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625728640">
+						<p>
+							-
+						</p>
+						<p>
+							
+						</p>
+						</td></tr><tr><td align="left" valign="top" headers="idm46383631705248">
+						<p>
+							Thorntail 
+						</p>
+						</td><td align="left" valign="top" headers="idm46383714116576">
+						<p>
+							✔ <a href="#ftn.note3" class="footnote"><sup class="footnote" id="note3">[b]</sup></a>
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633273968">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631699680">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631273024">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631668672">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633606832">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625336992">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625728640">
+						<p>
+							-
+						</p>
+						</td></tr><tr><td align="left" valign="top" headers="idm46383631705248">
+						<p>
+							Oracle JDK
+						</p>
+						</td><td align="left" valign="top" headers="idm46383714116576">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633273968">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631699680">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631273024">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631668672">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633606832">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625336992">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625728640">
+						<p>
+							-
+						</p>
+						</td></tr><tr><td align="left" valign="top" headers="idm46383631705248">
+						<p>
+							Camel 2
+						</p>
+						</td><td align="left" valign="top" headers="idm46383714116576">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633273968">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631699680">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631273024">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631668672">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633606832">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625336992">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625728640">
+						<p>
+							-
+						</p>
+						</td></tr><tr><td align="left" valign="top" headers="idm46383631705248">
+						<p>
+							Spring Boot
+						</p>
+						</td><td align="left" valign="top" headers="idm46383714116576">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633273968">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631699680">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631273024">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631668672">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633606832">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625336992">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625728640">
+						<p>
+							-
+						</p>
+						</td></tr><tr><td align="left" valign="top" headers="idm46383631705248">
+						<p>
+							Any Java application
+						</p>
+						</td><td align="left" valign="top" headers="idm46383714116576">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633273968">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631699680">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631273024">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631668672">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633606832">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625336992">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625728640">
+						<p>
+							-
+						</p>
+						</td></tr><tr><td align="left" valign="top" headers="idm46383631705248">
+						<p>
+							Any Java EE application
+						</p>
+						</td><td align="left" valign="top" headers="idm46383714116576">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633273968">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631699680">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631273024">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383631668672">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383633606832">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625336992">
+						<p>
+							-
+						</p>
+						</td><td align="left" valign="top" headers="idm46383625728640">
+						<p>
+							-
+						</p>
+						</td></tr></tbody><tbody class="footnotes"><tr><td colspan="9"><div id="ftn.note2" class="footnote"><div class="para"><a href="#note2" class="simpara"><sup class="simpara">[a] </sup></a>
+								Although MTA does not currently provide rules for this migration path, Red Hat Consulting can assist with migration from any source platform to JBoss EAP 7.
+							</div></div><div id="ftn.note3" class="footnote"><div class="para"><a href="#note3" class="simpara"><sup class="simpara">[b] </sup></a>
+								Requires JBoss EAP expansion pack 2 (JBoss EAP XP 2).
+							</div></div></td></tr></tbody></table></div></div><p>
+			..NET migration paths
+		</p><div class="informaltable"><table class="lt-4-cols lt-7-rows"><colgroup><col style="width: 33%; " class="col_1"/><col style="width: 33%; " class="col_2"/><col style="width: 33%; " class="col_3"/></colgroup><thead><tr><th align="left" valign="top" id="idm46383628819584" scope="col">Source platform ⇒</th><th align="left" valign="top" id="idm46383628818720" scope="col">OpenShift (cloud readiness)</th><th align="left" valign="top" id="idm46383628817808" scope="col">Migration to .NET 8.0</th></tr></thead><tbody><tr><td align="left" valign="top" headers="idm46383628819584">
+						<p>
+							.NET Framework 4.5+ (Windows only)
+						</p>
+						</td><td align="left" valign="top" headers="idm46383628818720">
+						<p>
+							✔
+						</p>
+						</td><td align="left" valign="top" headers="idm46383628817808">
+						<p>
+							✔
+						</p>
+						</td></tr></tbody></table></div><div class="admonition important"><div class="admonition_header">Important</div><div><p>
+				Analyzing applications written in the .NET language is Developer Preview software only. Developer Preview software is not supported by Red Hat in any way and is not functionally complete or production-ready. Do not use Developer Preview software for production or business-critical workloads. Developer Preview software provides early access to upcoming product software in advance of its possible inclusion in a Red Hat product offering. Customers can use this software to test functionality and provide feedback during the development process. This software might not have any documentation, is subject to change or removal at any time, and has received limited testing. Red Hat might provide ways to submit feedback on Developer Preview software without an associated SLA.
+			</p><p>
+				For more information about the support scope of Red Hat Developer Preview software, see <a class="link" href="https://access.redhat.com/support/offerings/devpreview/">Developer Preview Support Scope</a>.
+			</p></div></div><div class="itemizedlist _additional-resources"><p class="title"><strong>Additional resources</strong></p><ul class="itemizedlist _additional-resources" type="disc"><li class="listitem">
+					<a class="link" href="https://developers.redhat.com/products/mta/use-cases">Use cases and migration paths for migration toolkit for applications</a>
+				</li></ul></div></section><section class="chapter" id="installing-mta-ui_installing-mta-title"><div class="titlepage"><div><div><h1 class="title">Chapter 3. Installing the migration toolkit for applications user interface</h1></div></div></div><p class="_abstract _abstract">
+			By using the migration toolkit for applications (MTA) user interface (UI), you can assess the risks involved in containerizing an application for hybrid cloud environments on Red Hat OpenShift. You can also analyze the changes that you must apply to the application’s code to containerize the application. You can install the migration toolkit for applications UI on all Red Hat OpenShift cloud services and Red Hat OpenShift self-managed editions.
+		</p><p>
+			To create MTA instances, you must install the MTA Operator first. The MTA Operator is a structural layer that manages resources deployed on Red Hat OpenShift, such as database, front end, and back end, to automatically create an MTA instance.
+		</p><section class="section" id="persistent-volume-requirements_installing-mta-ui"><div class="titlepage"><div><div><h2 class="title">3.1. Persistent volume requirements</h2></div></div></div><p class="_abstract _abstract">
+				To successfully deploy the migration toolkit for applications (MTA) Operator, you must create a persistent volume (PV) used by different MTA components.
+			</p><p>
+				 The MTA Operator requires two <code class="literal">ReadWriteOnce</code> (RWO) PVs. If the <code class="literal">rwx_supported</code> configuration option is set to <code class="literal">true</code>, the MTA Operator needs two additional ReadWriteMany (RWX) PVs used by Maven and the hub file storage. 
+			</p><div class="table" id="idm46383627105984"><p class="title"><strong>Table 3.1. Required persistent volumes</strong></p><div class="table-contents"><table class="gt-4-cols lt-7-rows"><colgroup><col style="width: 25%; " class="col_1"/><col style="width: 25%; " class="col_2"/><col style="width: 25%; " class="col_3"/><col style="width: 25%; " class="col_4"/></colgroup><thead><tr><th align="left" valign="top" id="idm46383625724096" scope="col">Name</th><th align="left" valign="top" id="idm46383625723232" scope="col">Default size</th><th align="left" valign="top" id="idm46383625722368" scope="col">Access mode</th><th align="left" valign="top" id="idm46383625721504" scope="col">Description</th></tr></thead><tbody><tr><td align="left" valign="top" headers="idm46383625724096">
+							<p>
+								<code class="literal">hub database</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383625723232">
+							<p>
+								<code class="literal">10Gi</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383625722368">
+							<p>
+								RWO
+							</p>
+							</td><td align="left" valign="top" headers="idm46383625721504">
+							<p>
+								Hub database
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46383625724096">
+							<p>
+								<code class="literal">hub bucket</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383625723232">
+							<p>
+								<code class="literal">100Gi</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383625722368">
+							<p>
+								RWX
+							</p>
+							</td><td align="left" valign="top" headers="idm46383625721504">
+							<p>
+								Hub file storage required if the <code class="literal">rwx_supported</code> configuration option is set to <code class="literal">true</code>.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46383625724096">
+							<p>
+								<code class="literal">keycloak postgresql</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383625723232">
+							<p>
+								<code class="literal">1Gi</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383625722368">
+							<p>
+								RWO
+							</p>
+							</td><td align="left" valign="top" headers="idm46383625721504">
+							<p>
+								Keycloak backend database
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46383625724096">
+							<p>
+								<code class="literal">cache</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383625723232">
+							<p>
+								<code class="literal">100Gi</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383625722368">
+							<p>
+								RWX
+							</p>
+							</td><td align="left" valign="top" headers="idm46383625721504">
+							<p>
+								Maven m2 cache required if the <code class="literal">rwx_supported</code> configuration option is set to <code class="literal">true</code>.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46383625724096">
+							<p>
+								<code class="literal">kai-db</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383625723232">
+							<p>
+								<code class="literal">5Gi</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383625722368">
+							<p>
+								RWO
+							</p>
+							</td><td align="left" valign="top" headers="idm46383625721504">
+							<p>
+								Red Hat Developer Lightspeed for MTA database required to run an AI-assisted code resolution.
+							</p>
+							</td></tr></tbody></table></div></div></section><section class="section" id="red-hat-build-of-keycloak_installing-mta-ui"><div class="titlepage"><div><div><h2 class="title">3.2. Red Hat build of Keycloak</h2></div></div></div><p class="_abstract _abstract">
+				The migration toolkit for applications (MTA) uses a Red Hat build of Keycloak (RHBK) instance for user authentication and authorization. A RHBK instance is installed during the installation of the MTA user interface. The MTA Operator manages the RHBK instance and configures a dedicated realm with necessary roles and permissions.
+			</p><p>
+				You can use the MTA-managed RHBK instance to perform advanced RHBK configurations, such as adding a provider for User Federation or integrating identity providers.
+			</p><section class="section" id="accessing-rhbk-admin-console_red-hat-build-of-keycloak"><div class="titlepage"><div><div><h3 class="title">3.2.1. Accessing the RHBK Admin Console</h3></div></div></div><p class="_abstract _abstract">
+					To perform advanced configurations on an RHBK instance, you must log in to the RHBK Admin Console.
+				</p><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem"><p class="simpara">
+							Retrieve your admin credentials:
+						</p><pre class="screen">$ <span class="strong strong"><strong>oc get secret mta-keycloak-rhbk -n openshift-mta -o json| jq -r '.data.password | @base64d'</strong></span></pre><p class="simpara">
+							The admin credentials for RHBK are stored in the <code class="literal">mta-keycloak-rhbk</code> secret file in the namespace where you installed MTA.
+						</p></li><li class="listitem"><p class="simpara">
+							Enter the following URL in your browser:
+						</p><pre class="screen">https://<span class="emphasis"><em>&lt;web_console_address&gt;</em></span>/auth/admin</pre></li><li class="listitem">
+							Access the RHBK Admin Console by entering your credentials.
+						</li></ol></div><div class="itemizedlist _additional-resources"><p class="title"><strong>Additional resources</strong></p><ul class="itemizedlist _additional-resources" type="disc"><li class="listitem">
+							<a class="link" href="https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.0">Red Hat build of Keycloak</a>
+						</li><li class="listitem">
+							<a class="link" href="https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.0/html/server_administration_guide/user-storage-federation#ldap">Configuring LDAP and Active Directory in RHBK</a>
+						</li><li class="listitem">
+							<a class="link" href="https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.0/html/server_administration_guide/red_hat_build_of_keycloak_features_and_concepts">Red Hat build of Keycloak features and concepts</a>
+						</li></ul></div></section><section class="section" id="roles-personas-users-permissions_red-hat-build-of-keycloak"><div class="titlepage"><div><div><h3 class="title">3.2.2. Roles, personas, users, and permissions</h3></div></div></div><p class="_abstract _abstract">
+					The migration toolkit for applications (MTA) uses three roles, each corresponding to a persona. The roles are predefined in your Red Hat build of Keycloak (RHBK) instance. If you are an MTA Administrator, you can create users in your RHBK instance and assign each user one or more roles, one role per persona.
+				</p><p>
+					A user can have more than one role. Each role must correspond to a specific persona:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+							The <code class="literal">tackle-admin</code> role corresponds to the Administrator persona. The Administrator has all permissions that Architects and Migrators have. Administrators can also create application-wide configuration parameters that other users can consume but cannot change or view, for example, Git credentials or Maven <code class="literal">settings.xml</code> files.
+						</li><li class="listitem">
+							The <code class="literal">tackle-architect</code> role corresponds to the Architect persona. An Architect is a technical lead for the migration project. Architects can run assessments and can create and modify applications and information related to the applications. Architects cannot modify or delete sensitive information, but can consume such information. For example, architects can associate an existing set of credentials to the repository of a specific application.
+						</li><li class="listitem">
+							The <code class="literal">tackle-migrator</code> role corresponds to the Migrator persona. A Migrator can analyze applications. However, the Migrator cannot create, modify, or delete the applications.
+						</li></ul></div><p>
+					MTA has two views, <span class="strong strong"><strong>Administration</strong></span> and <span class="strong strong"><strong>Migration</strong></span>. Only an Administrator can access the <span class="strong strong"><strong>Administration</strong></span> view. Architects and Migrators cannot see or access the <span class="strong strong"><strong>Administration</strong></span> view. Administrators can perform all actions supported by the <span class="strong strong"><strong>Migration</strong></span> view. Architects and Migrators can see all elements of the <span class="strong strong"><strong>Migration</strong></span> view. However, whether Architects and Migrators can perform actions in the <span class="strong strong"><strong>Migration</strong></span> view depends on the permissions granted to their role.
+				</p></section></section><section class="section" id="installing-mta-operator_installing-mta-ui"><div class="titlepage"><div><div><h2 class="title">3.3. Installing the MTA Operator</h2></div></div></div><p class="_abstract _abstract">
+				To create the migration toolkit for applications (MTA) instances, you must install the MTA Operator first.
+			</p><p>
+				The MTA Operator is a structural layer that manages resources deployed on Red Hat OpenShift, such as the database, front end, and back end, to automatically create an MTA instance.
+			</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+						Your environment has 4 vCPUs, 8 GB RAM, and 40 GB persistent storage.
+					</li><li class="listitem">
+						Your environment uses Red Hat OpenShift (cloud service or self-hosted), version 4.21–4.22. 
+					</li><li class="listitem">
+						You created two RWO persistent volumes (PVs) used by different components. 
+					</li><li class="listitem">
+						You logged in as a user with <code class="literal">cluster-admin</code> permissions.
+					</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem">
+						In the Red Hat OpenShift web console, click <span class="strong strong"><strong>Operators</strong></span>.
+					</li><li class="listitem">
+						Click <span class="strong strong"><strong>OperatorHub</strong></span>.
+					</li><li class="listitem">
+						Type <span class="emphasis"><em>MTA</em></span> in the <span class="strong strong"><strong>Filter by keyword</strong></span> field to search for the MTA Operator.
+					</li><li class="listitem">
+						Click <span class="strong strong"><strong>Migration toolkit for applications (MTA) Operator</strong></span>.
+					</li><li class="listitem">
+						Click <span class="strong strong"><strong>Install</strong></span>.
+					</li><li class="listitem">
+						On the <span class="strong strong"><strong>Install Operator</strong></span> page, click <span class="strong strong"><strong>Install</strong></span>.
+					</li><li class="listitem"><p class="simpara">
+						Optional: Review and edit the custom resource (CR) settings.
+					</p><p class="simpara">
+						A window for creating CR settings opens automatically after the installation of the MTA Operator is complete. The default settings are acceptable. However, make sure to check the system requirements for storage, memory, and cores.
+					</p><p class="simpara">
+						Alternatively, to work directly with the YAML file, click the <span class="strong strong"><strong>YAML</strong></span> view and review the CR settings listed in the <code class="literal">spec</code> section of the YAML file.
+					</p><p class="simpara">
+						The <code class="literal">spec</code> section of the YAML file can have the following configuration:
+					</p><pre class="screen">kind: Tackle
+apiVersion: tackle.konveyor.io/v1alpha1
+metadata:
+  name: mta
+  namespace: openshift-mta
+spec:
+  hub_bucket_volume_size: "2.5Gi"
+  maven_data_volume_size: "2.5Gi"
+  rwx_supported: "false"</pre></li><li class="listitem"><p class="simpara">
+						Verify that the MTA pods are running:
+					</p><div class="orderedlist"><ol class="orderedlist" type="a"><li class="listitem">
+								In the <span class="strong strong"><strong>Administration</strong></span> view, click <span class="strong strong"><strong>Workloads</strong></span>.
+							</li><li class="listitem">
+								Click <span class="strong strong"><strong>Pods</strong></span>.
+							</li></ol></div></li></ol></div><div class="itemizedlist"><p class="title"><strong>Verification</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+						Verify that you can see the MTA Operator in the <code class="literal">openshift-mta</code> project with the status of <span class="strong strong"><strong>Succeeded</strong></span> by clicking <span class="strong strong"><strong>Operators</strong></span> and then <span class="strong strong"><strong>Installed Operators</strong></span>.
+					</li></ul></div><div class="itemizedlist _additional-resources"><p class="title"><strong>Next steps</strong></p><ul class="itemizedlist _additional-resources" type="disc"><li class="listitem">
+						<a class="link" href="#creating-mta-instance_installing-mta-ui" title="3.4. Creating an MTA instance">Create an MTA instance</a>.
+					</li></ul></div><div class="itemizedlist _additional-resources"><p class="title"><strong>Additional resources</strong></p><ul class="itemizedlist _additional-resources" type="disc"><li class="listitem">
+						<a class="link" href="https://access.redhat.com/support/policy/updates/openshift_operators">OpenShift Operator Life Cycles</a>
+					</li><li class="listitem">
+						<a class="link" href="https://docs.redhat.com/en/documentation/migration_toolkit_for_applications/8.1/html-single/installing_the_migration_toolkit_for_applications/index#persistent-volume-requirements_installing-mta-ui">Persistent volume requirements</a>
+					</li><li class="listitem">
+						<a class="link" href="#custom-resource-settings_installing-mta-ui" title="3.5. Custom resource settings">Custom resource settings</a>
+					</li></ul></div></section><section class="section" id="creating-mta-instance_installing-mta-ui"><div class="titlepage"><div><div><h2 class="title">3.4. Creating an MTA instance</h2></div></div></div><p class="_abstract _abstract">
+				You can use the migration toolkit for applications (MTA) user interface (UI) to get insights about the application adoption process at both the portfolio and application levels. You can use the MTA UI to inventory, assess, analyze, and manage applications for faster migration to Red Hat OpenShift.
+			</p><p>
+				To use the MTA UI for assessing and analyzing your applications, you must create a MTA instance first.
+			</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+						You installed the MTA Operator on your system. For more information, see <a class="link" href="#installing-mta-operator_installing-mta-ui" title="3.3. Installing the MTA Operator">Installing the MTA Operator</a>.
+					</li><li class="listitem">
+						Your environment has 4 vCPUs, 8 GB RAM, and 40 GB persistent storage.
+					</li><li class="listitem">
+						Your environment uses Red Hat OpenShift (cloud service or self-hosted), version 4.21–4.22.
+					</li><li class="listitem">
+						You logged in as a user with <code class="literal">cluster-admin</code> permissions.
+					</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem">
+						Click <span class="strong strong"><strong>MTA Operator</strong></span>.
+					</li><li class="listitem">
+						Under <span class="strong strong"><strong>Provided APIs</strong></span>, search for <span class="strong strong"><strong>Tackle</strong></span>.
+					</li><li class="listitem">
+						Click <span class="strong strong"><strong>Create Instance</strong></span>.
+					</li><li class="listitem">
+						Access the user interface from your browser by using the route provided by the <code class="literal">mta-ui</code> application within Red Hat OpenShift.
+					</li><li class="listitem"><p class="simpara">
+						Log in to the user interface instance by using the default credentials:
+					</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+								Username: <code class="literal">admin</code>
+							</li><li class="listitem">
+								Password: <code class="literal">Passw0rd!</code>
+							</li></ul></div></li><li class="listitem">
+						When prompted, create a new password.
+					</li></ol></div><div class="itemizedlist _additional-resources"><p class="title"><strong>Additional resources</strong></p><ul class="itemizedlist _additional-resources" type="disc"><li class="listitem">
+						<a class="link" href="https://access.redhat.com/support/policy/updates/openshift_operators">OpenShift Operator Life Cycles</a>
+					</li></ul></div></section><section class="section" id="custom-resource-settings_installing-mta-ui"><div class="titlepage"><div><div><h2 class="title">3.5. Custom resource settings</h2></div></div></div><p class="_abstract _abstract">
+				When installing the migration toolkit for applications (MTA) Operator, you might need to create custom resource (CR) settings. The default settings are acceptable. However, make sure to check the system requirements for storage, memory, and cores.
+			</p><p>
+				The following are the most commonly used CR settings that you can find in the <code class="literal">spec</code> section of the YAML file.
+			</p><div class="table" id="idm46383630501536"><p class="title"><strong>Table 3.2. Common custom resource settings</strong></p><div class="table-contents"><table class="lt-4-cols lt-7-rows"><colgroup><col style="width: 33%; " class="col_1"/><col style="width: 33%; " class="col_2"/><col style="width: 33%; " class="col_3"/></colgroup><thead><tr><th align="left" valign="top" id="idm46383627166544" scope="col">CR name</th><th align="left" valign="top" id="idm46383627165456" scope="col">Default size</th><th align="left" valign="top" id="idm46383627164368" scope="col">Description</th></tr></thead><tbody><tr><td align="left" valign="top" headers="idm46383627166544">
+							<p>
+								<code class="literal">cache_data_volume_size</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627165456">
+							<p>
+								100 GB
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627164368">
+							<p>
+								A size requested for the cache volume. This CR is ignored when the <code class="literal">rwx_supported</code> option is set to <code class="literal">false</code>.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46383627166544">
+							<p>
+								<code class="literal">cache_storage_class</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627165456">
+							<p>
+								Default storage class
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627164368">
+							<p>
+								A storage class used for the cache volume. This CR is ignored when the <code class="literal">rwx_supported</code> option is set to <code class="literal">false</code>.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46383627166544">
+							<p>
+								<code class="literal">feature_auth_required</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627165456">
+							<p>
+								True
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627164368">
+							<p>
+								A flag that indicates whether keycloak authorization is required. When set to <code class="literal">false</code>, the flag mounts to <code class="literal">“noauth“</code>, which means only a single user can use the web console. The single user is the default <code class="literal">admin</code> user.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46383627166544">
+							<p>
+								<code class="literal">feature_isolate_namespace</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627165456">
+							<p>
+								True
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627164368">
+							<p>
+								A flag that indicates whether namespace isolation by using network policies is enabled.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46383627166544">
+							<p>
+								<code class="literal">hub_database_volume_size</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627165456">
+							<p>
+								10 GB
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627164368">
+							<p>
+								A size requested for the Hub database volume.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46383627166544">
+							<p>
+								<code class="literal">hub_bucket_volume_size</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627165456">
+							<p>
+								100 GB
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627164368">
+							<p>
+								A size requested for the Hub bucket volume.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46383627166544">
+							<p>
+								<code class="literal">hub_bucket_storage_class</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627165456">
+							<p>
+								Default storage class
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627164368">
+							<p>
+								A storage class used for the bucket volume.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46383627166544">
+							<p>
+								<code class="literal">keycloak_database_data_volume_size</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627165456">
+							<p>
+								1 GB
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627164368">
+							<p>
+								A size requested for the Keycloak database volume.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46383627166544">
+							<p>
+								<code class="literal">pathfinder_database_data_volume_size</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627165456">
+							<p>
+								1 GB
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627164368">
+							<p>
+								A size requested for the Pathfinder database volume.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46383627166544">
+							<p>
+								<code class="literal">rwx_supported</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627165456">
+							<p>
+								True
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627164368">
+							<p>
+								A flag that indicates whether the cluster storage supports RWX mode.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46383627166544">
+							<p>
+								<code class="literal">rwo_storage_class</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627165456">
+							<p>
+								NA
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627164368">
+							<p>
+								A storage class requested for the Tackle RWO volumes.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46383627166544">
+							<p>
+								<code class="literal">rhsso_external_access</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627165456">
+							<p>
+								False
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627164368">
+							<p>
+								A flag that indicates whether a dedicated route is created to access the MTA managed RHSSO instance.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46383627166544">
+							<p>
+								<code class="literal">analyzer_container_limits_cpu</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627165456">
+							<p>
+								1
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627164368">
+							<p>
+								A maximum number of CPUs the pod is allowed to use.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46383627166544">
+							<p>
+								<code class="literal">analyzer_container_limits_memory</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627165456">
+							<p>
+								4 GB
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627164368">
+							<p>
+								Maximum amount of memory the pod is allowed to use. You can increase this limit if the pod displays <code class="literal">OOMKilled</code> errors.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46383627166544">
+							<p>
+								<code class="literal">analyzer_container_requests_cpu</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627165456">
+							<p>
+								1
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627164368">
+							<p>
+								A minimum number of CPUs the pod needs to run.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46383627166544">
+							<p>
+								<code class="literal">analyzer_container_requests_memory</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627165456">
+							<p>
+								4 GB
+							</p>
+							</td><td align="left" valign="top" headers="idm46383627164368">
+							<p>
+								Minimum amount of memory the pod needs to run.
+							</p>
+							</td></tr></tbody></table></div></div><div class="itemizedlist _additional-resources"><p class="title"><strong>Additional resources</strong></p><ul class="itemizedlist _additional-resources" type="disc"><li class="listitem">
+						<a class="link" href="#installing-mta-operator_installing-mta-ui" title="3.3. Installing the MTA Operator">Installing the MTA Operator</a>
+					</li></ul></div></section></section><section class="chapter" id="installing-mta-cli-overview_installing-mta-title"><div class="titlepage"><div><div><h1 class="title">Chapter 4. migration toolkit for applications command-line interface installation</h1></div></div></div><p class="_abstract _abstract">
+			To install the migration toolkit for applications (MTA) command-line interface (CLI), use the instructions in the <span class="emphasis"><em>migration toolkit for applications CLI guide</em></span>.
+		</p><p>
+			For more information, see <a class="link" href="https://docs.redhat.com/en/documentation/migration_toolkit_for_applications/8.1/html-single/using_the_migration_toolkit_for_applications_command-line_interface/index#installing-mta-cli_cli-guide">Installing the migration toolkit for applications command-line interface</a>.
+		</p></section><section class="appendix" id="contributing-to-mta-development"><div class="titlepage"><div><div><h1 class="title">Appendix A. How to contribute to the MTA project</h1></div></div></div><p class="_abstract _abstract">
+			You can help the migration toolkit for applications (MTA) to cover most application builds and server configurations, including yours.
+		</p><p>
+			You can help with any of the following items:
+		</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+					Send an email to <a class="link" href="mailto:jboss-migration-feedback@redhat.com">jboss-migration-feedback@redhat.com</a> and let us know what MTA migration rules must cover.
+				</li><li class="listitem">
+					Provide example applications to test migration rules.
+				</li><li class="listitem"><p class="simpara">
+					Identify application components and problem areas that might be difficult to migrate:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+							Write a short description of the problem migration areas.
+						</li><li class="listitem">
+							Write a brief overview describing how to solve the problem in migration areas.
+						</li></ul></div></li><li class="listitem">
+					Try migration toolkit for applications on your application. Report any issues you encounter. MTA uses Jira as its issue tracking system. If you encounter an issue when using MTA, submit a <a class="link" href="https://issues.redhat.com/projects/MTA">Jira issue</a>.
+				</li><li class="listitem"><p class="simpara">
+					Contribute to the migration toolkit for applications rules repository:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+							Write a migration toolkit for applications rule to identify or automate a migration process.
+						</li><li class="listitem"><p class="simpara">
+							Create a test for the new rule.
+						</p><p class="simpara">
+							For more information, see <a class="link" href="https://docs.redhat.com/en/documentation/migration_toolkit_for_applications/8.1/html-single/configuring_and_using_rules_for_an_mta_analysis/index">Configuring and using rules for an MTA analysis</a>.
+						</p></li></ul></div></li><li class="listitem"><p class="simpara">
+					Contribute to the project source code:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+							Create a core rule.
+						</li><li class="listitem">
+							Improve MTA performance or efficiency.
+						</li></ul></div></li></ul></div><p>
+			Any level of involvement is greatly appreciated!
+		</p><div class="itemizedlist _additional-resources"><p class="title"><strong>Additional resources</strong></p><ul class="itemizedlist _additional-resources" type="disc"><li class="listitem">
+					<a class="link" href="https://developer.jboss.org/en/windup">MTA forums</a>
+				</li><li class="listitem">
+					<a class="link" href="https://issues.redhat.com/projects/MTA/issues/MTA-4961?filter=allopenissues">Jira issues tracker</a>
+				</li></ul></div></section><div><div xml:lang="en-US" class="legalnotice" id="idm46383628923072"><h1 class="legalnotice">Legal Notice</h1><div class="para">
+		Copyright <span class="trademark"/>© 2026 Red Hat, Inc.
+	</div><div class="para">
+		The text of and illustrations in this document are licensed by Red Hat under a Creative Commons Attribution–Share Alike 3.0 Unported license ("CC-BY-SA"). An explanation of CC-BY-SA is available at <a class="uri" href="http://creativecommons.org/licenses/by-sa/3.0/">http://creativecommons.org/licenses/by-sa/3.0/</a>. In accordance with CC-BY-SA, if you distribute this document or an adaptation of it, you must provide the URL for the original version.
+	</div><div class="para">
+		Red Hat, as the licensor of this document, waives the right to enforce, and agrees not to assert, Section 4d of CC-BY-SA to the fullest extent permitted by applicable law.
+	</div><div class="para">
+		Red Hat, Red Hat Enterprise Linux, the Shadowman logo, the Red Hat logo, JBoss, OpenShift, Fedora, the Infinity logo, and RHCE are trademarks of Red Hat, Inc., registered in the United States and other countries.
+	</div><div class="para">
+		<span class="trademark">Linux</span>® is the registered trademark of Linus Torvalds in the United States and other countries.
+	</div><div class="para">
+		<span class="trademark">Java</span>® is a registered trademark of Oracle and/or its affiliates.
+	</div><div class="para">
+		<span class="trademark">XFS</span>® is a trademark of Silicon Graphics International Corp. or its subsidiaries in the United States and/or other countries.
+	</div><div class="para">
+		<span class="trademark">MySQL</span>® is a registered trademark of MySQL AB in the United States, the European Union and other countries.
+	</div><div class="para">
+		<span class="trademark">Node.js</span>® is an official trademark of Joyent. Red Hat is not formally related to or endorsed by the official Joyent Node.js open source or commercial project.
+	</div><div class="para">
+		The <span class="trademark">OpenStack</span>® Word Mark and OpenStack logo are either registered trademarks/service marks or trademarks/service marks of the OpenStack Foundation, in the United States and other countries and are used with the OpenStack Foundation's permission. We are not affiliated with, endorsed or sponsored by the OpenStack Foundation, or the OpenStack community.
+	</div><div class="para">
+		All other trademarks are the property of their respective owners.
+	</div></div></div></div></div></div><script type="text/javascript">
+                        jQuery(document).ready(function() {
+                            initSwitchery();
+                            jQuery('pre[class*="language-"]').each(function(i, block){hljs.highlightBlock(block);});
+                        });
+                    </script></body></html>
