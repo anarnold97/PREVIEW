@@ -10,7 +10,7 @@ This repository contains a collection of Python scripts, shell scripts, DITA map
 - **MTV** – Migration Toolkit for Virtualization
 - **OADP** – OpenShift API for Data Protection
 - **CNV** – Container Native Virtualization
-- **MMS** – Managed Monitoring Service
+- **MMS** – Migration Modernization Services
 - **OCP** – OpenShift Container Platform
 
 ## Repository Structure
