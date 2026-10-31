@@ -89,3 +89,15 @@ I am 10 years old.
 ### Task 2
 
 * Try changing 10 to another number. What does the program display?
+
+---
+
+## Bugs
+
+Bugs in programming are mistakes or errors in the code that can cause a program to not work correctly. A bug can make a computer program behave unexpectedly or even crash.
+
+Grace Hopper is our hero for many reasons. She also found the first **bug**.
+
+In 1947, Grace and her team were working on the Harvard Mark II computer when they discovered a moth that had caused a problem by entering the circuits of one of the early computers.
+
+They documented this incident in their logbook, labeling it as the "first actual case of bug being found."

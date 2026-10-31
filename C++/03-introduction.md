@@ -82,3 +82,11 @@ The condition `age >= 10` means “is age greater than or equal to 10?” It eva
 ### Task 2
 
 * Try changing the number 10 or the messages.
+
+---
+
+## Infinite Loop
+
+An infinite loop is a set of instructions in a computer program that keeps repeating forever because it never reaches a stopping point. 
+
+It's like a game that keeps going without ever ending unless someone turns it off.

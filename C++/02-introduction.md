@@ -84,4 +84,4 @@ Sam smiled. “Next time, I’ll ask if I’m not sure what you mean.”
 
 The lesson: Instructions can sometimes mean more than one thing.
 
-Computers are like Sam, they follow instructions logically.
+Computers are like Sam, they follow instructions very logically. What you tell it to do in a program, might not be how the computer interprets your instructions. 
