@@ -28,3 +28,10 @@ Your program should:
 ### Challenge: 
 
 Add a blank line between each times table to make the output easier to read.
+
+---
+
+## Interesting fact
+
+Ada Lovelace is often called the first computer programmer because in 1843 she wrote detailed instructions for a machine called the Analytical Engine, which was like an early computer, and her notes included the first published computer algorithm.
+		
