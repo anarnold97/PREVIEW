@@ -73,9 +73,9 @@ Arithmetic operators let a program do math. Here are some common ones:
 
 | Operator | Meaning | Example |
 | -------- | ------- | ------- |
-| `+ |	Add	| 4 + 3  gives 7 |
-| `- |	Subtract |	4 - 3 gives 1 |
-| `*	| Multiply	| 4 * 3 gives 12 |
+| `+` |	Add	| 4 + 3  gives 7 |
+| `-` |	Subtract |	4 - 3 gives 1 |
+| `*`	| Multiply	| 4 * 3 gives 12 |
 | `/` |	Divide |	12 / 3 gives 4 |
 | `%` |	Find the remainder| 7 % 3 gives 1 |
 

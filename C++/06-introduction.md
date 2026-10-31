@@ -40,7 +40,7 @@ The outer loop chooses which times table to print:
 for (int table = 1; table <= 12; table++)
 ```
 
-It starts with table set to 1. After each time table is printed, `table++`` increases it by one. The loop stops after table reaches 12.
+It starts with table set to 1. After each time table is printed, `table++` increases it by one. The loop stops after table reaches 12.
 
 The inner loop prints the equations for the current table:
 

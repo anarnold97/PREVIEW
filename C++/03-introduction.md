@@ -112,8 +112,8 @@ int main() {
 The program checks the conditions in order:
 
 * If `score >= 90` is **true**, it prints “Excellent!”
-* Otherwise, it checks whether s`core >= 60` is **true**, it prints "You passed".
-* If neither condition is true, it runs the else block and prints "Keep practicing!".
+* Otherwise, it checks whether `score >= 60` is **true**, it prints "You passed".
+* If neither condition is **true**, it runs the else block and prints "Keep practicing!".
 
 Only the first matching block runs. 
 
