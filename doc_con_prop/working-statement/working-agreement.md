@@ -12,6 +12,7 @@ This partnership is founded on the principle that **MFH is the Strategic Lead** 
     *   **Quality Standards:** Final approval on all documentation, training materials, and deliverables before client submission.
     *   **Client Strategy:** Deciding how to approach clients, pricing strategy, and negotiation terms.
     *   **Team Direction:** Setting the pace, priorities, and workload distribution.
+    *   **Technology:** Defining team overall tooling. 
 *   **AA's Domain (Final Say):**
     *   **Implementation:** Selecting the specific tools, pipelines, and technical architecture to execute MFH's strategy.
     *   **Operations:** Administrative logistics.
@@ -33,7 +34,7 @@ Given our time zone differences (approx. 8 hours) and full-time employment:
 *   **Default Mode:** Asynchronous communication via email/Slack/GitHub Issues. We do not expect immediate responses.
 *   **Overlap Window:** We aim for a 4-hour daily overlap for synchronous syncs if needed.
 *   **Meeting Cadence:**
-    *   **Weekly Sync:** 45 mins (Video/Audio). Focus: Strategic alignment, blockers, and review of MFH's direction.
+    *   **Weekly Sync:** 30 mins (Video/Audio). Focus: Strategic alignment, blockers, and review of MFH's direction.
     *   **Ad-Hoc:** Unplanned calls only for urgent fires (rare).
 *   **Communication Protocol:**
     *   **No "Urgent" unless critical.** We respect each other's priMFH jobs.
@@ -69,3 +70,5 @@ Given our time zone differences (approx. 8 hours) and full-time employment:
 
 ---
 *This is a living document. It will be reviewed and updated quarterly or as the business evolves.*
+
+* **revision date:** AA October 31, 2026 
