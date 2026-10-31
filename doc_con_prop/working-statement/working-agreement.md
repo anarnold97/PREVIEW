@@ -53,7 +53,7 @@ Given our time zone differences (approx. 8 hours) and full-time employment:
 *   **Tooling:** Git-based workflow (Docs-as-Code). All work tracked in issues/PRs.
 
 ## 4. Growth & Development
-*   **Skill Sharing:** We commit to sharing knowledge. AA trains MFH on ops/tooling; MFH trains AA on editorial strategy/methodology.
+*   **Skill Sharing:** We commit to sharing knowledge. 
 *   **Professional Branding:** We present a unified front. Publicly, we speak as one voice. Internally, we debate openly.
 
 ## 5. Exit & Conflict Resolution
@@ -69,4 +69,3 @@ Given our time zone differences (approx. 8 hours) and full-time employment:
 
 ---
 *This is a living document. It will be reviewed and updated quarterly or as the business evolves.*
-
