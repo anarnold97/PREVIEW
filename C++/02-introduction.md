@@ -85,3 +85,75 @@ Sam smiled. “Next time, I’ll ask if I’m not sure what you mean.”
 The lesson: Instructions can sometimes mean more than one thing.
 
 Computers are like Sam, they follow instructions very logically. What you tell it to do in a program, might not be how the computer interprets your instructions. 
+
+---
+
+## Bug Detective: Variables
+
+Detective hats on, team! Variables are like labeled boxes where a program keeps information. Let’s investigate what happens when a label is misspelled, the wrong kind of box is used, or we show the wrong box!
+
+Each program has one bug. Copy and run them one at a time.
+
+### Mystery 1: The name that isn’t there
+
+```cpp
+
+#include <iostream>
+#include <string>
+
+int main() {
+    std::string name = "Mia";
+
+    std::cout << nme << " says hello!\n";
+    return 0;
+}
+```
+
+* **Clue:** Check whether the variable’s name in the std::cout line matches its label above.
+
+### Mystery 2: Where did the decimal go?
+
+```cpp
+
+#include <iostream>
+
+int main() {
+    int favoriteNumber = 7.5;
+
+    std::cout << "My favorite number is " << favoriteNumber << "\n";
+    return 0;
+}
+```
+
+This program runs, but it won’t show 7.5.
+
+* **Clue:** `int` is for whole numbers. Which type can store numbers with a decimal part?
+
+### Mystery 3: The wrong box is on display
+
+```cpp
+
+#include <iostream>
+#include <string>
+
+int main() {
+    std::string name;
+    int age = 10;
+
+    std::cout << "What is your name? ";
+    std::cin >> name;
+
+    std::cout << "Hello, " << age << "!\n";
+    return 0;
+}
+```
+
+Try entering Mia. Does the program greet Mia?
+
+* **Clue:** The program saved the answer in one variable. Which variable does it show afterward?
+
+### Detective answer key
+
+* Change `nme` to `name`.
+* Change `int favoriteNumber` to `double favoriteNumber`.
+* Change `age` to `name` in the final `std::cout` line.

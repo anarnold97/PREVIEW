@@ -48,11 +48,51 @@ The symbol `>=` means “greater than or equal to.” So `age >= 10` checks whet
 * Try changing 10 to a different number, or change the messages.
 
 
-## Making Choices with `if` and `else`
+### Task 2
 
-An `if` statement checks whether something is **true** or **false**. If it is **true**, the program runs the instructions inside the `if` block. 
+* Try changing the number 10 or the messages.
 
-Otherwise, an `else` block can run instead:
+---
+
+## Infinite Loop
+
+An infinite loop is a set of instructions in a computer program that keeps repeating forever because it never reaches a stopping point. 
+
+It's like a game that keeps going without ever ending unless someone turns it off.
+
+---
+
+## Bug Detective: Making Choices
+
+Detective hats on, team! The program is deciding whether someone is 10 or older—but some sneaky bugs are messing with its choices. Run each program separately and test the age shown in its clue.
+
+### Mystery 1: What about exactly 10?
+
+```cpp
+
+#include <iostream>
+
+int main() {
+    int age;
+
+    std::cout << "How old are you? ";
+    std::cin >> age;
+
+    if (age > 10) {
+        std::cout << "You are 10 or older!";
+    } else {
+        std::cout << "You are younger than 10.";
+    }
+
+    return 0;
+}
+```
+
+Try entering 10.
+
+* **Clue:** Does > include 10, or only numbers bigger than 10?
+
+### Mystery 2: Backwards answers
 
 ```cpp
 
@@ -65,6 +105,32 @@ int main() {
     std::cin >> age;
 
     if (age >= 10) {
+        std::cout << "You are younger than 10.";
+    } else {
+        std::cout << "You are 10 or older!";
+    }
+
+    return 0;
+}
+```
+
+Try entering 8.
+
+* **Clue:** The condition checks correctly. Do the messages match the branches?
+
+### Mystery 3: Exactly 10—or 10 and older?
+
+```cpp
+
+#include <iostream>
+
+int main() {
+    int age;
+
+    std::cout << "How old are you? ";
+    std::cin >> age;
+
+    if (age == 10) {
         std::cout << "You are 10 or older!";
     } else {
         std::cout << "You are younger than 10.";
@@ -74,19 +140,12 @@ int main() {
 }
 ```
 
-The condition `age >= 10` means “is age greater than or equal to 10?” It evaluates to **true** or **false**.
+Try entering 12.
 
-* If the condition is **true**, the program prints “You are 10 or older!”
-* If the condition is **false**, the program prints “You are younger than 10.”
+* **Clue:** `==`` checks whether the age is exactly 10. Which condition also includes ages above 10?
 
-### Task 2
+### Detective answer key
 
-* Try changing the number 10 or the messages.
-
----
-
-## Infinite Loop
-
-An infinite loop is a set of instructions in a computer program that keeps repeating forever because it never reaches a stopping point. 
-
-It's like a game that keeps going without ever ending unless someone turns it off.
+* Change `age > 10` to `age >= 10`.
+* Swap the two messages so each matches its branch.
+* Change `age == 10` to age `>= 10`.

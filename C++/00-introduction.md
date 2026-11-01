@@ -70,6 +70,10 @@ You’ll meet some strange-sounding words as we go. You don’t have to memorize
 * Debugging: Finding and fixing bugs. It’s detective work, but the clues are usually missing commas.
 * Run: To start a program and let the computer follow its instructions.
 
+**Oh it all sounds so complicated!!!**
+
+Yes, it is. But it will help your code if you know what is happening when you run a program.  
+
 ## Mistakes
 
 Don’t worry if your code has mistakes—even the world’s best programmers make them! Sometimes a tiny, sneaky mistake can be hard to spot, like finding one missing sprinkle on a giant cupcake. The important thing isn’t to get everything perfect the first time: it’s to test your code, learn what went wrong, and try again. Every bug you fix makes you a better programmer!
