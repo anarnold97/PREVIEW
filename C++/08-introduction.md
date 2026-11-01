@@ -112,7 +112,7 @@ Make a small game map using numbers. For example, use 0 for an empty space and 1
 
 #### Solution 2: A Small Game Map
 
-Here, 0 means an empty space and 1 means a wall. The nested loops print the map row by row.
+Here, `0` means an empty space and `1` means a wall. The nested loops print the map row by row.
 
 ```cpp
 
@@ -156,3 +156,5 @@ Katherine Johnson was a mathematician whose calculations helped NASA plan spacec
 NASA
 
 Her calculations of orbital mechanics as a NASA employee were critical to the success of the first and subsequent U.S. crewed spaceflights. 
+
+Yet she said of herself " I am just a girl who loved to count."

@@ -1,4 +1,4 @@
-# Introduction to C++ (Part 5) 
+# Introduction to C++ (Part 6) 
 
 ## How did you do?
 
@@ -83,7 +83,7 @@ It comes after the inner loop, so the program prints all 12 equations before mov
 >
 > If you didn’t get it yet, that’s okay. Nested loops can take a little time to understand, and getting stuck is part of learning to program. 
 >
-> Try tracing the loops one step at a time (and this is a great skill to learn.
+> Try tracing the loops one step at a time (and this is a great skill to learn). We call it **debugging**.
 >
 > Or ask a friend or teacher to work through one line with you.
 >
@@ -93,3 +93,4 @@ It comes after the inner loop, so the program prints all 12 equations before mov
 >
 > Keep experimenting and you **WILL** get there!
 > 
+
