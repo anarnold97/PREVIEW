@@ -92,15 +92,24 @@ I am 10 years old.
 
 ---
 
+## Interesting fact
+
+After Ada Lovelace imagined programs, people had to write them — but early computers only understood raw numbers. Programming meant writing long streams of 1s and 0s. Grace Hopper, a US Navy rear admiral and mathematician, thought that was absurd. Why couldn't humans program in words?
+
+Everyone told her machines could never translate human words into computer language. She built the first compiler anyway — a program that translates human-readable code into machine code. Every modern programming language, including the one in these tutorials, exists because Grace Hopper insisted computers should speak our language too.
+
+Oh — and her team also found the first literal computer bug: an actual moth, squashed in a relay, taped into the logbook with the caption "first actual case of bug being found." When your program misbehaves, you're carrying on a tradition that's older than you think.
+
+WE LOVE GRACE HOPPER! We will tell you more about her in a later interesting fact!
+
+---
+
+
 ## Bugs
 
-Bugs in programming are mistakes or errors in the code that can cause a program to not work correctly. A bug can make a computer program behave unexpectedly or even crash.
+Now we can talk about bugs. Bugs in programming are mistakes or errors in the code that can cause a program to not work correctly. A bug can make a computer program behave unexpectedly or even crash.
 
-Grace Hopper is our hero for many reasons. She also found the first **bug**.
-
-In 1947, Grace and her team were working on the Harvard Mark II computer when they discovered a moth that had caused a problem by entering the circuits of one of the early computers.
-
-They documented this incident in their logbook, labeling it as the "first actual case of bug being found."
+Every coder will find bugs in their code. Bugs let us improve.
 
 ---
 

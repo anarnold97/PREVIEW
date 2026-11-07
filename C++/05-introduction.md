@@ -33,5 +33,10 @@ Add a blank line between each times table to make the output easier to read.
 
 ## Interesting fact
 
-Ada Lovelace is often called the first computer programmer because in 1843 she wrote detailed instructions for a machine called the Analytical Engine, which was like an early computer, and her notes included the first published computer algorithm.
-		
+Hedy Lamarr was a movie star who also loved inventing things. During World War II, she and composer George Antheil came up with a clever idea for guiding radio-controlled torpedoes: make the radio signal hop between frequencies so it would be harder to jam. Their invention wasn't used during the war, but the idea later helped inspire wireless technology.
+
+Hollywood wanted Hedy to be beautiful and quiet. She had other plans. She later joked that any girl can be glamorous — "all you have to do is stand still and look stupid."
+
+Hedy shows us that you can love more than one thing — movies and machines, music and maths.
+
+Your brain doesn't have to pick just one channel. It can be a whole radio station!

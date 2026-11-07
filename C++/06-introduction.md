@@ -94,3 +94,12 @@ It comes after the inner loop, so the program prints all 12 equations before mov
 > Keep experimenting and you **WILL** get there!
 > 
 
+---
+
+## Interesting fact
+
+Sophie Wilson helped design the ARM processor with her colleague Steve Furber. A processor is the tiny chip that carries out a computer’s instructions. ARM designs are now used in billions of devices, including smartphones. So the phone in your pocket has a little piece of Sophie’s work inside it. 
+
+Sophie and her team also built a working prototype of the BBC Micro in less than a week. That’s a reminder that small teams can build big things when everyone brings their skills—and remembers to sleep eventually. 
+
+So remember that hardware and code work together, and you don’t have to build something huge to make a huge difference. A tiny chip can help power a whole lot of cat videos.

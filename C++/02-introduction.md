@@ -157,3 +157,21 @@ Try entering Mia. Does the program greet Mia?
 * Change `nme` to `name`.
 * Change `int favoriteNumber` to `double favoriteNumber`.
 * Change `age` to `name` in the final `std::cout` line.
+
+---
+
+## Interesting fact
+
+ENIAC, finished in 1945, was one of the first electronic computers ever built. It was enormous — about the size of a large classroom — with around 18,000 vacuum tubes that glowed, overheated, and burned out constantly. Some tubes failed every single day.
+
+Programming ENIAC didn't mean typing code. It meant physically moving cables and switches for days until the machine did what you wanted. There was no manual. Nobody had ever done this before.
+
+The team who figured out how to program it were six women: Kathleen McNulty, Jean Jennings Bartik, Frances Spence, Ruth Lichterman, Elizabeth Snyder, and Marlyn Wescoff. They studied the machine's blueprints and worked out, entirely from scratch, how to make it calculate.
+
+In 1946, ENIAC was shown off to the press and Army officials. It was called a miracle of modern science. The six women who made it work? They were not mentioned. They weren't even in the photograph.
+
+Was ENIAC a success? Not really! It barely worked, it was retired after a few years, and better machines quickly replaced it. But every computer that came after — including the one you're reading this on — works because six women first wrestled the impossible machine into cooperating. 
+
+So when your program crashes on the first try, you are in excellent historical company. First versions are supposed to be disasters. That's what first versions are for.
+
+We salute the ENIAC Six, who by definition, are the world's first professional developers!

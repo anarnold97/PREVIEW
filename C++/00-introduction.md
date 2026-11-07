@@ -81,3 +81,19 @@ Don’t worry if your code has mistakes—even the world’s best programmers ma
 Here’s a real-life example. In 1996, the first Ariane 5 rocket launched carrying science satellites. About 37 seconds after liftoff, a problem in its guidance software meant it lost reliable information about how it was moving. The rocket veered off course and was automatically destroyed for safety. Some software had been reused from an older rocket, but its assumptions hadn’t been tested well enough for the new rocket. It wasn’t just one person’s mistake—it was a chain of problems that better testing could have caught. The lesson? Reusing code can be helpful, but you still have to check that it works in its new home. 
 
 We all make mistakes, so successful coding is a team effort. You might be good at writing code, or you might be good at finding bugs. 
+
+---
+
+## Interesting fact
+
+Ada Lovelace was born in England in 1815. Her father was Lord Byron, one of the most famous poets in the world — but her mother decided poetry was too wild, and raised Ada on mathematics instead.
+
+When Ada was a teenager, she met Charles Babbage, an inventor who had drawn plans for a giant mechanical computer called the Analytical Engine. It was full of gears and punch cards — but he never finished building it. The machine existed only on paper.
+
+Most people looked at the drawings and saw a very fancy calculator. Ada Lovelace saw something bigger. She realized that if a machine could follow instructions about numbers, it could follow instructions about anything — even music.
+
+In 1843, Ada wrote out detailed instructions for the machine — the first published computer algorithm. She wrote the world's first program for a computer made entirely of imagination.
+
+More than a hundred years later, real computers were built — and they worked exactly the way Ada had seen they could. Which is why she is remembered as the first computer programmer.
+
+Every program you write starts the same way hers did: with an idea, and the instructions to make it real.

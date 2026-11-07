@@ -105,3 +105,16 @@ This displays **Total apples: 8**.
 > To get a decimal answer, use double, such as 7.0 / 2.0, which gives 3.5.
 > 
 
+---
+
+## Interesting fact
+
+Margaret Hamilton worked at MIT, where her team built the software that guided Apollo’s command and lunar modules. In those days, software engineering was so new that there were no classes to teach it. The team had to figure out how to design and organize a system that people would trust to carry astronauts to the Moon—and bring them home.
+
+Hamilton led the teams writing that software. She believed it should do more than follow instructions: it should notice when something went wrong, tell the astronauts, and recover when it could. During Apollo 11’s landing, the computer was overloaded with tasks. The software recognized the problem, set priorities, and kept the mission-critical work going. 
+
+Hamilton called this work “software engineering” because she believed software deserved the same care and respect as other kinds of engineering. She helped make it a discipline—not just a pile of code, but a system thoughtfully designed to handle trouble. 
+
+When you organize your code into clear pieces, give each part a job, and plan for things to go wrong, you’re following the kind of discipline Margaret Hamilton helped build. Good software isn’t only about making things work. It’s about making them work when it matters.
+
+So: give your ideas tidy little jobs, test your work, and make a backup plan. Because even computers sometimes need to hear, “Not everything at once, please!”

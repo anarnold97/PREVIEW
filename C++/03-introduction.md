@@ -149,3 +149,17 @@ Try entering 12.
 * Change `age > 10` to `age >= 10`.
 * Swap the two messages so each matches its branch.
 * Change `age == 10` to age `>= 10`.
+
+---
+
+## Interesting fact
+
+Katherine Johnson worked at NASA, where they were figuring out how to send humans safely into space. Trajectories — the paths spacecraft take — depend on thousands of mathematical calculations, and in the early days, people had to do many of them by hand.
+
+Katherine was so brilliant at this that the astronauts asked for her personally. Before John Glenn's orbital flight in 1962, the new electronic computers produced the numbers — but Glenn didn't fully trust the unfamiliar machine. He said: "get the girl to check the numbers. If she says they're good, then I'm ready to go".
+
+The woman checked the computer. And the computer's math was good, because Katherine had checked it.
+
+She described herself simply: "I'm just a girl who likes to count." She counted her way to the Moon and back, at a time when many people made things difficult for women — and for Black women especially — in science. The mathematics never minded. It worked for anyone who loved it.
+
+So when you check your code before running it — look at every line, test every path — you're doing exactly what the astronauts trusted Katherine Johnson to do. Always check like Katherine, because one day, people could depend on your code too.
