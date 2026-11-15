@@ -6,7 +6,7 @@
 
 Visual: The row of boxes from Tutorial 9 appears again. The boxes hold 8, 10, 7, and 9; below them, position tags read 0, 1, 2, and 3.
 
-* Capition: In Tutorial 9, we looped over a whole list. Now we'll learn to reach in and grab any single item—and how lists can grow.
+* Caption: In Tutorial 9, we looped over a whole list. Now we'll learn to reach in and grab any single item—and how lists can grow.
 
 ```
 scores = [8, 10, 7, 9]
@@ -195,6 +195,6 @@ You entered 3 animals.
 
 * **Hint:** Use `range(len(animals))` to get each index. Remember, indexes start at 0, so add 1 to i when printing the number.
 
-* **Hint:** To print "1. cat is a great animal!" neatly, an `f-string` helps: `f"{i + 1}`. {animal} is a great animal!" We met `f-strings` in Tutorial 7.
+**Hint:** Numbers are tricky to print neatly — print(i + 1, ".") adds unwanted spaces. An f-string puts the number and the dot together exactly as you want: f"{i + 1}. {animal} is a great animal!" We met f-strings in Tutorial 7.
 
 * Finish by using `len(animals)` to show how many animals were entered.
